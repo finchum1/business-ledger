@@ -18,15 +18,19 @@ export function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-slate-50 dark:bg-[#0f1117]">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-sm bg-slate-900/60 border border-slate-800 rounded-2xl p-8 shadow-xl"
+        className="w-full max-w-sm bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 shadow-lg dark:shadow-xl"
       >
-        <h1 className="text-2xl font-semibold text-slate-100 mb-1">Business Ledger</h1>
-        <p className="text-slate-400 text-sm mb-6">Sign in to record revenue and expenses.</p>
+        <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-1">
+          Business Ledger
+        </h1>
+        <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">
+          Sign in to record revenue and expenses.
+        </p>
 
-        <label className="block text-sm text-slate-300 mb-1" htmlFor="email">
+        <label className="block text-sm text-slate-600 dark:text-slate-300 mb-1" htmlFor="email">
           Email
         </label>
         <input
@@ -36,10 +40,10 @@ export function Login() {
           autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full mb-4 rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          className="w-full mb-4 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
         />
 
-        <label className="block text-sm text-slate-300 mb-1" htmlFor="password">
+        <label className="block text-sm text-slate-600 dark:text-slate-300 mb-1" htmlFor="password">
           Password
         </label>
         <input
@@ -49,11 +53,11 @@ export function Login() {
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full mb-6 rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          className="w-full mb-6 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
         />
 
         {error && (
-          <p className="text-sm text-rose-400 mb-4" role="alert">
+          <p className="text-sm text-rose-600 dark:text-rose-400 mb-4" role="alert">
             {error}
           </p>
         )}

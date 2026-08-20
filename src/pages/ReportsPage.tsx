@@ -79,15 +79,17 @@ export function ReportsPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
-      <section className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
-        <h2 className="text-lg font-semibold text-slate-100 mb-4">Profit &amp; Loss</h2>
+      <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
+          Profit &amp; Loss
+        </h2>
         <div className="flex flex-wrap gap-3 items-end">
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Business</label>
+            <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">Business</label>
             <select
               value={businessId}
               onChange={(e) => setBusinessId(e.target.value)}
-              className="rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-slate-100 text-sm"
+              className="rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-900 dark:text-slate-100 text-sm"
             >
               <option value="all">All businesses (combined)</option>
               {businesses.map((b) => (
@@ -98,11 +100,11 @@ export function ReportsPage() {
             </select>
           </div>
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Period</label>
+            <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">Period</label>
             <select
               value={preset}
               onChange={(e) => setPreset(e.target.value as PresetKey)}
-              className="rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-slate-100 text-sm"
+              className="rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-900 dark:text-slate-100 text-sm"
             >
               {Object.entries(PRESET_LABELS).map(([k, label]) => (
                 <option key={k} value={k}>
@@ -114,93 +116,101 @@ export function ReportsPage() {
           {preset === 'custom' && (
             <>
               <div>
-                <label className="block text-xs text-slate-400 mb-1">From</label>
+                <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">From</label>
                 <input
                   type="date"
                   value={customFrom}
                   onChange={(e) => setCustomFrom(e.target.value)}
-                  className="rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-slate-100 text-sm"
+                  className="rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-900 dark:text-slate-100 text-sm"
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-400 mb-1">To</label>
+                <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">To</label>
                 <input
                   type="date"
                   value={customTo}
                   onChange={(e) => setCustomTo(e.target.value)}
-                  className="rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-slate-100 text-sm"
+                  className="rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-900 dark:text-slate-100 text-sm"
                 />
               </div>
             </>
           )}
         </div>
         {range.from || range.to ? (
-          <p className="text-xs text-slate-500 mt-3">
+          <p className="text-xs text-slate-400 dark:text-slate-500 mt-3">
             {range.from ?? '…'} through {range.to ?? '…'}
           </p>
         ) : (
-          <p className="text-xs text-slate-500 mt-3">All time</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500 mt-3">All time</p>
         )}
-        {error && <p className="text-sm text-rose-400 mt-3">{error}</p>}
+        {error && <p className="text-sm text-rose-600 dark:text-rose-400 mt-3">{error}</p>}
       </section>
 
       {loading ? (
-        <p className="text-slate-400 text-sm px-1">Loading…</p>
+        <p className="text-slate-500 dark:text-slate-400 text-sm px-1">Loading…</p>
       ) : (
         <>
-          <section className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
-            <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">
+          <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
               Income
             </h3>
             {incomeByCategory.length === 0 ? (
-              <p className="text-slate-500 text-sm">No income recorded.</p>
+              <p className="text-slate-400 dark:text-slate-500 text-sm">No income recorded.</p>
             ) : (
               <table className="w-full text-sm mb-2">
                 <tbody>
                   {incomeByCategory.map(([cat, amt]) => (
-                    <tr key={cat} className="border-b border-slate-800/60">
-                      <td className="py-1.5 text-slate-300">{cat}</td>
-                      <td className="py-1.5 text-right text-emerald-400">${fmt(amt)}</td>
+                    <tr key={cat} className="border-b border-slate-200/70 dark:border-slate-800/60">
+                      <td className="py-1.5 text-slate-600 dark:text-slate-300">{cat}</td>
+                      <td className="py-1.5 text-right text-emerald-600 dark:text-emerald-400">
+                        ${fmt(amt)}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             )}
-            <div className="flex justify-between pt-2 font-semibold text-slate-100">
+            <div className="flex justify-between pt-2 font-semibold text-slate-900 dark:text-slate-100">
               <span>Total Income</span>
-              <span className="text-emerald-400">${fmt(totalIncome)}</span>
+              <span className="text-emerald-600 dark:text-emerald-400">${fmt(totalIncome)}</span>
             </div>
           </section>
 
-          <section className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
-            <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">
+          <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
               Expenses
             </h3>
             {expensesByCategory.length === 0 ? (
-              <p className="text-slate-500 text-sm">No expenses recorded.</p>
+              <p className="text-slate-400 dark:text-slate-500 text-sm">No expenses recorded.</p>
             ) : (
               <table className="w-full text-sm mb-2">
                 <tbody>
                   {expensesByCategory.map(([cat, amt]) => (
-                    <tr key={cat} className="border-b border-slate-800/60">
-                      <td className="py-1.5 text-slate-300">{cat}</td>
-                      <td className="py-1.5 text-right text-rose-400">${fmt(amt)}</td>
+                    <tr key={cat} className="border-b border-slate-200/70 dark:border-slate-800/60">
+                      <td className="py-1.5 text-slate-600 dark:text-slate-300">{cat}</td>
+                      <td className="py-1.5 text-right text-rose-600 dark:text-rose-400">
+                        ${fmt(amt)}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             )}
-            <div className="flex justify-between pt-2 font-semibold text-slate-100">
+            <div className="flex justify-between pt-2 font-semibold text-slate-900 dark:text-slate-100">
               <span>Total Expenses</span>
-              <span className="text-rose-400">${fmt(totalExpenses)}</span>
+              <span className="text-rose-600 dark:text-rose-400">${fmt(totalExpenses)}</span>
             </div>
           </section>
 
-          <section className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
+          <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
             <div className="flex justify-between items-center">
-              <span className="text-lg font-semibold text-slate-100">Net Profit</span>
+              <span className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                Net Profit
+              </span>
               <span
-                className={`text-2xl font-bold ${net >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}
+                className={`text-2xl font-bold ${
+                  net >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'
+                }`}
               >
                 {net >= 0 ? '' : '−'}${fmt(Math.abs(net))}
               </span>
@@ -208,13 +218,13 @@ export function ReportsPage() {
           </section>
 
           {businessId === 'all' && perBusiness.length > 0 && (
-            <section className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
-              <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">
+            <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+              <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
                 By business
               </h3>
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-left text-slate-500 border-b border-slate-800">
+                  <tr className="text-left text-slate-400 dark:text-slate-500 border-b border-slate-200 dark:border-slate-800">
                     <th className="py-2 font-medium">Business</th>
                     <th className="py-2 font-medium text-right">Income</th>
                     <th className="py-2 font-medium text-right">Expenses</th>
@@ -223,13 +233,19 @@ export function ReportsPage() {
                 </thead>
                 <tbody>
                   {perBusiness.map((row) => (
-                    <tr key={row.id} className="border-b border-slate-800/60">
-                      <td className="py-2 text-slate-300">{row.name}</td>
-                      <td className="py-2 text-right text-emerald-400">${fmt(row.income)}</td>
-                      <td className="py-2 text-right text-rose-400">${fmt(row.expenses)}</td>
+                    <tr key={row.id} className="border-b border-slate-200/70 dark:border-slate-800/60">
+                      <td className="py-2 text-slate-600 dark:text-slate-300">{row.name}</td>
+                      <td className="py-2 text-right text-emerald-600 dark:text-emerald-400">
+                        ${fmt(row.income)}
+                      </td>
+                      <td className="py-2 text-right text-rose-600 dark:text-rose-400">
+                        ${fmt(row.expenses)}
+                      </td>
                       <td
                         className={`py-2 text-right font-medium ${
-                          row.net >= 0 ? 'text-emerald-400' : 'text-rose-400'
+                          row.net >= 0
+                            ? 'text-emerald-600 dark:text-emerald-400'
+                            : 'text-rose-600 dark:text-rose-400'
                         }`}
                       >
                         ${fmt(row.net)}

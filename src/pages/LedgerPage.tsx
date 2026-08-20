@@ -174,29 +174,29 @@ export function LedgerPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
-      <section className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
-        <h2 className="text-lg font-semibold text-slate-100 mb-4">
+      <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
           {form.id ? 'Edit transaction' : 'Add transaction'}
         </h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
           <div className="lg:col-span-1">
-            <label className="block text-xs text-slate-400 mb-1">Date</label>
+            <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">Date</label>
             <input
               type="date"
               required
               value={form.date}
               onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))}
-              className="w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
             />
           </div>
 
           <div className="lg:col-span-2">
-            <label className="block text-xs text-slate-400 mb-1">Business</label>
+            <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">Business</label>
             <select
               required
               value={form.business_id}
               onChange={(e) => setForm((f) => ({ ...f, business_id: e.target.value }))}
-              className="w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
             >
               {activeBusinesses.length === 0 && <option value="">No businesses yet</option>}
               {activeBusinesses.map((b) => (
@@ -208,8 +208,8 @@ export function LedgerPage() {
           </div>
 
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Type</label>
-            <div className="flex rounded-lg border border-slate-700 overflow-hidden text-sm">
+            <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">Type</label>
+            <div className="flex rounded-lg border border-slate-300 dark:border-slate-700 overflow-hidden text-sm">
               {(['income', 'expense'] as TxType[]).map((t) => (
                 <button
                   type="button"
@@ -220,7 +220,7 @@ export function LedgerPage() {
                       ? t === 'income'
                         ? 'bg-emerald-600 text-white'
                         : 'bg-rose-600 text-white'
-                      : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                   }`}
                 >
                   {t === 'income' ? 'Income' : 'Expense'}
@@ -230,27 +230,27 @@ export function LedgerPage() {
           </div>
 
           <div className="lg:col-span-2">
-            <label className="block text-xs text-slate-400 mb-1">Category</label>
+            <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">Category</label>
             <input
               list="category-options"
               required
               placeholder="e.g. Materials & Supplies"
               value={form.category}
               onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
-              className="w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
             />
             <datalist id="category-options">
               {categoryOptions.map((c) => (
                 <option key={c} value={c} />
               ))}
             </datalist>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
               Don't see it? Type any category, or manage the list on the Categories page.
             </p>
           </div>
 
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Amount</label>
+            <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">Amount</label>
             <input
               type="number"
               step="0.01"
@@ -259,38 +259,42 @@ export function LedgerPage() {
               placeholder="0.00"
               value={form.amount}
               onChange={(e) => setForm((f) => ({ ...f, amount: e.target.value }))}
-              className="w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
             />
           </div>
 
           <div className="sm:col-span-2 lg:col-span-4">
-            <label className="block text-xs text-slate-400 mb-1">Description (optional)</label>
+            <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">
+              Description (optional)
+            </label>
             <input
               type="text"
               placeholder="Notes, vendor, invoice #, etc."
               value={form.description}
               onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
-              className="w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
             />
           </div>
 
           {form.type === 'expense' && (
             <div className="sm:col-span-2 lg:col-span-6">
-              <label className="block text-xs text-slate-400 mb-1">Receipt (optional)</label>
+              <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">
+                Receipt (optional)
+              </label>
               {form.receipt_path && !removingReceipt && !receiptFile ? (
                 <div className="flex items-center gap-3 text-sm">
                   <button
                     type="button"
                     onClick={() => viewReceipt('editing', form.receipt_path!)}
                     disabled={receiptBusy === 'editing'}
-                    className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2"
+                    className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300 underline underline-offset-2"
                   >
                     {receiptBusy === 'editing' ? 'Opening…' : 'View current receipt'}
                   </button>
                   <button
                     type="button"
                     onClick={() => setRemovingReceipt(true)}
-                    className="text-slate-400 hover:text-rose-400"
+                    className="text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400"
                   >
                     Remove
                   </button>
@@ -300,11 +304,13 @@ export function LedgerPage() {
                   type="file"
                   accept="image/*,application/pdf"
                   onChange={handleReceiptChange}
-                  className="w-full text-sm text-slate-300 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-800 file:px-3 file:py-2 file:text-sm file:text-slate-200 hover:file:bg-slate-700"
+                  className="w-full text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-200 dark:file:bg-slate-800 file:px-3 file:py-2 file:text-sm file:text-slate-700 dark:file:text-slate-200 hover:file:bg-slate-300 dark:hover:file:bg-slate-700"
                 />
               )}
               {removingReceipt && (
-                <p className="text-xs text-amber-400 mt-1">Receipt will be removed when you save.</p>
+                <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                  Receipt will be removed when you save.
+                </p>
               )}
             </div>
           )}
@@ -321,7 +327,7 @@ export function LedgerPage() {
               <button
                 type="button"
                 onClick={cancelEdit}
-                className="rounded-lg border border-slate-700 hover:border-slate-500 text-slate-300 px-4 py-2 text-sm transition"
+                className="rounded-lg border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 text-slate-600 dark:text-slate-300 px-4 py-2 text-sm transition"
               >
                 Cancel
               </button>
@@ -329,25 +335,27 @@ export function LedgerPage() {
           </div>
         </form>
         {error && (
-          <p className="text-sm text-rose-400 mt-3" role="alert">
+          <p className="text-sm text-rose-600 dark:text-rose-400 mt-3" role="alert">
             {error}
           </p>
         )}
         {!businessesLoading && activeBusinesses.length === 0 && (
-          <p className="text-sm text-amber-400 mt-3">
+          <p className="text-sm text-amber-600 dark:text-amber-400 mt-3">
             Add a business on the Businesses page before recording transactions.
           </p>
         )}
       </section>
 
-      <section className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
+      <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <h2 className="text-lg font-semibold text-slate-100">Recent transactions</h2>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+            Recent transactions
+          </h2>
           <div className="flex items-center gap-2">
             <select
               value={filterBusiness}
               onChange={(e) => setFilterBusiness(e.target.value)}
-              className="rounded-lg bg-slate-800 border border-slate-700 px-3 py-1.5 text-slate-100 text-sm"
+              className="rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-slate-900 dark:text-slate-100 text-sm"
             >
               <option value="all">All businesses</option>
               {businesses.map((b) => (
@@ -359,7 +367,7 @@ export function LedgerPage() {
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value as 'all' | TxType)}
-              className="rounded-lg bg-slate-800 border border-slate-700 px-3 py-1.5 text-slate-100 text-sm"
+              className="rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-slate-900 dark:text-slate-100 text-sm"
             >
               <option value="all">All types</option>
               <option value="income">Income</option>
@@ -369,14 +377,14 @@ export function LedgerPage() {
         </div>
 
         {loading ? (
-          <p className="text-slate-400 text-sm">Loading…</p>
+          <p className="text-slate-500 dark:text-slate-400 text-sm">Loading…</p>
         ) : transactions.length === 0 ? (
-          <p className="text-slate-400 text-sm">No transactions yet.</p>
+          <p className="text-slate-500 dark:text-slate-400 text-sm">No transactions yet.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-slate-400 border-b border-slate-800">
+                <tr className="text-left text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">
                   <th className="py-2 pr-3 font-medium">Date</th>
                   <th className="py-2 pr-3 font-medium">Business</th>
                   <th className="py-2 pr-3 font-medium">Category</th>
@@ -387,28 +395,35 @@ export function LedgerPage() {
               </thead>
               <tbody>
                 {transactions.map((tx) => (
-                  <tr key={tx.id} className="border-b border-slate-800/60 hover:bg-slate-800/30">
-                    <td className="py-2 pr-3 text-slate-300 whitespace-nowrap">{tx.date}</td>
-                    <td className="py-2 pr-3 text-slate-300 whitespace-nowrap">
+                  <tr
+                    key={tx.id}
+                    className="border-b border-slate-200/70 dark:border-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800/30"
+                  >
+                    <td className="py-2 pr-3 text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                      {tx.date}
+                    </td>
+                    <td className="py-2 pr-3 text-slate-600 dark:text-slate-300 whitespace-nowrap">
                       {businessName(tx.business_id)}
                     </td>
-                    <td className="py-2 pr-3 text-slate-300">
+                    <td className="py-2 pr-3 text-slate-600 dark:text-slate-300">
                       {tx.category}
                       {tx.receipt_path && (
                         <button
                           onClick={() => viewReceipt(tx.id, tx.receipt_path!)}
                           disabled={receiptBusy === tx.id}
                           title="View receipt"
-                          className="ml-2 align-middle text-xs text-emerald-400 hover:text-emerald-300"
+                          className="ml-2 align-middle text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300"
                         >
                           {receiptBusy === tx.id ? '…' : '📎'}
                         </button>
                       )}
                     </td>
-                    <td className="py-2 pr-3 text-slate-500">{tx.description}</td>
+                    <td className="py-2 pr-3 text-slate-400 dark:text-slate-500">{tx.description}</td>
                     <td
                       className={`py-2 pr-3 text-right font-medium whitespace-nowrap ${
-                        tx.type === 'income' ? 'text-emerald-400' : 'text-rose-400'
+                        tx.type === 'income'
+                          ? 'text-emerald-600 dark:text-emerald-400'
+                          : 'text-rose-600 dark:text-rose-400'
                       }`}
                     >
                       {tx.type === 'income' ? '+' : '−'}$
@@ -417,13 +432,13 @@ export function LedgerPage() {
                     <td className="py-2 pr-3 text-right whitespace-nowrap">
                       <button
                         onClick={() => startEdit(tx)}
-                        className="text-slate-400 hover:text-slate-100 text-xs mr-3"
+                        className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 text-xs mr-3"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(tx.id, tx.receipt_path)}
-                        className="text-slate-400 hover:text-rose-400 text-xs"
+                        className="text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
                       >
                         Delete
                       </button>

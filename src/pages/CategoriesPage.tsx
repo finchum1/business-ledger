@@ -85,15 +85,15 @@ function CategoryList({
   }
 
   return (
-    <section className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
-      <h2 className="text-lg font-semibold text-slate-100 mb-4">{title}</h2>
+    <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+      <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">{title}</h2>
       <form onSubmit={handleAdd} className="flex gap-2 mb-4">
         <input
           type="text"
           placeholder={type === 'income' ? 'e.g. Consulting Revenue' : 'e.g. Storage Unit'}
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="flex-1 rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          className="flex-1 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
         />
         <button
           type="submit"
@@ -105,9 +105,9 @@ function CategoryList({
       </form>
 
       {list.length === 0 ? (
-        <p className="text-slate-500 text-sm">No categories yet — add one above.</p>
+        <p className="text-slate-400 dark:text-slate-500 text-sm">No categories yet — add one above.</p>
       ) : (
-        <ul className="divide-y divide-slate-800">
+        <ul className="divide-y divide-slate-200 dark:divide-slate-800">
           {list.map((c) => (
             <li key={c.id} className="py-2.5 flex items-center justify-between gap-3">
               {editingId === c.id ? (
@@ -116,20 +116,32 @@ function CategoryList({
                   value={editingName}
                   onChange={(e) => setEditingName(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && saveEdit(c.id)}
-                  className="flex-1 rounded-lg bg-slate-800 border border-slate-700 px-3 py-1.5 text-slate-100 text-sm"
+                  className="flex-1 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-slate-900 dark:text-slate-100 text-sm"
                 />
               ) : (
-                <span className={`text-sm ${c.is_active ? 'text-slate-200' : 'text-slate-500 line-through'}`}>
+                <span
+                  className={`text-sm ${
+                    c.is_active
+                      ? 'text-slate-800 dark:text-slate-200'
+                      : 'text-slate-400 dark:text-slate-500 line-through'
+                  }`}
+                >
                   {c.name}
                 </span>
               )}
               <div className="flex items-center gap-3 shrink-0">
                 {editingId === c.id ? (
                   <>
-                    <button onClick={() => saveEdit(c.id)} className="text-xs text-emerald-400 hover:text-emerald-300">
+                    <button
+                      onClick={() => saveEdit(c.id)}
+                      className="text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300"
+                    >
                       Save
                     </button>
-                    <button onClick={() => setEditingId(null)} className="text-xs text-slate-400 hover:text-slate-200">
+                    <button
+                      onClick={() => setEditingId(null)}
+                      className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+                    >
                       Cancel
                     </button>
                   </>
@@ -140,19 +152,19 @@ function CategoryList({
                         setEditingId(c.id)
                         setEditingName(c.name)
                       }}
-                      className="text-xs text-slate-400 hover:text-slate-100"
+                      className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
                     >
                       Rename
                     </button>
                     <button
                       onClick={() => toggleActive(c.id, c.is_active)}
-                      className="text-xs text-slate-400 hover:text-slate-100"
+                      className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
                     >
                       {c.is_active ? 'Deactivate' : 'Reactivate'}
                     </button>
                     <button
                       onClick={() => handleDelete(c.id, c.name)}
-                      className="text-xs text-slate-400 hover:text-rose-400"
+                      className="text-xs text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400"
                     >
                       Delete
                     </button>
@@ -174,12 +186,12 @@ export function CategoriesPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
       {(error || fetchError) && (
-        <p className="text-sm text-rose-400" role="alert">
+        <p className="text-sm text-rose-600 dark:text-rose-400" role="alert">
           {error ?? fetchError}
         </p>
       )}
       {loading ? (
-        <p className="text-slate-400 text-sm">Loading…</p>
+        <p className="text-slate-500 dark:text-slate-400 text-sm">Loading…</p>
       ) : (
         <>
           <CategoryList
@@ -198,7 +210,7 @@ export function CategoriesPage() {
           />
         </>
       )}
-      <p className="text-xs text-slate-500">
+      <p className="text-xs text-slate-400 dark:text-slate-500">
         Deactivated categories drop out of the "Add transaction" suggestions but stay visible in P&amp;L
         reports and keep their history. You can still type any category by hand when adding a
         transaction — this list just drives the suggestions and keeps naming consistent.
