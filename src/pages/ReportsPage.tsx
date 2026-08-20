@@ -105,6 +105,7 @@ export function ReportsPage() {
           totalExpenses={totalExpenses}
           net={net}
           perBusiness={businessId === 'all' ? perBusiness : []}
+          businessNames={businessId === 'all' ? businesses.map((b) => b.name) : []}
         />,
       ).toBlob()
       const url = URL.createObjectURL(blob)

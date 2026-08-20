@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
   brand: { fontSize: 10, color: '#64748b', marginBottom: 4 },
   title: { fontSize: 22, fontWeight: 'bold', marginBottom: 6 },
   subtitle: { fontSize: 11, color: '#475569', marginBottom: 2 },
+  businessList: { fontSize: 9, color: '#94a3b8', marginTop: 6 },
   section: { marginTop: 22 },
   sectionTitle: {
     fontSize: 11,
@@ -79,6 +80,8 @@ export interface ReportPDFProps {
   totalExpenses: number
   net: number
   perBusiness: { name: string; income: number; expenses: number; net: number }[]
+  /** Every business rolled into this report (only meaningful/passed when scope is "all"). */
+  businessNames: string[]
 }
 
 export function ReportPDF({
@@ -90,6 +93,7 @@ export function ReportPDF({
   totalExpenses,
   net,
   perBusiness,
+  businessNames,
 }: ReportPDFProps) {
   return (
     <Document>
@@ -99,6 +103,9 @@ export function ReportPDF({
           <Text style={styles.title}>Profit &amp; Loss</Text>
           <Text style={styles.subtitle}>{scopeLabel}</Text>
           <Text style={styles.subtitle}>{periodLabel}</Text>
+          {businessNames.length > 0 && (
+            <Text style={styles.businessList}>Includes: {businessNames.join(', ')}</Text>
+          )}
         </View>
 
         <View style={styles.section}>
