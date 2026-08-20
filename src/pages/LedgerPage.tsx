@@ -1,13 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import type { FormEvent } from 'react'
+import type { ChangeEvent, FormEvent } from 'react'
 import { supabase } from '../lib/supabase'
 import { useBusinesses } from '../lib/useBusinesses'
-import {
-  DEFAULT_EXPENSE_CATEGORIES,
-  DEFAULT_INCOME_CATEGORIES,
-  type Transaction,
-  type TxType,
-} from '../lib/types'
+import { useCategories } from '../lib/useCategories'
+import { deleteReceipt, getReceiptUrl, uploadReceipt } from '../lib/receipts'
+import type { Transaction, TxType } from '../lib/types'
 
 function todayStr() {
   return new Date().toISOString().slice(0, 10)
@@ -21,14 +18,19 @@ const emptyForm = {
   category: '',
   amount: '',
   description: '',
+  receipt_path: null as string | null,
 }
 
 export function LedgerPage() {
   const { businesses, loading: businessesLoading } = useBusinesses()
+  const { categories } = useCategories()
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
+  const [receiptFile, setReceiptFile] = useState<File | null>(null)
+  const [removingReceipt, setRemovingReceipt] = useState(false)
+  const [receiptBusy, setReceiptBusy] = useState<string | null>(null) // transaction id currently opening a receipt
 
   const [form, setForm] = useState(emptyForm)
 
@@ -73,8 +75,10 @@ export function LedgerPage() {
 
   const businessName = (id: string) => businesses.find((b) => b.id === id)?.name ?? '—'
 
-  const categoryOptions =
-    form.type === 'income' ? DEFAULT_INCOME_CATEGORIES : DEFAULT_EXPENSE_CATEGORIES
+  const categoryOptions = useMemo(
+    () => categories.filter((c) => c.type === form.type && c.is_active).map((c) => c.name),
+    [categories, form.type],
+  )
 
   function startEdit(tx: Transaction) {
     setForm({
@@ -85,12 +89,22 @@ export function LedgerPage() {
       category: tx.category,
       amount: String(tx.amount),
       description: tx.description ?? '',
+      receipt_path: tx.receipt_path,
     })
+    setReceiptFile(null)
+    setRemovingReceipt(false)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   function cancelEdit() {
     setForm({ ...emptyForm, business_id: activeBusinesses[0]?.id ?? '' })
+    setReceiptFile(null)
+    setRemovingReceipt(false)
+  }
+
+  function handleReceiptChange(e: ChangeEvent<HTMLInputElement>) {
+    setReceiptFile(e.target.files?.[0] ?? null)
+    setRemovingReceipt(false)
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -102,15 +116,25 @@ export function LedgerPage() {
       return
     }
     setSaving(true)
-    const payload = {
-      business_id: form.business_id,
-      date: form.date,
-      type: form.type,
-      category: form.category.trim(),
-      amount,
-      description: form.description.trim() || null,
-    }
     try {
+      let receiptPath = removingReceipt ? null : form.receipt_path
+      if (receiptFile) {
+        receiptPath = await uploadReceipt(receiptFile)
+      }
+      // Clean up the old file once the new one is safely uploaded/removed.
+      if (form.receipt_path && form.receipt_path !== receiptPath) {
+        await deleteReceipt(form.receipt_path)
+      }
+
+      const payload = {
+        business_id: form.business_id,
+        date: form.date,
+        type: form.type,
+        category: form.category.trim(),
+        amount,
+        description: form.description.trim() || null,
+        receipt_path: receiptPath,
+      }
       const { error } = form.id
         ? await supabase.from('transactions').update(payload).eq('id', form.id)
         : await supabase.from('transactions').insert(payload)
@@ -124,14 +148,27 @@ export function LedgerPage() {
     }
   }
 
-  async function handleDelete(id: string) {
+  async function handleDelete(id: string, receiptPath: string | null) {
     if (!confirm('Delete this transaction? This cannot be undone.')) return
     try {
       const { error } = await supabase.from('transactions').delete().eq('id', id)
       if (error) throw error
+      if (receiptPath) await deleteReceipt(receiptPath)
       fetchTransactions()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete transaction.')
+    }
+  }
+
+  async function viewReceipt(id: string, path: string) {
+    setReceiptBusy(id)
+    try {
+      const url = await getReceiptUrl(path)
+      window.open(url, '_blank', 'noopener,noreferrer')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to open receipt.')
+    } finally {
+      setReceiptBusy(null)
     }
   }
 
@@ -207,6 +244,9 @@ export function LedgerPage() {
                 <option key={c} value={c} />
               ))}
             </datalist>
+            <p className="text-xs text-slate-500 mt-1">
+              Don't see it? Type any category, or manage the list on the Categories page.
+            </p>
           </div>
 
           <div>
@@ -233,6 +273,41 @@ export function LedgerPage() {
               className="w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
             />
           </div>
+
+          {form.type === 'expense' && (
+            <div className="sm:col-span-2 lg:col-span-6">
+              <label className="block text-xs text-slate-400 mb-1">Receipt (optional)</label>
+              {form.receipt_path && !removingReceipt && !receiptFile ? (
+                <div className="flex items-center gap-3 text-sm">
+                  <button
+                    type="button"
+                    onClick={() => viewReceipt('editing', form.receipt_path!)}
+                    disabled={receiptBusy === 'editing'}
+                    className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2"
+                  >
+                    {receiptBusy === 'editing' ? 'Opening…' : 'View current receipt'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setRemovingReceipt(true)}
+                    className="text-slate-400 hover:text-rose-400"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <input
+                  type="file"
+                  accept="image/*,application/pdf"
+                  onChange={handleReceiptChange}
+                  className="w-full text-sm text-slate-300 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-800 file:px-3 file:py-2 file:text-sm file:text-slate-200 hover:file:bg-slate-700"
+                />
+              )}
+              {removingReceipt && (
+                <p className="text-xs text-amber-400 mt-1">Receipt will be removed when you save.</p>
+              )}
+            </div>
+          )}
 
           <div className="flex items-end gap-2 lg:col-span-2">
             <button
@@ -317,7 +392,19 @@ export function LedgerPage() {
                     <td className="py-2 pr-3 text-slate-300 whitespace-nowrap">
                       {businessName(tx.business_id)}
                     </td>
-                    <td className="py-2 pr-3 text-slate-300">{tx.category}</td>
+                    <td className="py-2 pr-3 text-slate-300">
+                      {tx.category}
+                      {tx.receipt_path && (
+                        <button
+                          onClick={() => viewReceipt(tx.id, tx.receipt_path!)}
+                          disabled={receiptBusy === tx.id}
+                          title="View receipt"
+                          className="ml-2 align-middle text-xs text-emerald-400 hover:text-emerald-300"
+                        >
+                          {receiptBusy === tx.id ? '…' : '📎'}
+                        </button>
+                      )}
+                    </td>
                     <td className="py-2 pr-3 text-slate-500">{tx.description}</td>
                     <td
                       className={`py-2 pr-3 text-right font-medium whitespace-nowrap ${
@@ -335,7 +422,7 @@ export function LedgerPage() {
                         Edit
                       </button>
                       <button
-                        onClick={() => handleDelete(tx.id)}
+                        onClick={() => handleDelete(tx.id, tx.receipt_path)}
                         className="text-slate-400 hover:text-rose-400 text-xs"
                       >
                         Delete

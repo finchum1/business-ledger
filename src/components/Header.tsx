@@ -23,6 +23,9 @@ export function Header({ session }: { session: Session }) {
             <NavLink to="/businesses" className={navLinkClass}>
               Businesses
             </NavLink>
+            <NavLink to="/categories" className={navLinkClass}>
+              Categories
+            </NavLink>
           </nav>
         </div>
         <div className="flex items-center gap-3">
