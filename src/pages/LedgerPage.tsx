@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
-import type { ChangeEvent, FormEvent } from 'react'
+import type { FormEvent } from 'react'
 import { supabase } from '../lib/supabase'
 import { useBusinesses } from '../lib/useBusinesses'
 import { useCategories } from '../lib/useCategories'
 import { deleteReceipt, getReceiptUrl, uploadReceipt } from '../lib/receipts'
 import { Combobox } from '../components/Combobox'
+import { ReceiptDropZone } from '../components/ReceiptDropZone'
 import type { Transaction, TxType } from '../lib/types'
 
 function todayStr() {
@@ -100,11 +101,6 @@ export function LedgerPage() {
   function cancelEdit() {
     setForm({ ...emptyForm, business_id: activeBusinesses[0]?.id ?? '' })
     setReceiptFile(null)
-    setRemovingReceipt(false)
-  }
-
-  function handleReceiptChange(e: ChangeEvent<HTMLInputElement>) {
-    setReceiptFile(e.target.files?.[0] ?? null)
     setRemovingReceipt(false)
   }
 
@@ -276,32 +272,20 @@ export function LedgerPage() {
               <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">
                 Receipt (optional)
               </label>
-              {form.receipt_path && !removingReceipt && !receiptFile ? (
-                <div className="flex items-center gap-3 text-sm">
-                  <button
-                    type="button"
-                    onClick={() => viewReceipt('editing', form.receipt_path!)}
-                    disabled={receiptBusy === 'editing'}
-                    className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300 underline underline-offset-2"
-                  >
-                    {receiptBusy === 'editing' ? 'Opening…' : 'View current receipt'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setRemovingReceipt(true)}
-                    className="text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400"
-                  >
-                    Remove
-                  </button>
-                </div>
-              ) : (
-                <input
-                  type="file"
-                  accept="image/*,application/pdf"
-                  onChange={handleReceiptChange}
-                  className="w-full text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-200 dark:file:bg-slate-800 file:px-3 file:py-2 file:text-sm file:text-slate-700 dark:file:text-slate-200 hover:file:bg-slate-300 dark:hover:file:bg-slate-700"
-                />
-              )}
+              <ReceiptDropZone
+                receiptPath={form.receipt_path}
+                file={receiptFile}
+                removing={removingReceipt}
+                viewing={receiptBusy === 'editing'}
+                onFileSelected={(file) => {
+                  setReceiptFile(file)
+                  setRemovingReceipt(false)
+                }}
+                onClearFile={() => setReceiptFile(null)}
+                onRemove={() => setRemovingReceipt(true)}
+                onView={() => viewReceipt('editing', form.receipt_path!)}
+                onError={setError}
+              />
               {removingReceipt && (
                 <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
                   Receipt will be removed when you save.
