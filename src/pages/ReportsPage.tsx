@@ -25,6 +25,7 @@ export function ReportsPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [generatingPdf, setGeneratingPdf] = useState(false)
 
   const range = useMemo(() => {
     if (preset === 'custom') return { from: customFrom || null, to: customTo || null }
@@ -77,12 +78,74 @@ export function ReportsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transactions, businessId])
 
+  const scopeLabel = businessId === 'all' ? 'All Businesses (Combined)' : businessName(businessId)
+  const periodLabel =
+    range.from || range.to ? `${range.from ?? '…'} through ${range.to ?? '…'}` : 'All time'
+
+  async function handleViewPdf() {
+    // Open the tab synchronously, before any `await` -- Safari (unlike Chrome) drops the
+    // "this came from a real click" flag across an async gap and silently blocks a
+    // window.open() called after one, even from a genuine click handler. Opening a blank
+    // tab immediately and navigating it once the PDF is ready sidesteps that everywhere.
+    const newTab = window.open('', '_blank', 'noopener,noreferrer')
+    setGeneratingPdf(true)
+    setError(null)
+    try {
+      const [{ pdf }, { ReportPDF }] = await Promise.all([
+        import('@react-pdf/renderer'),
+        import('../lib/pdf/ReportPDF'),
+      ])
+      const blob = await pdf(
+        <ReportPDF
+          scopeLabel={scopeLabel}
+          periodLabel={periodLabel}
+          incomeByCategory={incomeByCategory}
+          expensesByCategory={expensesByCategory}
+          totalIncome={totalIncome}
+          totalExpenses={totalExpenses}
+          net={net}
+          perBusiness={businessId === 'all' ? perBusiness : []}
+        />,
+      ).toBlob()
+      const url = URL.createObjectURL(blob)
+      if (newTab) {
+        newTab.location.href = url
+      } else {
+        // Pop-up blocked -- fall back to a direct file download so "save" still works
+        // even when "view in a new tab" doesn't.
+        const scopeSlug = (businessId === 'all' ? 'all-businesses' : scopeLabel)
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '')
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `profit-loss-${scopeSlug}-${preset}.pdf`
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
+      }
+    } catch (err) {
+      newTab?.close()
+      setError(err instanceof Error ? err.message : 'Failed to generate PDF.')
+    } finally {
+      setGeneratingPdf(false)
+    }
+  }
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
       <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
-          Profit &amp; Loss
-        </h2>
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Profit &amp; Loss</h2>
+          <button
+            type="button"
+            onClick={handleViewPdf}
+            disabled={generatingPdf || loading}
+            className="rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60 text-white font-medium px-4 py-2 text-sm transition"
+          >
+            {generatingPdf ? 'Generating PDF…' : 'View / Save PDF'}
+          </button>
+        </div>
         <div className="flex flex-wrap gap-3 items-end">
           <div>
             <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">Business</label>
