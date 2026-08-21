@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import type { Session } from '@supabase/supabase-js'
 import { supabase } from './lib/supabase'
-import { Login } from './components/Login'
+import { Landing } from './pages/Landing'
 import { Header } from './components/Header'
 import { LedgerPage } from './pages/LedgerPage'
 import { ReportsPage } from './pages/ReportsPage'
@@ -33,7 +33,7 @@ function App() {
   }
 
   if (!session) {
-    return <Login />
+    return <Landing />
   }
 
   return (
