@@ -80,67 +80,6 @@ function Section({
   )
 }
 
-function HeroDemo() {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, amount: 0.5 })
-  const businessPositions = [15, 50, 85]
-
-  return (
-    <div ref={ref} className="relative w-full max-w-2xl mx-auto" style={{ aspectRatio: '4 / 2.7' }}>
-      {businessPositions.map((x, i) => (
-        <PatchCable
-          key={i}
-          from={{ x, y: 14 }}
-          to={{ x: 50, y: 80 }}
-          color={panel.income}
-          delay={0.4 + i * 0.28}
-          active={inView}
-          sag={22}
-        />
-      ))}
-
-      {businessPositions.map((x, i) => (
-        <div
-          key={i}
-          className="absolute -translate-x-1/2 flex flex-col items-center gap-1.5"
-          style={{ left: `${x}%`, top: '4%' }}
-        >
-          <Jack active={inView} color={panel.income} size={34} />
-          <span
-            className="text-[10px] sm:text-xs whitespace-nowrap"
-            style={{ color: panel.creamDim, fontFamily: "'Space Mono', monospace" }}
-          >
-            {SAMPLE_BUSINESSES[i].name.split(' ')[0].toUpperCase()}
-          </span>
-        </div>
-      ))}
-
-      <div
-        className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2"
-        style={{ left: '50%', top: '80%' }}
-      >
-        <Lamp active={inView} color={panel.amber} size={11} />
-        <div
-          className="relative rounded-lg px-5 py-3 sm:px-7 sm:py-4 text-center"
-          style={{
-            ...panelSurface([panel.bgRaised2, panel.bgDeep], 160),
-            boxShadow: 'inset 0 0 0 1px rgba(184,147,90,0.4), 0 8px 20px rgba(0,0,0,0.5)',
-          }}
-        >
-          <BrassScrews />
-          <PlateLabel className="block mb-1">Combined</PlateLabel>
-          <TickerTotal
-            value={SAMPLE_NET}
-            active={inView}
-            className="text-2xl sm:text-4xl font-bold block"
-            style={{ color: panel.income }}
-          />
-        </div>
-      </div>
-    </div>
-  )
-}
-
 function Nameplate() {
   return (
     <div className="flex items-center gap-2.5">
@@ -273,9 +212,13 @@ export function Landing() {
         </div>
       </header>
 
-      {/* Hero -- the panel itself is the hero; the nameplate is inset into it,
-          lower-left, never centered floating text over a plain wash. */}
-      <section className="relative overflow-hidden" style={panelSurface([panel.bgRaised2, panel.bgDeep], 150)}>
+      {/* Hero -- a single centered nameplate is the entire first viewport;
+          the switchboard demo lives in the Mechanism section below so the
+          two aren't showing the same thing back to back. */}
+      <section
+        className="relative overflow-hidden flex items-center justify-center px-5 sm:px-8 py-24 sm:py-32 min-h-[85vh]"
+        style={panelSurface([panel.bgRaised2, panel.bgDeep], 150)}
+      >
         <div
           className="pointer-events-none absolute inset-0"
           style={{
@@ -284,59 +227,47 @@ export function Landing() {
           }}
         />
 
-        <div className="relative px-5 sm:px-8 pt-16 sm:pt-20">
-          <HeroDemo />
-          <p
-            className="text-center text-[11px] mt-8"
-            style={{ color: panel.creamDim, fontFamily: "'Space Mono', monospace" }}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="relative max-w-3xl w-full rounded-lg p-8 sm:p-12 text-center"
+          style={{
+            ...panelSurface([panel.bgRaised, panel.bgDeep], 165),
+            boxShadow: 'inset 0 0 0 1px rgba(184,147,90,0.4), 0 20px 45px rgba(0,0,0,0.55)',
+          }}
+        >
+          <BrassScrews />
+          <h1
+            className="text-5xl sm:text-6xl md:text-7xl font-bold leading-[0.95] mb-6 tracking-tight"
+            style={{ color: panel.cream, fontFamily: "'Big Shoulders Display', sans-serif" }}
           >
-            sample data, for illustration
+            One ledger.
+            <br />
+            Every business.
+          </h1>
+          <p className="text-base sm:text-lg mb-8 max-w-xl mx-auto" style={{ color: panel.creamDim }}>
+            Log income and expenses for every business you run in one place. Pull a Profit &amp;
+            Loss for all of them combined — or isolate any single one instantly.
           </p>
-        </div>
-
-        <div className="relative px-5 sm:px-8 pb-16 sm:pb-24 pt-10 sm:pt-14">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="relative max-w-lg rounded-lg p-6 sm:p-8"
-            style={{
-              ...panelSurface([panel.bgRaised, panel.bgDeep], 165),
-              boxShadow: 'inset 0 0 0 1px rgba(184,147,90,0.4), 0 20px 45px rgba(0,0,0,0.55)',
-            }}
-          >
-            <BrassScrews />
-            <h1
-              className="text-4xl sm:text-5xl font-bold leading-[0.95] mb-4 tracking-tight"
-              style={{ color: panel.cream, fontFamily: "'Big Shoulders Display', sans-serif" }}
+          <div className="flex items-center justify-center gap-3">
+            <button
+              onClick={() => scrollTo('signin')}
+              className="px-5 py-2.5 rounded-lg font-medium text-sm transition active:scale-[0.98]"
+              style={{ background: panel.income, color: panel.bgDeep }}
             >
-              One ledger.
-              <br />
-              Every business.
-            </h1>
-            <p className="text-sm sm:text-base mb-6" style={{ color: panel.creamDim }}>
-              Log income and expenses for every business you run in one place. Pull a Profit &amp;
-              Loss for all of them combined — or isolate any single one instantly.
-            </p>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => scrollTo('signin')}
-                className="px-5 py-2.5 rounded-lg font-medium text-sm transition active:scale-[0.98]"
-                style={{ background: panel.income, color: panel.bgDeep }}
-              >
-                Sign In
-              </button>
-              <button
-                onClick={() => scrollTo('mechanism')}
-                className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg font-medium text-sm transition"
-                style={{ boxShadow: `inset 0 0 0 1px ${panel.hairline}`, color: panel.cream }}
-              >
-                See it work
-                <ChevronDown color={panel.cream} />
-              </button>
-            </div>
-          </motion.div>
-        </div>
+              Sign In
+            </button>
+            <button
+              onClick={() => scrollTo('mechanism')}
+              className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg font-medium text-sm transition"
+              style={{ boxShadow: `inset 0 0 0 1px ${panel.hairline}`, color: panel.cream }}
+            >
+              See it work
+              <ChevronDown color={panel.cream} />
+            </button>
+          </div>
+        </motion.div>
       </section>
 
       {/* Mechanism */}
