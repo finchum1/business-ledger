@@ -298,16 +298,21 @@ export function Landing() {
             <button
               key={i}
               onClick={() => setIsolated(isolated === i ? null : i)}
-              className="absolute -translate-x-1/2 flex flex-col items-center gap-1.5 cursor-pointer"
+              className="absolute -translate-x-1/2 cursor-pointer"
               style={{ left: `${[15, 50, 85][i]}%`, top: '2%' }}
             >
-              <Jack active={isolated === null || isolated === i} color={panel.income} size={26} />
-              <span
-                className="text-[9px] sm:text-[10px] whitespace-nowrap"
-                style={{ color: isolated === i ? panel.income : panel.creamDim, fontFamily: "'Space Mono', monospace" }}
-              >
-                {b.name.split(' ')[0].toUpperCase()}
-              </span>
+              {/* Label sits above the jack via absolute positioning rather
+                  than flex order, so the jack itself never moves from the
+                  spot the patch cable's "from" coordinate is tuned to. */}
+              <div className="relative flex flex-col items-center">
+                <span
+                  className="absolute bottom-full mb-1.5 text-[9px] sm:text-[10px] whitespace-nowrap"
+                  style={{ color: isolated === i ? panel.income : panel.creamDim, fontFamily: "'Space Mono', monospace" }}
+                >
+                  {b.name.split(' ')[0].toUpperCase()}
+                </span>
+                <Jack active={isolated === null || isolated === i} color={panel.income} size={26} />
+              </div>
             </button>
           ))}
           <div
