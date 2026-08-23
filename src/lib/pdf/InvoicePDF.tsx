@@ -1,13 +1,13 @@
 import { Document, Page, View, Text, Image, StyleSheet } from '@react-pdf/renderer'
 
 const styles = StyleSheet.create({
-  page: { padding: 40, fontSize: 10, fontFamily: 'Helvetica', color: '#0f172a' },
+  page: { padding: 40, fontSize: 10, fontFamily: 'Helvetica', color: '#241f16' },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 },
   logo: { width: 64, height: 64, objectFit: 'contain', marginBottom: 8 },
   businessName: { fontSize: 13, fontWeight: 'bold', marginBottom: 3 },
-  businessLine: { fontSize: 9, color: '#475569', marginBottom: 1 },
+  businessLine: { fontSize: 9, color: '#6f5a39', marginBottom: 1 },
   invoiceTitle: { fontSize: 22, fontWeight: 'bold', marginBottom: 6, textAlign: 'right' },
-  metaLine: { fontSize: 9, color: '#475569', textAlign: 'right', marginBottom: 1 },
+  metaLine: { fontSize: 9, color: '#6f5a39', textAlign: 'right', marginBottom: 1 },
   statusBadge: {
     marginTop: 6,
     alignSelf: 'flex-end',
@@ -22,28 +22,28 @@ const styles = StyleSheet.create({
     fontSize: 9,
     fontWeight: 'bold',
     textTransform: 'uppercase',
-    color: '#64748b',
+    color: '#957a50',
     letterSpacing: 1,
     marginBottom: 4,
   },
-  billToLine: { fontSize: 10, color: '#334155', marginBottom: 1 },
+  billToLine: { fontSize: 10, color: '#4c3c24', marginBottom: 1 },
   table: { marginTop: 8 },
   tableHeader: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: '#0f172a',
+    borderBottomColor: '#241f16',
     paddingBottom: 5,
     marginBottom: 2,
     fontWeight: 'bold',
     fontSize: 9,
     textTransform: 'uppercase',
-    color: '#64748b',
+    color: '#957a50',
   },
   row: {
     flexDirection: 'row',
     paddingVertical: 5,
     borderBottomWidth: 1,
-    borderBottomColor: '#e2e8f0',
+    borderBottomColor: '#ede3d4',
   },
   colDesc: { flex: 3 },
   colQty: { flex: 1, textAlign: 'right' },
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
     paddingTop: 8,
     borderTopWidth: 2,
-    borderTopColor: '#0f172a',
+    borderTopColor: '#241f16',
   },
   totalLabel: { fontSize: 12, fontWeight: 'bold', marginRight: 16 },
   totalAmount: { fontSize: 14, fontWeight: 'bold' },
@@ -64,11 +64,11 @@ const styles = StyleSheet.create({
     fontSize: 9,
     fontWeight: 'bold',
     textTransform: 'uppercase',
-    color: '#64748b',
+    color: '#957a50',
     letterSpacing: 1,
     marginBottom: 4,
   },
-  footerText: { fontSize: 9, color: '#475569', marginBottom: 8, lineHeight: 1.4 },
+  footerText: { fontSize: 9, color: '#6f5a39', marginBottom: 8, lineHeight: 1.4 },
 })
 
 export interface InvoicePDFLineItem {
@@ -144,8 +144,8 @@ export function InvoicePDF({
             <Text
               style={{
                 ...styles.statusBadge,
-                backgroundColor: status === 'paid' ? '#dcfce7' : '#fef3c7',
-                color: status === 'paid' ? '#166534' : '#92400e',
+                backgroundColor: status === 'paid' ? '#e7f8f1' : '#f9f2e6',
+                color: status === 'paid' ? '#176945' : '#6e4c11',
               }}
             >
               {status === 'paid' ? 'PAID' : 'UNPAID'}

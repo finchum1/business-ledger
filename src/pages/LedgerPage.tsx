@@ -171,7 +171,7 @@ export function LedgerPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
-      <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+      <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
         <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
           {form.id ? 'Edit transaction' : 'Add transaction'}
         </h2>
@@ -325,7 +325,7 @@ export function LedgerPage() {
         )}
       </section>
 
-      <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+      <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
             Recent transactions

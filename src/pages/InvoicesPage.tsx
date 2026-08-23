@@ -259,7 +259,7 @@ export function InvoicesPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
-      <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+      <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Invoices</h2>
           <div className="flex items-center gap-2">
@@ -302,7 +302,7 @@ export function InvoicesPage() {
       </section>
 
       {showForm && (
-        <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+        <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
           <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
             {editingId ? `Edit ${invoiceNumber}` : `New invoice — ${invoiceNumber}`}
           </h3>
@@ -448,7 +448,7 @@ export function InvoicesPage() {
         </p>
       )}
 
-      <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+      <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
         {loading ? (
           <p className="text-slate-500 dark:text-slate-400 text-sm">Loading…</p>
         ) : invoices.length === 0 ? (

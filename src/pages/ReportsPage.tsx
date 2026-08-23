@@ -135,7 +135,7 @@ export function ReportsPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
-      <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+      <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Profit &amp; Loss</h2>
           <button
@@ -214,7 +214,7 @@ export function ReportsPage() {
         <p className="text-slate-500 dark:text-slate-400 text-sm px-1">Loading…</p>
       ) : (
         <>
-          <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
             <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
               Income
             </h3>
@@ -240,7 +240,7 @@ export function ReportsPage() {
             </div>
           </section>
 
-          <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
             <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
               Expenses
             </h3>
@@ -266,7 +266,7 @@ export function ReportsPage() {
             </div>
           </section>
 
-          <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
             <div className="flex justify-between items-center">
               <span className="text-lg font-semibold text-slate-900 dark:text-slate-100">
                 Net Profit
@@ -282,7 +282,7 @@ export function ReportsPage() {
           </section>
 
           {businessId === 'all' && perBusiness.length > 0 && (
-            <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
               <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
                 By business
               </h3>

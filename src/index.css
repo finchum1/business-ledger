@@ -2,6 +2,70 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/*
+ * The app's own light/dark theme retinted to match the landing page's warm
+ * ivory/brass "tan" world instead of Tailwind's default cool slate/emerald.
+ * Overriding the color tokens here (rather than editing every bg-slate and
+ * text-emerald class across every page) retints the whole app in one place
+ * and keeps every existing light/dark pairing correct, since the light-vs-
+ * dark relationship in this app is "which shade number," not "which
+ * palette" -- shifting the hue of every step keeps that relationship intact.
+ * slate: warm ivory (50) down to near-black bakelite (950), the same two
+ * endpoints as the landing page's own light and original dark palettes.
+ * emerald/rose/amber: re-derived from the landing page's income/expense/
+ * amber hues so the app's positive/negative/accent colors read as the same
+ * brand colors as the website, not a coincidentally-similar green/red.
+ */
+@theme {
+  --color-slate-50: #fdfcf9;
+  --color-slate-100: #f9f4ec;
+  --color-slate-200: #ede3d4;
+  --color-slate-300: #d8c7ac;
+  --color-slate-400: #baa078;
+  --color-slate-500: #957a50;
+  --color-slate-600: #6f5a39;
+  --color-slate-700: #4c3c24;
+  --color-slate-800: #332817;
+  --color-slate-900: #1e180d;
+  --color-slate-950: #0f0c07;
+
+  --color-emerald-50: #f5fcf9;
+  --color-emerald-100: #e7f8f1;
+  --color-emerald-200: #c9f3e0;
+  --color-emerald-300: #a3ebcb;
+  --color-emerald-400: #6ddfad;
+  --color-emerald-500: #2ed189;
+  --color-emerald-600: #25a76e;
+  --color-emerald-700: #1d8658;
+  --color-emerald-800: #176945;
+  --color-emerald-900: #104b31;
+  --color-emerald-950: #0c271b;
+
+  --color-rose-50: #fcf7f5;
+  --color-rose-100: #f8ece7;
+  --color-rose-200: #f3d3c9;
+  --color-rose-300: #ebb5a3;
+  --color-rose-400: #df896c;
+  --color-rose-500: #d1572e;
+  --color-rose-600: #a84524;
+  --color-rose-700: #86381d;
+  --color-rose-800: #692b17;
+  --color-rose-900: #4b1f10;
+  --color-rose-950: #27130c;
+
+  --color-amber-50: #fdfaf5;
+  --color-amber-100: #f9f2e6;
+  --color-amber-200: #f6e4c6;
+  --color-amber-300: #f0d29e;
+  --color-amber-400: #e7b764;
+  --color-amber-500: #dd9822;
+  --color-amber-600: #b1791b;
+  --color-amber-700: #8d6116;
+  --color-amber-800: #6e4c11;
+  --color-amber-900: #50370c;
+  --color-amber-950: #291e0a;
+}
+
 :root {
   color-scheme: light;
 }
@@ -12,14 +76,14 @@
 
 body {
   margin: 0;
-  background: #f8fafc;
-  color: #0f172a;
+  background: #fdfcf9;
+  color: #1e180d;
   font-family: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
 }
 
 .dark body {
-  background: #0f1117;
-  color: #e5e7eb;
+  background: #0f0c07;
+  color: #f9f4ec;
 }
 
 #root {

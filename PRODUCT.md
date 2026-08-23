@@ -17,8 +17,9 @@ business contacts) — it should read as a real, confident product pitch, not pu
 ## Product Purpose
 
 Lets someone who runs multiple businesses record income and expenses in one shared ledger, attach
-receipts to expenses, and generate Profit & Loss reports either combined across every business or
-filtered to a single one — without separate bookkeeping software or spreadsheets per entity.
+receipts to expenses, bill clients with branded per-business invoices, and generate Profit & Loss
+reports either combined across every business or filtered to a single one — without separate
+bookkeeping software or spreadsheets per entity.
 
 ## Positioning
 
@@ -49,6 +50,10 @@ viewed on screen, or exported as a clean PDF to hand to an accountant or keep fo
 - P&L reports: combined ("All businesses") or single-business scope, with date-range presets (this
   month, last month, this quarter, YTD, last year, all time, custom) and a PDF export that lists which
   businesses are rolled into a combined report.
+- Invoicing: each business carries its own profile (logo, contact info) that prints onto that
+  business's invoices, so a client sees the right branding regardless of which of the owner's
+  businesses billed them. Invoices have line items, a due date, and an unpaid/paid status, and export
+  as a clean PDF.
 - Built with React + Vite + TypeScript + Tailwind v4 + Supabase (Postgres + Auth + Storage), deployed on
   Vercel.
 
@@ -60,10 +65,11 @@ wordmark/icon treatment rather than assuming an existing visual identity.
 
 ## Evidence on Hand
 
-Real screenshots of the live app will be captured for this landing page (Ledger entry page, P&L Reports
-page including the PDF export, Categories management, receipt drag-and-drop) — populated with generic
-placeholder business names and round-number amounts, not the owner's real financial data. No existing
-customer testimonials, press mentions, or case studies exist and none should be fabricated.
+Real screenshots of the live app are captured for this landing page (Ledger entry page, P&L Reports
+page including the PDF export, Categories management, receipt drag-and-drop, a branded invoice) —
+populated with generic placeholder business names and round-number amounts, not the owner's real
+financial data. No existing customer testimonials, press mentions, or case studies exist and none
+should be fabricated.
 
 ## Product Principles
 

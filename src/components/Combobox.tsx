@@ -66,7 +66,7 @@ export function Combobox({
         </svg>
       </button>
       {open && filtered.length > 0 && (
-        <ul className="absolute z-20 left-0 right-0 mt-1 max-h-56 overflow-auto rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-lg py-1 text-sm">
+        <ul className="absolute z-20 left-0 right-0 mt-1 max-h-56 overflow-auto rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 shadow-lg py-1 text-sm">
           {filtered.map((opt) => (
             <li key={opt}>
               <button

@@ -74,7 +74,7 @@ export function LogoDropZone({
     >
       {previewUrl ? (
         <div className="flex items-center gap-3">
-          <img src={previewUrl} alt="New logo preview" className="h-12 w-12 object-contain rounded bg-white" />
+          <img src={previewUrl} alt="New logo preview" className="h-12 w-12 object-contain rounded bg-slate-50" />
           <span className="text-sm text-slate-700 dark:text-slate-200 truncate flex-1">{file!.name}</span>
           <button
             type="button"
@@ -89,7 +89,7 @@ export function LogoDropZone({
           <img
             src={getLogoUrl(logoPath)}
             alt="Business logo"
-            className="h-12 w-12 object-contain rounded bg-white"
+            className="h-12 w-12 object-contain rounded bg-slate-50"
           />
           <button
             type="button"

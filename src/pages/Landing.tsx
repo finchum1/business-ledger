@@ -46,6 +46,11 @@ const FEATURES = [
     body: 'Drop a photo or PDF straight onto an expense. Stored privately, opened later through a short-lived link — never a public file.',
   },
   {
+    label: 'INVOICING',
+    title: 'Bill clients, branded per business',
+    body: 'Create an invoice under any business with its own logo and contact details on it, add line items, mark it paid — and send a clean PDF.',
+  },
+  {
     label: 'P&L EXPORT',
     title: 'A clean PDF, either scope',
     body: 'Export the Profit & Loss combined across every business or scoped to one — the PDF lists exactly which businesses are rolled into the number.',
@@ -352,7 +357,7 @@ export function Landing() {
         <div className="max-w-4xl mx-auto">
           <div className="max-w-xl mb-10">
             <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}>
-              Four circuits. Everything you need weekly.
+              Five circuits. Everything you need weekly.
             </h2>
           </div>
           <div
@@ -421,6 +426,13 @@ export function Landing() {
               alt="Dragging a receipt onto an expense to attach it"
               label="Receipts — drag to attach"
             />
+            <div className="sm:col-span-2">
+              <ScreenshotWindow
+                src="/landing/screenshot-invoice.png"
+                alt="A branded invoice for one business, with line items and a paid status"
+                label="Invoicing — branded per business"
+              />
+            </div>
           </div>
         </div>
       </Section>

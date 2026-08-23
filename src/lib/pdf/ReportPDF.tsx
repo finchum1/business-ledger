@@ -1,18 +1,18 @@
 import { Document, Page, View, Text, StyleSheet } from '@react-pdf/renderer'
 
 const styles = StyleSheet.create({
-  page: { padding: 40, fontSize: 10, fontFamily: 'Helvetica', color: '#0f172a' },
+  page: { padding: 40, fontSize: 10, fontFamily: 'Helvetica', color: '#241f16' },
   header: { marginBottom: 20 },
-  brand: { fontSize: 10, color: '#64748b', marginBottom: 4 },
+  brand: { fontSize: 10, color: '#957a50', marginBottom: 4 },
   title: { fontSize: 22, fontWeight: 'bold', marginBottom: 6 },
-  subtitle: { fontSize: 11, color: '#475569', marginBottom: 2 },
-  businessList: { fontSize: 9, color: '#94a3b8', marginTop: 6 },
+  subtitle: { fontSize: 11, color: '#6f5a39', marginBottom: 2 },
+  businessList: { fontSize: 9, color: '#baa078', marginTop: 6 },
   section: { marginTop: 22 },
   sectionTitle: {
     fontSize: 11,
     fontWeight: 'bold',
     textTransform: 'uppercase',
-    color: '#64748b',
+    color: '#957a50',
     marginBottom: 8,
     letterSpacing: 1,
   },
@@ -21,11 +21,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 5,
     borderBottomWidth: 1,
-    borderBottomColor: '#e2e8f0',
+    borderBottomColor: '#ede3d4',
   },
-  rowLabel: { color: '#334155' },
-  rowAmountIncome: { color: '#059669' },
-  rowAmountExpense: { color: '#e11d48' },
+  rowLabel: { color: '#4c3c24' },
+  rowAmountIncome: { color: '#1c8054' },
+  rowAmountExpense: { color: '#c1502a' },
   totalRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     marginTop: 26,
     paddingTop: 16,
     borderTopWidth: 2,
-    borderTopColor: '#0f172a',
+    borderTopColor: '#241f16',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -46,11 +46,11 @@ const styles = StyleSheet.create({
   byBusinessHeader: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: '#0f172a',
+    borderBottomColor: '#241f16',
     paddingBottom: 5,
     marginBottom: 2,
     fontWeight: 'bold',
-    color: '#64748b',
+    color: '#957a50',
     fontSize: 9,
     textTransform: 'uppercase',
   },
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     left: 40,
     right: 40,
     fontSize: 8,
-    color: '#94a3b8',
+    color: '#baa078',
     textAlign: 'center',
   },
 })
@@ -146,7 +146,7 @@ export function ReportPDF({
 
         <View style={styles.netSection}>
           <Text style={styles.netLabel}>Net Profit</Text>
-          <Text style={{ ...styles.netAmount, color: net >= 0 ? '#059669' : '#e11d48' }}>
+          <Text style={{ ...styles.netAmount, color: net >= 0 ? '#1c8054' : '#c1502a' }}>
             {net >= 0 ? '' : '-'}${fmt(Math.abs(net))}
           </Text>
         </View>

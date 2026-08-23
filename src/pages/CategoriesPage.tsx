@@ -85,7 +85,7 @@ function CategoryList({
   }
 
   return (
-    <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+    <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
       <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">{title}</h2>
       <form onSubmit={handleAdd} className="flex gap-2 mb-4">
         <input

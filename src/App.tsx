@@ -26,7 +26,7 @@ function App() {
 
   if (!checked) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-[#0f1117] text-slate-500 dark:text-slate-400 text-sm">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 text-slate-500 dark:text-slate-400 text-sm">
         Loading…
       </div>
     )
@@ -37,7 +37,7 @@ function App() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50 dark:bg-[#0f1117]">
+    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
       <Sidebar session={session} />
       <main className="min-w-0 flex-1">
         <Routes>
