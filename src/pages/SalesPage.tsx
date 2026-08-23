@@ -2,16 +2,19 @@ import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useBusinesses } from '../lib/useBusinesses'
 import { getLogoUrl } from '../lib/logos'
+import { StatCard } from '../components/StatCard'
 import {
   convertQuoteToInvoice,
   createInvoice,
   deleteInvoice,
   fetchInvoices,
   fetchLineItems,
+  fetchLineItemTotals,
   nextDocumentNumber,
   setApproved,
   setInvoiceStatus,
   setSent,
+  statusLabel,
   updateInvoice,
   type LineItemInput,
 } from '../lib/invoices'
@@ -31,30 +34,18 @@ function fmt(n: number) {
   return n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
-/** Single source of truth for the status word shown on a row/PDF -- keep this in sync with
- * lib/pdf/InvoicePDF.tsx's own statusBadge() so the app and the PDF never disagree. */
-function statusLabel(invoice: Invoice): { label: string; tone: 'green' | 'amber' | 'gray' } {
-  if (invoice.doc_type === 'invoice') {
-    if (invoice.status === 'paid') return { label: 'Paid', tone: 'green' }
-    if (invoice.sent_at) return { label: 'Sent', tone: 'amber' }
-    return { label: 'Draft', tone: 'gray' }
-  }
-  if (invoice.approved_at) return { label: 'Approved', tone: 'green' }
-  if (invoice.sent_at) return { label: 'Sent', tone: 'amber' }
-  return { label: 'Draft', tone: 'gray' }
-}
-
 const TONE_CLASSES: Record<string, string> = {
   green: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400',
   amber: 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400',
   gray: 'bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300',
 }
 
-export function InvoicesPage() {
+export function SalesPage() {
   const { businesses } = useBusinesses()
   const [businessId, setBusinessId] = useState('')
   const [typeFilter, setTypeFilter] = useState<'all' | DocType>('all')
   const [invoices, setInvoices] = useState<Invoice[]>([])
+  const [totals, setTotals] = useState<Record<string, number>>({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
@@ -86,6 +77,7 @@ export function InvoicesPage() {
   async function loadInvoices() {
     if (!businessId) {
       setInvoices([])
+      setTotals({})
       setLoading(false)
       return
     }
@@ -93,6 +85,7 @@ export function InvoicesPage() {
     try {
       const data = await fetchInvoices(businessId)
       setInvoices(data)
+      setTotals(await fetchLineItemTotals(data.map((i) => i.id)))
       setError(null)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load invoices.')
@@ -110,6 +103,23 @@ export function InvoicesPage() {
     () => invoices.filter((inv) => typeFilter === 'all' || inv.doc_type === typeFilter),
     [invoices, typeFilter],
   )
+
+  // Tracking summary -- always over ALL of this business's quotes/invoices, independent of typeFilter.
+  const tracking = useMemo(() => {
+    const quotes = invoices.filter((i) => i.doc_type === 'quote')
+    const sales = invoices.filter((i) => i.doc_type === 'invoice')
+    const quoteDraft = quotes.filter((q) => statusLabel(q).label === 'Draft').length
+    const quoteSent = quotes.filter((q) => statusLabel(q).label === 'Sent').length
+    const quoteApproved = quotes.filter((q) => statusLabel(q).label === 'Approved').length
+    const openQuoteValue = quotes
+      .filter((q) => !q.converted_to_invoice_id)
+      .reduce((s, q) => s + (totals[q.id] ?? 0), 0)
+    const salesDraft = sales.filter((s) => statusLabel(s).label === 'Draft').length
+    const salesSent = sales.filter((s) => statusLabel(s).label === 'Sent').length
+    const salesPaid = sales.filter((s) => s.status === 'paid').length
+    const outstanding = sales.filter((s) => s.status !== 'paid').reduce((sum, s) => sum + (totals[s.id] ?? 0), 0)
+    return { quoteDraft, quoteSent, quoteApproved, openQuoteValue, salesDraft, salesSent, salesPaid, outstanding }
+  }, [invoices, totals])
 
   const total = lineItems.reduce((s, li) => s + li.quantity * li.rate, 0)
 
@@ -329,7 +339,7 @@ export function InvoicesPage() {
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
       <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Quotes &amp; Invoices</h2>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Sales</h2>
           <div className="flex items-center gap-2">
             <select
               value={businessId}
@@ -376,6 +386,19 @@ export function InvoicesPage() {
           </p>
         )}
       </section>
+
+      {!loading && business && invoices.length > 0 && (
+        <section className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <StatCard label="Quotes: Draft" value={String(tracking.quoteDraft)} />
+          <StatCard label="Quotes: Sent" value={String(tracking.quoteSent)} tone="amber" />
+          <StatCard label="Quotes: Approved" value={String(tracking.quoteApproved)} tone="green" />
+          <StatCard label="Open quote value" value={`$${fmt(tracking.openQuoteValue)}`} />
+          <StatCard label="Invoices: Draft" value={String(tracking.salesDraft)} />
+          <StatCard label="Invoices: Sent" value={String(tracking.salesSent)} tone="amber" />
+          <StatCard label="Invoices: Paid" value={String(tracking.salesPaid)} tone="green" />
+          <StatCard label="Outstanding" value={`$${fmt(tracking.outstanding)}`} tone="rose" />
+        </section>
+      )}
 
       {showForm && (
         <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">

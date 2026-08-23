@@ -27,6 +27,51 @@ export async function fetchInvoices(businessId: string): Promise<Invoice[]> {
   return data as Invoice[]
 }
 
+/** Every quote/invoice across every business -- for the Home overview, which has no single business in scope. */
+export async function fetchAllInvoices(): Promise<Invoice[]> {
+  const { data, error } = await supabase
+    .from('invoices')
+    .select('*')
+    .order('issue_date', { ascending: false })
+  if (error) throw error
+  return data as Invoice[]
+}
+
+/** Batched line-item totals for a set of invoices (one query, not N+1) -- id -> sum(amount). */
+export async function fetchLineItemTotals(invoiceIds: string[]): Promise<Record<string, number>> {
+  if (invoiceIds.length === 0) return {}
+  const { data, error } = await supabase
+    .from('invoice_line_items')
+    .select('invoice_id, amount')
+    .in('invoice_id', invoiceIds)
+  if (error) throw error
+  const totals: Record<string, number> = {}
+  for (const row of data ?? []) {
+    totals[row.invoice_id] = (totals[row.invoice_id] ?? 0) + Number(row.amount)
+  }
+  return totals
+}
+
+export type StatusTone = 'green' | 'amber' | 'gray'
+
+/** Single source of truth for the status word shown on a Sales/Home row or stat tile. Kept in
+ * sync BY HAND with lib/pdf/InvoicePDF.tsx's own statusBadge() -- that one can't import this
+ * (react-pdf needs real hex colors, not Tailwind tone names), so if this logic ever changes,
+ * that file needs the same change made manually. */
+export function statusLabel(invoice: Pick<Invoice, 'doc_type' | 'status' | 'sent_at' | 'approved_at'>): {
+  label: string
+  tone: StatusTone
+} {
+  if (invoice.doc_type === 'invoice') {
+    if (invoice.status === 'paid') return { label: 'Paid', tone: 'green' }
+    if (invoice.sent_at) return { label: 'Sent', tone: 'amber' }
+    return { label: 'Draft', tone: 'gray' }
+  }
+  if (invoice.approved_at) return { label: 'Approved', tone: 'green' }
+  if (invoice.sent_at) return { label: 'Sent', tone: 'amber' }
+  return { label: 'Draft', tone: 'gray' }
+}
+
 export async function fetchLineItems(invoiceId: string): Promise<InvoiceLineItem[]> {
   const { data, error } = await supabase
     .from('invoice_line_items')

@@ -4,8 +4,9 @@ import type { Session } from '@supabase/supabase-js'
 import { ThemeToggle } from './ThemeToggle'
 
 const NAV = [
-  { to: '/', label: 'Ledger', end: true },
-  { to: '/invoices', label: 'Invoices', end: false },
+  { to: '/', label: 'Home', end: true },
+  { to: '/ledger', label: 'Ledger', end: false },
+  { to: '/sales', label: 'Sales', end: false },
   { to: '/reports', label: 'P&L Reports', end: false },
 ]
 

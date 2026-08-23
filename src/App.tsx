@@ -4,10 +4,11 @@ import type { Session } from '@supabase/supabase-js'
 import { supabase } from './lib/supabase'
 import { Landing } from './pages/Landing'
 import { Sidebar } from './components/Sidebar'
+import { HomePage } from './pages/HomePage'
 import { LedgerPage } from './pages/LedgerPage'
 import { ReportsPage } from './pages/ReportsPage'
 import { SettingsPage } from './pages/SettingsPage'
-import { InvoicesPage } from './pages/InvoicesPage'
+import { SalesPage } from './pages/SalesPage'
 
 function App() {
   const [session, setSession] = useState<Session | null>(null)
@@ -41,10 +42,12 @@ function App() {
       <Sidebar session={session} />
       <main className="min-w-0 flex-1">
         <Routes>
-          <Route path="/" element={<LedgerPage />} />
-          <Route path="/invoices" element={<InvoicesPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/ledger" element={<LedgerPage />} />
+          <Route path="/sales" element={<SalesPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/invoices" element={<Navigate to="/sales" replace />} />
           <Route path="/businesses" element={<Navigate to="/settings" replace />} />
           <Route path="/categories" element={<Navigate to="/settings" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
