@@ -37,12 +37,17 @@ export interface Transaction {
 }
 
 export type InvoiceStatus = 'unpaid' | 'paid'
+export type DocType = 'quote' | 'invoice'
 
 export interface Invoice {
   id: string
   business_id: string
+  doc_type: DocType
   invoice_number: string
   status: InvoiceStatus
+  sent_at: string | null
+  approved_at: string | null
+  converted_to_invoice_id: string | null
   client_name: string
   client_email: string | null
   client_address: string | null

@@ -3,16 +3,19 @@ import type { FormEvent } from 'react'
 import { useBusinesses } from '../lib/useBusinesses'
 import { getLogoUrl } from '../lib/logos'
 import {
+  convertQuoteToInvoice,
   createInvoice,
   deleteInvoice,
   fetchInvoices,
   fetchLineItems,
-  nextInvoiceNumber,
+  nextDocumentNumber,
+  setApproved,
   setInvoiceStatus,
+  setSent,
   updateInvoice,
   type LineItemInput,
 } from '../lib/invoices'
-import type { Invoice, InvoiceStatus } from '../lib/types'
+import type { DocType, Invoice, InvoiceStatus } from '../lib/types'
 
 function todayStr() {
   return new Date().toISOString().slice(0, 10)
@@ -28,16 +31,38 @@ function fmt(n: number) {
   return n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
+/** Single source of truth for the status word shown on a row/PDF -- keep this in sync with
+ * lib/pdf/InvoicePDF.tsx's own statusBadge() so the app and the PDF never disagree. */
+function statusLabel(invoice: Invoice): { label: string; tone: 'green' | 'amber' | 'gray' } {
+  if (invoice.doc_type === 'invoice') {
+    if (invoice.status === 'paid') return { label: 'Paid', tone: 'green' }
+    if (invoice.sent_at) return { label: 'Sent', tone: 'amber' }
+    return { label: 'Draft', tone: 'gray' }
+  }
+  if (invoice.approved_at) return { label: 'Approved', tone: 'green' }
+  if (invoice.sent_at) return { label: 'Sent', tone: 'amber' }
+  return { label: 'Draft', tone: 'gray' }
+}
+
+const TONE_CLASSES: Record<string, string> = {
+  green: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400',
+  amber: 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400',
+  gray: 'bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300',
+}
+
 export function InvoicesPage() {
   const { businesses } = useBusinesses()
   const [businessId, setBusinessId] = useState('')
+  const [typeFilter, setTypeFilter] = useState<'all' | DocType>('all')
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
   const [pdfBusy, setPdfBusy] = useState<string | null>(null)
+  const [convertingId, setConvertingId] = useState<string | null>(null)
 
   const [showForm, setShowForm] = useState(false)
+  const [docType, setDocType] = useState<DocType>('quote')
   const [editingId, setEditingId] = useState<string | null>(null)
   const [invoiceNumber, setInvoiceNumber] = useState('')
   const [clientName, setClientName] = useState('')
@@ -81,6 +106,11 @@ export function InvoicesPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [businessId])
 
+  const visibleInvoices = useMemo(
+    () => invoices.filter((inv) => typeFilter === 'all' || inv.doc_type === typeFilter),
+    [invoices, typeFilter],
+  )
+
   const total = lineItems.reduce((s, li) => s + li.quantity * li.rate, 0)
 
   function resetForm() {
@@ -94,14 +124,15 @@ export function InvoicesPage() {
     setLineItems([{ ...emptyLineItem }])
   }
 
-  async function openCreateForm() {
+  async function openCreateForm(type: DocType) {
     setError(null)
     resetForm()
+    setDocType(type)
     try {
-      setInvoiceNumber(await nextInvoiceNumber(businessId))
+      setInvoiceNumber(await nextDocumentNumber(businessId, type))
       setShowForm(true)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate an invoice number.')
+      setError(err instanceof Error ? err.message : 'Failed to generate a document number.')
     }
   }
 
@@ -109,6 +140,7 @@ export function InvoicesPage() {
     setError(null)
     try {
       const items = await fetchLineItems(invoice.id)
+      setDocType(invoice.doc_type)
       setEditingId(invoice.id)
       setInvoiceNumber(invoice.invoice_number)
       setClientName(invoice.client_name)
@@ -125,7 +157,7 @@ export function InvoicesPage() {
       setShowForm(true)
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load invoice.')
+      setError(err instanceof Error ? err.message : 'Failed to load document.')
     }
   }
 
@@ -173,24 +205,24 @@ export function InvoicesPage() {
       if (editingId) {
         await updateInvoice(editingId, fields, cleanedItems)
       } else {
-        await createInvoice(businessId, invoiceNumber, fields, cleanedItems)
+        await createInvoice(businessId, docType, invoiceNumber, fields, cleanedItems)
       }
       closeForm()
       loadInvoices()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save invoice.')
+      setError(err instanceof Error ? err.message : 'Failed to save document.')
     } finally {
       setSaving(false)
     }
   }
 
   async function handleDelete(id: string) {
-    if (!confirm('Delete this invoice? This cannot be undone.')) return
+    if (!confirm('Delete this document? This cannot be undone.')) return
     try {
       await deleteInvoice(id)
       loadInvoices()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete invoice.')
+      setError(err instanceof Error ? err.message : 'Failed to delete document.')
     }
   }
 
@@ -200,7 +232,40 @@ export function InvoicesPage() {
       await setInvoiceStatus(invoice.id, next)
       loadInvoices()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update invoice status.')
+      setError(err instanceof Error ? err.message : 'Failed to update status.')
+    }
+  }
+
+  async function handleToggleSent(invoice: Invoice) {
+    try {
+      await setSent(invoice.id, !invoice.sent_at)
+      loadInvoices()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update status.')
+    }
+  }
+
+  async function handleToggleApproved(invoice: Invoice) {
+    try {
+      await setApproved(invoice.id, !invoice.approved_at)
+      loadInvoices()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update status.')
+    }
+  }
+
+  async function handleConvert(quote: Invoice) {
+    if (!confirm(`Convert ${quote.invoice_number} to a new invoice? This copies the client and line items.`))
+      return
+    setConvertingId(quote.id)
+    setError(null)
+    try {
+      await convertQuoteToInvoice(quote)
+      loadInvoices()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to convert quote to invoice.')
+    } finally {
+      setConvertingId(null)
     }
   }
 
@@ -226,8 +291,11 @@ export function InvoicesPage() {
           businessEmail={business.email}
           businessWebsite={business.website}
           paymentInstructions={business.payment_instructions}
+          docType={invoice.doc_type}
           invoiceNumber={invoice.invoice_number}
           status={invoice.status}
+          sentAt={invoice.sent_at}
+          approvedAt={invoice.approved_at}
           issueDate={invoice.issue_date}
           dueDate={invoice.due_date}
           clientName={invoice.client_name}
@@ -251,7 +319,7 @@ export function InvoicesPage() {
       }
     } catch (err) {
       newTab?.close()
-      setError(err instanceof Error ? err.message : 'Failed to generate invoice PDF.')
+      setError(err instanceof Error ? err.message : 'Failed to generate PDF.')
     } finally {
       setPdfBusy(null)
     }
@@ -261,7 +329,7 @@ export function InvoicesPage() {
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
       <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Invoices</h2>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Quotes &amp; Invoices</h2>
           <div className="flex items-center gap-2">
             <select
               value={businessId}
@@ -280,23 +348,31 @@ export function InvoicesPage() {
             </select>
             <button
               type="button"
-              onClick={showForm ? closeForm : openCreateForm}
+              onClick={() => openCreateForm('quote')}
+              disabled={!businessId}
+              className="rounded-lg border border-emerald-600 text-emerald-700 dark:text-emerald-400 disabled:opacity-60 font-medium px-4 py-2 text-sm transition hover:bg-emerald-500/10"
+            >
+              New Quote
+            </button>
+            <button
+              type="button"
+              onClick={() => openCreateForm('invoice')}
               disabled={!businessId}
               className="rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60 text-white font-medium px-4 py-2 text-sm transition"
             >
-              {showForm ? 'Cancel' : 'New Invoice'}
+              New Invoice
             </button>
           </div>
         </div>
         {businesses.length === 0 && (
           <p className="text-xs text-amber-600 dark:text-amber-400">
-            Add a business in Settings before creating invoices.
+            Add a business in Settings before creating quotes or invoices.
           </p>
         )}
         {!business?.address && !business?.email && !business?.phone && business && (
           <p className="text-xs text-amber-600 dark:text-amber-400">
             This business has no contact info yet — add a logo, address, and contact details on the
-            Settings page so invoices look complete.
+            Settings page so these look complete.
           </p>
         )}
       </section>
@@ -304,7 +380,9 @@ export function InvoicesPage() {
       {showForm && (
         <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
           <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
-            {editingId ? `Edit ${invoiceNumber}` : `New invoice — ${invoiceNumber}`}
+            {editingId
+              ? `Edit ${docType === 'quote' ? 'quote' : 'invoice'} ${invoiceNumber}`
+              : `New ${docType === 'quote' ? 'quote' : 'invoice'} — ${invoiceNumber}`}
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -345,7 +423,9 @@ export function InvoicesPage() {
                 />
               </div>
               <div>
-                <label className={labelClass}>Due date (optional)</label>
+                <label className={labelClass}>
+                  {docType === 'quote' ? 'Valid until (optional)' : 'Due date (optional)'}
+                </label>
                 <input
                   type="date"
                   value={dueDate}
@@ -412,7 +492,7 @@ export function InvoicesPage() {
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={2}
-                placeholder="Shown at the bottom of the invoice"
+                placeholder="Shown at the bottom of the document"
                 className={inputClass}
               />
             </div>
@@ -427,7 +507,7 @@ export function InvoicesPage() {
                   disabled={saving}
                   className="rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60 text-white font-medium px-4 py-2 text-sm transition"
                 >
-                  {saving ? 'Saving…' : editingId ? 'Save changes' : 'Create invoice'}
+                  {saving ? 'Saving…' : editingId ? 'Save changes' : `Create ${docType}`}
                 </button>
                 <button
                   type="button"
@@ -449,15 +529,31 @@ export function InvoicesPage() {
       )}
 
       <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+        <div className="flex items-center justify-between gap-3 mb-4">
+          <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+            All documents
+          </h3>
+          <select
+            value={typeFilter}
+            onChange={(e) => setTypeFilter(e.target.value as 'all' | DocType)}
+            className="rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-slate-900 dark:text-slate-100 text-sm"
+          >
+            <option value="all">All types</option>
+            <option value="quote">Quotes</option>
+            <option value="invoice">Invoices</option>
+          </select>
+        </div>
+
         {loading ? (
           <p className="text-slate-500 dark:text-slate-400 text-sm">Loading…</p>
-        ) : invoices.length === 0 ? (
-          <p className="text-slate-400 dark:text-slate-500 text-sm">No invoices yet for this business.</p>
+        ) : visibleInvoices.length === 0 ? (
+          <p className="text-slate-400 dark:text-slate-500 text-sm">Nothing here yet for this business.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-left text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">
+                  <th className="py-2 pr-3 font-medium">Type</th>
                   <th className="py-2 pr-3 font-medium">Number</th>
                   <th className="py-2 pr-3 font-medium">Client</th>
                   <th className="py-2 pr-3 font-medium">Issued</th>
@@ -466,56 +562,92 @@ export function InvoicesPage() {
                 </tr>
               </thead>
               <tbody>
-                {invoices.map((inv) => (
-                  <tr
-                    key={inv.id}
-                    className="border-b border-slate-200/70 dark:border-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800/30"
-                  >
-                    <td className="py-2 pr-3 text-slate-600 dark:text-slate-300 whitespace-nowrap">
-                      {inv.invoice_number}
-                    </td>
-                    <td className="py-2 pr-3 text-slate-600 dark:text-slate-300">{inv.client_name}</td>
-                    <td className="py-2 pr-3 text-slate-600 dark:text-slate-300 whitespace-nowrap">
-                      {inv.issue_date}
-                    </td>
-                    <td className="py-2 pr-3">
-                      <button
-                        onClick={() => handleToggleStatus(inv)}
-                        className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                          inv.status === 'paid'
-                            ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400'
-                            : 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400'
-                        }`}
-                        title="Click to toggle paid/unpaid"
-                      >
-                        {inv.status === 'paid' ? 'Paid' : 'Unpaid'}
-                      </button>
-                    </td>
-                    <td className="py-2 pr-3 text-right whitespace-nowrap">
-                      <button
-                        onClick={() => handleViewPdf(inv)}
-                        disabled={pdfBusy === inv.id}
-                        className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300 text-xs mr-3"
-                      >
-                        {pdfBusy === inv.id ? 'Generating…' : 'PDF'}
-                      </button>
-                      {inv.status !== 'paid' && (
+                {visibleInvoices.map((inv) => {
+                  const st = statusLabel(inv)
+                  const locked = inv.status === 'paid' || !!inv.converted_to_invoice_id
+                  return (
+                    <tr
+                      key={inv.id}
+                      className="border-b border-slate-200/70 dark:border-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800/30"
+                    >
+                      <td className="py-2 pr-3 text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                        {inv.doc_type === 'quote' ? 'Quote' : 'Invoice'}
+                      </td>
+                      <td className="py-2 pr-3 text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                        {inv.invoice_number}
+                      </td>
+                      <td className="py-2 pr-3 text-slate-600 dark:text-slate-300">{inv.client_name}</td>
+                      <td className="py-2 pr-3 text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                        {inv.issue_date}
+                      </td>
+                      <td className="py-2 pr-3">
+                        <span
+                          className={`text-xs font-medium px-2 py-0.5 rounded-full ${TONE_CLASSES[st.tone]}`}
+                        >
+                          {st.label}
+                        </span>
+                        {inv.converted_to_invoice_id && (
+                          <div className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Converted</div>
+                        )}
+                      </td>
+                      <td className="py-2 pr-3 text-right whitespace-nowrap">
                         <button
-                          onClick={() => openEditForm(inv)}
+                          onClick={() => handleViewPdf(inv)}
+                          disabled={pdfBusy === inv.id}
+                          className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300 text-xs mr-3"
+                        >
+                          {pdfBusy === inv.id ? 'Generating…' : 'PDF'}
+                        </button>
+                        <button
+                          onClick={() => handleToggleSent(inv)}
                           className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 text-xs mr-3"
                         >
-                          Edit
+                          {inv.sent_at ? 'Unmark Sent' : 'Mark Sent'}
                         </button>
-                      )}
-                      <button
-                        onClick={() => handleDelete(inv.id)}
-                        className="text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                        {inv.doc_type === 'quote' ? (
+                          <>
+                            <button
+                              onClick={() => handleToggleApproved(inv)}
+                              className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 text-xs mr-3"
+                            >
+                              {inv.approved_at ? 'Unmark Approved' : 'Mark Approved'}
+                            </button>
+                            {!inv.converted_to_invoice_id && (
+                              <button
+                                onClick={() => handleConvert(inv)}
+                                disabled={convertingId === inv.id}
+                                className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300 text-xs mr-3"
+                              >
+                                {convertingId === inv.id ? 'Converting…' : 'Convert to Invoice'}
+                              </button>
+                            )}
+                          </>
+                        ) : (
+                          <button
+                            onClick={() => handleToggleStatus(inv)}
+                            className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 text-xs mr-3"
+                          >
+                            {inv.status === 'paid' ? 'Mark Unpaid' : 'Mark Paid'}
+                          </button>
+                        )}
+                        {!locked && (
+                          <button
+                            onClick={() => openEditForm(inv)}
+                            className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 text-xs mr-3"
+                          >
+                            Edit
+                          </button>
+                        )}
+                        <button
+                          onClick={() => handleDelete(inv.id)}
+                          className="text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>

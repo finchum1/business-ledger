@@ -87,8 +87,11 @@ export interface InvoicePDFProps {
   businessEmail: string | null
   businessWebsite: string | null
   paymentInstructions: string | null
+  docType: 'quote' | 'invoice'
   invoiceNumber: string
   status: 'paid' | 'unpaid'
+  sentAt: string | null
+  approvedAt: string | null
   issueDate: string
   dueDate: string | null
   clientName: string
@@ -103,6 +106,27 @@ function fmt(n: number) {
   return n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
+// Same brass/emerald/amber palette already used throughout this file --
+// react-pdf can't read Tailwind classes or CSS variables, so these badge
+// colors are hand-matched to the app's --color-emerald-100/700 and
+// --color-amber-100/700 tokens rather than computed from them.
+const BADGE_COLORS: Record<string, { bg: string; text: string }> = {
+  green: { bg: '#e7f8f1', text: '#176945' },
+  amber: { bg: '#f9f2e6', text: '#6e4c11' },
+  gray: { bg: '#ede3d4', text: '#4c3c24' },
+}
+
+function statusBadge(docType: 'quote' | 'invoice', status: 'paid' | 'unpaid', sentAt: string | null, approvedAt: string | null) {
+  if (docType === 'invoice') {
+    if (status === 'paid') return { label: 'PAID', ...BADGE_COLORS.green }
+    if (sentAt) return { label: 'SENT', ...BADGE_COLORS.amber }
+    return { label: 'DRAFT', ...BADGE_COLORS.gray }
+  }
+  if (approvedAt) return { label: 'APPROVED', ...BADGE_COLORS.green }
+  if (sentAt) return { label: 'SENT', ...BADGE_COLORS.amber }
+  return { label: 'DRAFT', ...BADGE_COLORS.gray }
+}
+
 export function InvoicePDF({
   logoUrl,
   businessName,
@@ -112,8 +136,11 @@ export function InvoicePDF({
   businessEmail,
   businessWebsite,
   paymentInstructions,
+  docType,
   invoiceNumber,
   status,
+  sentAt,
+  approvedAt,
   issueDate,
   dueDate,
   clientName,
@@ -123,6 +150,7 @@ export function InvoicePDF({
   notes,
   total,
 }: InvoicePDFProps) {
+  const badge = statusBadge(docType, status, sentAt, approvedAt)
   return (
     <Document>
       <Page size="LETTER" style={styles.page}>
@@ -137,24 +165,18 @@ export function InvoicePDF({
             {businessWebsite && <Text style={styles.businessLine}>{businessWebsite}</Text>}
           </View>
           <View>
-            <Text style={styles.invoiceTitle}>INVOICE</Text>
+            <Text style={styles.invoiceTitle}>{docType === 'quote' ? 'QUOTE' : 'INVOICE'}</Text>
             <Text style={styles.metaLine}>{invoiceNumber}</Text>
             <Text style={styles.metaLine}>Issued: {issueDate}</Text>
             {dueDate && <Text style={styles.metaLine}>Due: {dueDate}</Text>}
-            <Text
-              style={{
-                ...styles.statusBadge,
-                backgroundColor: status === 'paid' ? '#e7f8f1' : '#f9f2e6',
-                color: status === 'paid' ? '#176945' : '#6e4c11',
-              }}
-            >
-              {status === 'paid' ? 'PAID' : 'UNPAID'}
+            <Text style={{ ...styles.statusBadge, backgroundColor: badge.bg, color: badge.text }}>
+              {badge.label}
             </Text>
           </View>
         </View>
 
         <View style={styles.billTo}>
-          <Text style={styles.billToLabel}>Bill To</Text>
+          <Text style={styles.billToLabel}>{docType === 'quote' ? 'Prepared For' : 'Bill To'}</Text>
           <Text style={styles.billToLine}>{clientName}</Text>
           {clientEmail && <Text style={styles.billToLine}>{clientEmail}</Text>}
           {clientAddress && <Text style={styles.billToLine}>{clientAddress}</Text>}
@@ -178,13 +200,13 @@ export function InvoicePDF({
         </View>
 
         <View style={styles.totalRow}>
-          <Text style={styles.totalLabel}>Total</Text>
+          <Text style={styles.totalLabel}>{docType === 'quote' ? 'Estimated Total' : 'Total'}</Text>
           <Text style={styles.totalAmount}>${fmt(total)}</Text>
         </View>
 
-        {(paymentInstructions || notes) && (
+        {((docType === 'invoice' && paymentInstructions) || notes) && (
           <View style={styles.footer}>
-            {paymentInstructions && (
+            {docType === 'invoice' && paymentInstructions && (
               <>
                 <Text style={styles.footerLabel}>Payment</Text>
                 <Text style={styles.footerText}>{paymentInstructions}</Text>

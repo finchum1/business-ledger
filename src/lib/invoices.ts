@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import type { Invoice, InvoiceLineItem, InvoiceStatus } from './types'
+import type { DocType, Invoice, InvoiceLineItem, InvoiceStatus } from './types'
 
 export interface LineItemInput {
   description: string
@@ -37,19 +37,22 @@ export async function fetchLineItems(invoiceId: string): Promise<InvoiceLineItem
   return data as InvoiceLineItem[]
 }
 
-/** Next sequential number for this business, e.g. INV-0001 -> INV-0002. Scoped per business. */
-export async function nextInvoiceNumber(businessId: string): Promise<string> {
+const NUMBER_PREFIX: Record<DocType, string> = { quote: 'Q', invoice: 'INV' }
+
+/** Next sequential number for this business + doc type, e.g. Q-0001 or INV-0001, each scoped separately. */
+export async function nextDocumentNumber(businessId: string, docType: DocType): Promise<string> {
   const { data, error } = await supabase
     .from('invoices')
     .select('invoice_number')
     .eq('business_id', businessId)
+    .eq('doc_type', docType)
   if (error) throw error
   let max = 0
   for (const row of data ?? []) {
     const m = /(\d+)$/.exec(row.invoice_number)
     if (m) max = Math.max(max, parseInt(m[1], 10))
   }
-  return `INV-${String(max + 1).padStart(4, '0')}`
+  return `${NUMBER_PREFIX[docType]}-${String(max + 1).padStart(4, '0')}`
 }
 
 async function replaceLineItems(invoiceId: string, lineItems: LineItemInput[]) {
@@ -73,13 +76,14 @@ async function replaceLineItems(invoiceId: string, lineItems: LineItemInput[]) {
 
 export async function createInvoice(
   businessId: string,
+  docType: DocType,
   invoiceNumber: string,
   fields: InvoiceFields,
   lineItems: LineItemInput[],
 ): Promise<string> {
   const { data, error } = await supabase
     .from('invoices')
-    .insert({ business_id: businessId, invoice_number: invoiceNumber, ...fields })
+    .insert({ business_id: businessId, doc_type: docType, invoice_number: invoiceNumber, ...fields })
     .select('id')
     .single()
   if (error) throw error
@@ -106,4 +110,46 @@ export async function deleteInvoice(invoiceId: string): Promise<void> {
 export async function setInvoiceStatus(invoiceId: string, status: InvoiceStatus): Promise<void> {
   const { error } = await supabase.from('invoices').update({ status }).eq('id', invoiceId)
   if (error) throw error
+}
+
+export async function setSent(invoiceId: string, sent: boolean): Promise<void> {
+  const { error } = await supabase
+    .from('invoices')
+    .update({ sent_at: sent ? new Date().toISOString() : null })
+    .eq('id', invoiceId)
+  if (error) throw error
+}
+
+export async function setApproved(invoiceId: string, approved: boolean): Promise<void> {
+  const { error } = await supabase
+    .from('invoices')
+    .update({ approved_at: approved ? new Date().toISOString() : null })
+    .eq('id', invoiceId)
+  if (error) throw error
+}
+
+/** Copies a quote's client info + line items into a brand-new invoice, and links the quote to it. */
+export async function convertQuoteToInvoice(quote: Invoice): Promise<string> {
+  const lineItems = await fetchLineItems(quote.id)
+  const invoiceNumber = await nextDocumentNumber(quote.business_id, 'invoice')
+  const invoiceId = await createInvoice(
+    quote.business_id,
+    'invoice',
+    invoiceNumber,
+    {
+      client_name: quote.client_name,
+      client_email: quote.client_email,
+      client_address: quote.client_address,
+      issue_date: new Date().toISOString().slice(0, 10),
+      due_date: null,
+      notes: quote.notes,
+    },
+    lineItems.map((li) => ({ description: li.description, quantity: li.quantity, rate: li.rate })),
+  )
+  const { error } = await supabase
+    .from('invoices')
+    .update({ converted_to_invoice_id: invoiceId })
+    .eq('id', quote.id)
+  if (error) throw error
+  return invoiceId
 }
