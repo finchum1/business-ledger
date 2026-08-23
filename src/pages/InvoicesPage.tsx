@@ -59,7 +59,11 @@ export function InvoicesPage() {
   const business = businesses.find((b) => b.id === businessId) ?? null
 
   async function loadInvoices() {
-    if (!businessId) return
+    if (!businessId) {
+      setInvoices([])
+      setLoading(false)
+      return
+    }
     setLoading(true)
     try {
       const data = await fetchInvoices(businessId)
@@ -284,6 +288,11 @@ export function InvoicesPage() {
             </button>
           </div>
         </div>
+        {businesses.length === 0 && (
+          <p className="text-xs text-amber-600 dark:text-amber-400">
+            Add a business on the Businesses page before creating invoices.
+          </p>
+        )}
         {!business?.address && !business?.email && !business?.phone && business && (
           <p className="text-xs text-amber-600 dark:text-amber-400">
             This business has no contact info yet — add a logo, address, and contact details on the

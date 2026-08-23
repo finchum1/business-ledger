@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import type { Session } from '@supabase/supabase-js'
 import { supabase } from './lib/supabase'
 import { Landing } from './pages/Landing'
-import { Header } from './components/Header'
+import { Sidebar } from './components/Sidebar'
 import { LedgerPage } from './pages/LedgerPage'
 import { ReportsPage } from './pages/ReportsPage'
 import { BusinessesPage } from './pages/BusinessesPage'
@@ -38,16 +38,18 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0f1117]">
-      <Header session={session} />
-      <Routes>
-        <Route path="/" element={<LedgerPage />} />
-        <Route path="/reports" element={<ReportsPage />} />
-        <Route path="/businesses" element={<BusinessesPage />} />
-        <Route path="/categories" element={<CategoriesPage />} />
-        <Route path="/invoices" element={<InvoicesPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+    <div className="flex min-h-screen bg-slate-50 dark:bg-[#0f1117]">
+      <Sidebar session={session} />
+      <main className="min-w-0 flex-1">
+        <Routes>
+          <Route path="/" element={<LedgerPage />} />
+          <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/businesses" element={<BusinessesPage />} />
+          <Route path="/categories" element={<CategoriesPage />} />
+          <Route path="/invoices" element={<InvoicesPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
     </div>
   )
 }
