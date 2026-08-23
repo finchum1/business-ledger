@@ -1,21 +1,29 @@
 // Palette for the marketing landing page's switchboard/patch-bay world.
 // Deliberately separate from the app's own theme.ts (light/dark toggle) --
-// the landing page is a fixed dark visual world, not user-toggleable.
+// the landing page is a fixed light visual world, not user-toggleable.
+//
+// Revised from an original near-black bakelite palette to a warm ivory
+// control-panel material at the user's request ("lightened up... a little
+// too dark") -- same physical jack/cable/brass hardware grammar, lighter
+// enamel instead of black bakelite. bgDeep stays the "sunken" tone (page
+// background, input fills) and bgRaised/bgRaised2 stay lighter than it, the
+// same relative relationship as the original dark palette, just inverted in
+// absolute brightness.
 export const panel = {
-  bgDeep: '#0c0906',
-  bg: '#161009',
-  bgRaised: '#1f170e',
-  bgRaised2: '#241c11',
-  brassDim: '#6e5936',
-  brass: '#b8935a',
-  brassBright: '#e3c383',
-  cream: '#ece0c8',
-  creamDim: '#a89878',
-  income: '#3ecf8e',
-  incomeDim: '#1f5e42',
-  expense: '#e07348',
-  expenseDim: '#6e3521',
-  amber: '#f4a623',
-  wire: '#332818',
-  hairline: 'rgba(184, 147, 90, 0.22)',
+  bgDeep: '#f1ead9',
+  bg: '#f8f3e6',
+  bgRaised: '#fffdf7',
+  bgRaised2: '#fbf6e8',
+  brassDim: '#5c4a28',
+  brass: '#8a6a35',
+  brassBright: '#b8935a',
+  ink: '#241f16',
+  inkDim: '#6b6252',
+  income: '#1c8054',
+  incomeDim: '#bfe0cf',
+  expense: '#c1502a',
+  expenseDim: '#f0d2c2',
+  amber: '#c98a1f',
+  wire: '#d9cdb0',
+  hairline: 'rgba(138, 107, 58, 0.28)',
 } as const

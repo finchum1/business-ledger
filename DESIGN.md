@@ -1,51 +1,51 @@
 ---
 name: Business Ledger — Landing (Switchboard World)
-description: A near-black bakelite patch-bay panel where every business is a jack on one trunk line.
+description: A warm ivory enamel patch-bay panel where every business is a jack on one trunk line.
 colors:
-  bg-deep: "#0c0906"
-  bg: "#161009"
-  bg-raised: "#1f170e"
-  bg-raised-2: "#241c11"
-  brass-dim: "#6e5936"
-  brass: "#b8935a"
-  brass-bright: "#e3c383"
-  cream: "#ece0c8"
-  cream-dim: "#a89878"
-  income: "#3ecf8e"
-  income-dim: "#1f5e42"
-  expense: "#e07348"
-  expense-dim: "#6e3521"
-  amber: "#f4a623"
-  wire: "#332818"
+  bg-deep: "#f1ead9"
+  bg: "#f8f3e6"
+  bg-raised: "#fffdf7"
+  bg-raised-2: "#fbf6e8"
+  brass-dim: "#5c4a28"
+  brass: "#8a6a35"
+  brass-bright: "#b8935a"
+  ink: "#241f16"
+  ink-dim: "#6b6252"
+  income: "#1c8054"
+  income-dim: "#bfe0cf"
+  expense: "#c1502a"
+  expense-dim: "#f0d2c2"
+  amber: "#c98a1f"
+  wire: "#d9cdb0"
 typography:
   display:
-    fontFamily: "'Big Shoulders Display', sans-serif"
+    fontFamily: "'IBM Plex Serif', serif"
     fontSize: "clamp(1.875rem, 4vw, 3rem)"
     fontWeight: 700
     lineHeight: 0.95
     letterSpacing: "-0.01em"
   headline:
-    fontFamily: "'Big Shoulders Display', sans-serif"
+    fontFamily: "'IBM Plex Serif', serif"
     fontSize: "1.875rem"
     fontWeight: 700
     lineHeight: 1.1
   title:
-    fontFamily: "'Big Shoulders Display', sans-serif"
+    fontFamily: "'IBM Plex Serif', serif"
     fontSize: "1.125rem"
     fontWeight: 600
     lineHeight: 1.2
   body:
-    fontFamily: "'Big Shoulders Text', sans-serif"
+    fontFamily: "'IBM Plex Sans', sans-serif"
     fontSize: "0.9375rem"
     fontWeight: 400
     lineHeight: 1.6
   label:
-    fontFamily: "'Big Shoulders Display', sans-serif"
+    fontFamily: "'IBM Plex Sans', sans-serif"
     fontSize: "11px"
     fontWeight: 500
     letterSpacing: "0.18em"
   mono:
-    fontFamily: "'Space Mono', monospace"
+    fontFamily: "'IBM Plex Mono', monospace"
     fontWeight: 400
 rounded:
   sm: "4px"
@@ -62,17 +62,17 @@ spacing:
 components:
   button-primary:
     backgroundColor: "{colors.income}"
-    textColor: "{colors.bg-deep}"
+    textColor: "{colors.bg-raised}"
     rounded: "{rounded.md}"
     padding: "10px 20px"
   button-ghost:
     backgroundColor: "transparent"
-    textColor: "{colors.cream}"
+    textColor: "{colors.ink}"
     rounded: "{rounded.md}"
     padding: "10px 20px"
   input-field:
     backgroundColor: "{colors.bg-deep}"
-    textColor: "{colors.cream}"
+    textColor: "{colors.ink}"
     rounded: "{rounded.md}"
     padding: "10px 12px"
 ---
@@ -83,69 +83,69 @@ components:
 
 **Creative North Star: "The Switchboard"**
 
-The landing page is a single near-black bakelite patch panel, not a page of floating text over a gradient wash. Every surface — hero, feature strip, screenshot mounts, the sign-in card — is a physical insert bolted into the same panel material with real brass screws at its corners. Business identity is expressed as jacks on a trunk line: three businesses patch into one master total, and isolating a single business means literally unplugging the others rather than filtering a list. This is a fixed dark world; it is not part of the app's own light/dark-toggleable theme and does not inherit or export tokens to it.
+The landing page is a single warm ivory enamel patch panel, not a page of floating text over a gradient wash. Every surface — hero, feature strip, screenshot mounts, the sign-in card — is a physical insert bolted into the same panel material with real brass screws at its corners. Business identity is expressed as jacks on a trunk line: three businesses patch into one master total, and isolating a single business means literally unplugging the others rather than filtering a list. This is a fixed light world; it is not part of the app's own light/dark-toggleable theme and does not inherit or export tokens to it.
 
-This is the shipped result of a rebuild pass, not the first draft. The first attempt centered a floating text stack in the hero (rejected — contradicts the panel-as-hero contract), used a same-size icon+heading+text card grid for the features section (rejected — the world's own line is a continuous trunk, not a card grid), and rendered every panel as a flat CSS gradient (rejected — the world's own material is bakelite/brass, and flat gradient does not read as that material). All three were rebuilt before this record was written: the nameplate is inset lower-left into a full-bleed panel-textured hero; features are one hairline-divided terminal strip; every panel surface layers a photographed bakelite/gunmetal texture (`panel-texture.jpg`) under a semi-transparent color-tint gradient via a shared `panelSurface()` helper, so grain and scratches show through the tint rather than sitting under a flat wash.
+This is the shipped result of two build passes, not the first draft. The page originally shipped as a near-black bakelite panel with a condensed cast-metal display face (Big Shoulders) and Space Mono figures. The user asked for the whole page lightened ("a little too dark") and for more business-like typography in the same session; both requests were carried out together as one revision rather than two separate passes, since a lighter ground and a more corporate typeset read as one coherent direction rather than two unrelated tweaks. The physical grammar — jacks, cables, lamps, brass screws, a photographed panel material — is unchanged; vintage switchboards were as often cream/ivory bakelite as black, so the lighter material is period-accurate to the same object, not a different one. Every panel surface still layers a photographed bakelite/gunmetal texture (`panel-texture.jpg`) under a semi-transparent color-tint gradient via a shared `panelSurface()` helper — only the tint pair changed, from near-black stops to warm ivory ones — so the same grain and scratches still show through.
 
 **Key Characteristics:**
 - One continuous panel material (photographed texture + tint), never a flat gradient standing in for it.
 - Jacks, cables, and lamps as the literal visual grammar for "business" / "connection" / "active state."
 - Brass-plate labels sit beside headings, never above them, at every breakpoint.
-- Emerald reads income/active, rust-red reads expense, amber reads an idle lamp turning on.
-- Tabular figures are always Space Mono; running copy and headlines are never set in it.
+- Deep emerald reads income/active, rust-red reads expense, amber reads an idle lamp turning on.
+- Tabular figures are always IBM Plex Mono; running copy and headlines are never set in it.
 
 ## Colors
 
-A near-black bakelite ground with brass hardware and two signal colors (emerald for income/active, rust-red for expense) doing all of the semantic work; amber is reserved for the panel's own idle-to-active lamp state, not for a third semantic meaning.
+A warm ivory enamel ground with brass hardware and two signal colors (deep emerald for income/active, rust-red for expense) doing all of the semantic work; amber is reserved for the panel's own idle-to-active lamp state, not for a third semantic meaning. Every signal color was deepened from the original dark-ground palette specifically so it stays legible as text and as button fill against a light ground — the same hue family, tuned for the opposite contrast direction rather than reused unchanged.
 
 ### Primary
-- **Signal Emerald** (`#3ecf8e`): the income/active/positive color — patch cables into the trunk, active jacks, the "Sign In" and submit buttons, the combined-total figure.
+- **Signal Emerald** (`#1c8054`): the income/active/positive color — patch cables into the trunk, active jacks, the "Sign In" and submit buttons, the combined-total figure. Deep enough to read as text directly on the ivory ground (≈4.8:1) and to carry light button-label text (≈4.9:1) — the original bright mint (`#3ecf8e`) only had to clear the second of those on a dark ground, so it could stay lighter than this.
 
 ### Secondary
-- **Rust Expense** (`#e07348`): the expense/negative color — reserved for expense figures and form error text. Never used decoratively.
+- **Rust Expense** (`#c1502a`): the expense/negative color — reserved for expense figures and form error text. Never used decoratively.
 
 ### Tertiary
-- **Amber Lamp** (`#f4a623`): the panel's own idle-to-active indicator glow (the `Lamp` primitive), and the nameplate's power dot. Not a general accent; it means "this instrument is live," not "this is important."
+- **Amber Lamp** (`#c98a1f`): the panel's own idle-to-active indicator glow (the `Lamp` primitive), and the nameplate's power dot. Not a general accent; it means "this instrument is live," not "this is important."
 
 ### Neutral
-- **Bakelite Deep** (`#0c0906`): the page's deepest ground — page background, input field fills.
-- **Bakelite** (`#161009`): the alternating section background (features, positioning sections).
-- **Bakelite Raised** (`#1f170e`) / **Bakelite Raised 2** (`#241c11`): the two tints used inside `panelSurface()` for insets, cards, and the sign-in panel — always layered over the photographed texture, never used as flat fills on their own.
-- **Brass Dim** (`#6e5936`) / **Brass** (`#b8935a`) / **Brass Bright** (`#e3c383`): hardware and label color — plate-label text, jack rims, cable ferrules, hairline dividers (`rgba(184,147,90,0.22)`).
-- **Cream** (`#ece0c8`) / **Cream Dim** (`#a89878`): primary and secondary text on the dark ground.
+- **Ivory Deep** (`#f1ead9`): the page's most sunken tone — page background, input field fills. The relative relationship from the original palette is preserved (this is still the tone raised panels lift away from), just inverted in absolute brightness: raised panels are now lighter/whiter than the page rather than the page being the near-black floor.
+- **Ivory** (`#f8f3e6`): the alternating section background (features, positioning sections).
+- **Ivory Raised** (`#fffdf7`) / **Ivory Raised 2** (`#fbf6e8`): the two tints used inside `panelSurface()` for insets, cards, and the sign-in panel — always layered over the photographed texture, never used as flat fills on their own.
+- **Brass Dim** (`#5c4a28`) / **Brass** (`#8a6a35`) / **Brass Bright** (`#b8935a`): hardware and label color — plate-label text, jack rims, cable ferrules, hairline dividers (`rgba(138,107,58,0.28)`). Deepened a step from the original dark-ground brass values so `brass` still clears small-text contrast (≈4:1) as `PlateLabel`'s color against the ivory cards.
+- **Ink** (`#241f16`) / **Ink Dim** (`#6b6252`): primary and secondary text on the light ground — a warm near-black and a warm mid-brown-gray, tinted from the same brass/bakelite hue family rather than a neutral gray, per the craft floor's "tint secondary text from the surface hue" rule. These replace the original `cream`/`cream-dim` tokens, which held light colors for a dark ground; the token names changed because their values inverted, not just shifted.
 
 ### Named Rules
 **The Two-Signal Rule.** Only emerald and rust-red carry semantic meaning (positive/negative, active/isolated). Amber is reserved exclusively for the lamp's own idle→active transition and never doubles as a third semantic color.
 
 ## Typography
 
-**Display Font:** Big Shoulders Display (with sans-serif fallback)
-**Body Font:** Big Shoulders Text (with sans-serif fallback)
-**Label/Mono Font:** Space Mono (with monospace fallback)
+**Display Font:** IBM Plex Serif (with serif fallback)
+**Body Font:** IBM Plex Sans (with sans-serif fallback)
+**Label/Mono Font:** IBM Plex Mono for figures; IBM Plex Sans for the `PlateLabel` caption grammar
 
-**Character:** A condensed, cast-metal display face for anything engraved into the panel (headlines, plate labels, nav wordmark) paired with its own upright text sibling for running copy, and a fixed-width mono strictly for numbers — so a dollar figure reads like a mechanical counter, never like body prose. Space Grotesk was tried first and dropped mid-build after the mechanical-pattern detector flagged it as an overused default; Big Shoulders was chosen specifically for its condensed, engraved-plate character and stayed clean through both review rounds.
+**Character:** A corporate serif for anything that reads as a heading — the ledger-report, financial-statement register the user asked for in place of the original condensed cast-metal display face — paired with IBM Plex Sans for running copy and micro-labels, and IBM Plex Mono strictly for numbers, so a dollar figure still reads like a mechanical counter rather than body prose. All three are members of the same IBM Plex superfamily, designed as a coordinated serif/sans/mono trio, which is why they harmonize as a set rather than reading as three unrelated choices. IBM Plex was picked over the reflexive "business font" default (Inter) specifically because Inter is on the mechanical detector's overused-font list; IBM Plex Serif/Sans/Mono are not, and IBM Plex carries its own real-world enterprise/corporate association that argues for "business-like" more directly than a startup-default grotesque would.
 
 ### Hierarchy
-- **Display** (700, `clamp(1.875rem, 4vw, 3rem)`, 0.95 line-height): hero headline only, set in Big Shoulders Display, tracked tight (`tracking-tight`).
-- **Headline** (700, 1.875rem–2.25rem, 1.1 line-height): section headings (`h2`), Big Shoulders Display.
-- **Title** (600, 1.125rem, 1.2 line-height): feature-row headings (`h3`) and the sign-in card heading, Big Shoulders Display.
-- **Body** (400, 0.875–1rem, 1.6 line-height): running copy in Big Shoulders Text, always in `cream-dim` against the dark ground, capped near 60ch by its container `max-w-xl`/`max-w-2xl`.
-- **Label** (500, 11px, 0.18em tracking, uppercase): the `PlateLabel` primitive — engraved brass-plate captions beside jacks, lamps, and feature tags. Always Big Shoulders Display in `brass`.
-- **Mono/Tabular** (400/700, Space Mono): every dollar figure and ledger number, including the `TickerTotal` primitive and business-name captions under jacks. Never used for headlines or body prose.
+- **Display** (700, `clamp(1.875rem, 4vw, 3rem)`, 0.95 line-height): hero headline only, set in IBM Plex Serif, tracked tight (`tracking-tight`).
+- **Headline** (700, 1.875rem–2.25rem, 1.1 line-height): section headings (`h2`), IBM Plex Serif.
+- **Title** (600, 1.125rem, 1.2 line-height): feature-row headings (`h3`) and the sign-in card heading, IBM Plex Serif.
+- **Body** (400, 0.875–1rem, 1.6 line-height): running copy in IBM Plex Sans, always in `ink-dim` against the light ground, capped near 60ch by its container `max-w-xl`/`max-w-2xl`.
+- **Label** (500, 11px, 0.18em tracking, uppercase): the `PlateLabel` primitive — engraved brass-plate captions beside jacks, lamps, and feature tags. Set in IBM Plex Sans, not the serif — a tracked uppercase micro-label reads cleaner in a sans at 11px than in a serif, which is why this is the one place the hierarchy departs from the serif/sans split by role. Always in `brass`.
+- **Mono/Tabular** (400/700, IBM Plex Mono): every dollar figure and ledger number, including the `TickerTotal` primitive and business-name captions under jacks. Never used for headlines or body prose.
 
 ### Named Rules
-**The Mono-Is-For-Numbers Rule.** Space Mono renders only figures and short data captions (dollar totals, business-name tags under jacks). It never sets a headline, a body paragraph, or a label — monospace here means "measurement," not "technical" costume.
+**The Mono-Is-For-Numbers Rule.** IBM Plex Mono renders only figures and short data captions (dollar totals, business-name tags under jacks). It never sets a headline, a body paragraph, or a label — monospace here means "measurement," not "technical" costume.
 
 ## Layout
 
-A single-column, centered content spine (`max-w-xl` to `max-w-6xl` depending on section) inside a full-bleed dark page background, alternating between `bg-deep` and `bg` per section to separate the trunk-line demos from the flatter reading sections. Section vertical rhythm is generous and consistent: `py-20` (80px) on mobile stepping to `py-28` (112px) at `sm`, with horizontal page padding fixed at `px-5` (20px) / `sm:px-8` (32px) throughout. Interactive demo boxes (hero patch panel, mechanism demo) are drawn in percentage-space inside a fixed `aspect-ratio` box so jacks and cables stay registered together at any width — this is why those two boxes hold fixed aspect ratios rather than flexible heights. The feature terminal strip is a single bordered panel with internal rows separated by 1px hairlines (`border-top`), not a card grid with independent boxes and gutters.
+A single-column, centered content spine (`max-w-xl` to `max-w-6xl` depending on section) inside a full-bleed light page background, alternating between `bg-deep` and `bg` per section to separate the trunk-line demos from the flatter reading sections. Section vertical rhythm is generous and consistent: `py-20` (80px) on mobile stepping to `py-28` (112px) at `sm`, with horizontal page padding fixed at `px-5` (20px) / `sm:px-8` (32px) throughout. The hero is a centered, full-viewport (`min-h-[85vh]`) nameplate card rather than an inset lower-left card — a later revision in the same build, made so the headline is the first and only thing in the initial viewport instead of sharing it with a demo that duplicates the one in the Mechanism section below. Interactive demo boxes (mechanism demo) are drawn in percentage-space inside a fixed `aspect-ratio` box so jacks and cables stay registered together at any width. The feature terminal strip is a single bordered panel with internal rows separated by 1px hairlines (`border-top`), not a card grid with independent boxes and gutters.
 
 ## Elevation & Depth
 
-Hybrid: panels sit on soft, deep ambient shadows (`0 12–20px 30–50px rgba(0,0,0,0.5–0.55)`) that read as physical insets mounted into the wall panel, plus a thin inset brass-tinted ring (`inset 0 0 0 1px rgba(184,147,90,0.35–0.45)`) standing in for a beveled metal edge. There is no hard-offset/zero-blur shadow anywhere in this system — every shadow carries real blur. Depth also comes from material, not just shadow: the photographed texture under every panel and the separate glow-ring layered over the (visually fixed-material) jack photo both read as physical depth cues that a flat gradient could not supply.
+Hybrid: panels sit on soft, deep ambient shadows (`0 12–20px 30–50px rgba(0,0,0,0.5–0.55)`) that read as physical insets mounted into the wall panel, plus a thin inset brass-tinted ring (`inset 0 0 0 1px rgba(138,107,58,0.35–0.45)`) standing in for a beveled metal edge. There is no hard-offset/zero-blur shadow anywhere in this system — every shadow carries real blur. Depth also comes from material, not just shadow: the photographed texture under every panel and the separate glow-ring layered over the (visually fixed-material) jack photo both read as physical depth cues that a flat gradient could not supply. The ambient shadow rgba values stayed dark (not lightened) even though the ground did — a shadow is still a shadow regardless of what it's cast onto, so only the ring and gradient tints moved to the light palette.
 
 ### Shadow Vocabulary
-- **Panel-mount** (`inset 0 0 0 1px rgba(184,147,90,0.35–0.45), 0 12px–20px 30px–50px rgba(0,0,0,0.5–0.55)`): the standard treatment for every raised insert — hero card, sign-in card, screenshot windows, mechanism readout.
+- **Panel-mount** (`inset 0 0 0 1px rgba(138,107,58,0.35–0.45), 0 12px–20px 30px–50px rgba(0,0,0,0.5–0.55)`): the standard treatment for every raised insert — hero card, sign-in card, screenshot windows, mechanism readout.
 - **Lamp glow** (`0 0 Npx N*0.5px {color}66, 0 0 N*0.5px {color}`): ambient, state-driven only — appears when a `Lamp` goes active, absent at rest.
 - **Jack seat-flash** (`0 0 0 2px {color}` animating to `scale: 1.7, opacity: 0`): a one-shot ring pulse fired for 550ms when a jack transitions to active, verified against the component's real timer rather than assumed from the code.
 
@@ -160,8 +160,8 @@ Corners are moderate and consistent: `rounded` (4px) for small chips and screw c
 
 ### Buttons
 - **Shape:** `rounded-lg` (8px).
-- **Primary:** `income` (#3ecf8e) background, `bg-deep` (#0c0906) text, `px-5 py-2.5` (20px/10px) padding, medium weight, `active:scale-[0.98]` on press. Used for every primary action (nav Sign In, hero Sign In, sign-in form submit).
-- **Ghost:** transparent background, `cream` text, a 1px inset hairline ring (`inset 0 0 0 1px rgba(184,147,90,0.22)`) standing in for a border. Used for the hero's secondary "See it work" action, paired with a drawn chevron-down SVG (never a Unicode/emoji glyph).
+- **Primary:** `income` (#1c8054) background, `bg-raised` (#fffdf7, near-white) text, `px-5 py-2.5` (20px/10px) padding, medium weight, `active:scale-[0.98]` on press. Used for every primary action (nav Sign In, hero Sign In, sign-in form submit). The button label token changed from `bg-deep` to `bg-raised` in this revision: the original dark-ground button used its darkest neutral as dark-on-light-green text, but `income` is now itself a fairly dark green, so the label needs the palette's lightest neutral, not its most sunken one, to stay readable.
+- **Ghost:** transparent background, `ink` text, a 1px inset hairline ring (`inset 0 0 0 1px rgba(138,107,58,0.22)`) standing in for a border. Used for the hero's secondary "See it work" action, paired with a drawn chevron-down SVG (never a Unicode/emoji glyph).
 
 ### Cards / Containers
 - **Corner Style:** `rounded-lg` (8px) for insets and the screenshot window, `rounded-xl` (12px) for the sign-in card and feature strip.
@@ -171,24 +171,25 @@ Corners are moderate and consistent: `rounded` (4px) for small chips and screw c
 - **Internal Padding:** `p-6` (24px) mobile stepping to `p-8` (32px) at `sm` for card interiors; `px-6 py-6`/`px-8` for feature-strip rows.
 
 ### Inputs / Fields
-- **Style:** `bg-deep` fill, `cream` text, `rounded-lg`, 1px inset hairline ring in place of a drawn border, `px-3 py-2.5`.
-- **Focus:** currently relies on the browser default focus outline (`focus:outline-none` is set on the input but no custom focus treatment replaces it) — recorded as a gap, not a rule; a future pass should theme focus-visible from the palette per the craft floor's browser-surfaces check.
-- **Error:** inline text below the field in `expense` (#e07348) color, `role="alert"`.
+- **Style:** `bg-deep` fill, `ink` text, `rounded-lg`, 1px inset hairline ring in place of a drawn border, `px-3 py-2.5`.
+- **Focus:** currently relies on the browser default focus outline (`focus:outline-none` is set on the input but no custom focus treatment replaces it) — still recorded as a gap, not a rule, carried over unchanged from the prior revision; a future pass should theme focus-visible from the palette per the craft floor's browser-surfaces check.
+- **Error:** inline text below the field in `expense` (#c1502a) color, `role="alert"`.
 
 ### Navigation
-- Sticky header, `bg-deep` at 87% opacity with `backdrop-blur`, 1px brass hairline bottom border. Left: the `Nameplate` (a small panel-textured square housing an amber power dot, plus the wordmark in Big Shoulders Display). Right: a single primary button ("Sign In") — no nav link list, because the page is single-scroll with in-page anchors.
+- Sticky header, `bg-deep` at 87% opacity with `backdrop-blur`, 1px brass hairline bottom border. Left: the `Nameplate` (a small panel-textured square housing an amber power dot, plus the wordmark in IBM Plex Serif). Right: a single primary button ("Sign In") — no nav link list, because the page is single-scroll with in-page anchors.
 
 ### Jack / Cable / Lamp (signature components)
-The page's one true signature system. A `Jack` is a photographed brass socket (`jack-socket.png`) whose own metal never changes color — active/inactive state lives entirely in a separate glow-ring layered on top (`inset`/outer box-shadow in the signal color) plus a `brightness/saturate` filter dim when inactive, so the physical object and its electrical state stay visually separate, the way a real jack's socket and its indicator lamp are separate parts. A `PatchCable` is an SVG cubic-bezier with a sagging catenary and a brass ferrule at the termination, animated in with a spring (`stiffness: 90, damping: 15`) rather than a linear tween. A `Lamp` is a small filled circle, dark at rest, glowing in the signal color on activation via a 0.5s ease-out shadow transition. `TickerTotal` climbs to its value over 900ms with cubic ease-out, rendered in Space Mono — an adding-machine climb, not a linear count or a spring overshoot.
+The page's one true signature system, unchanged in mechanics by this revision. A `Jack` is a photographed brass socket (`jack-socket.png`) whose own metal never changes color — active/inactive state lives entirely in a separate glow-ring layered on top (`inset`/outer box-shadow in the signal color) plus a `brightness/saturate` filter dim when inactive, so the physical object and its electrical state stay visually separate, the way a real jack's socket and its indicator lamp are separate parts. A `PatchCable` is an SVG cubic-bezier with a sagging catenary and a brass ferrule at the termination (fill `brass-bright`, stroke `ink` — both retinted from hardcoded dark-ground hex values to palette tokens in this revision), animated in with a spring (`stiffness: 90, damping: 15`) rather than a linear tween. A `Lamp` is a small filled circle, dark at rest, glowing in the signal color on activation via a 0.5s ease-out shadow transition. `TickerTotal` climbs to its value over 900ms with cubic ease-out, rendered in IBM Plex Mono — an adding-machine climb, not a linear count or a spring overshoot.
 
 ## Do's and Don'ts
 
 ### Do:
 - **Do** build every panel surface with `panelSurface()` (photographed texture + tint gradient) — never a flat CSS gradient standing in for bakelite or brass.
 - **Do** keep plate labels (`PlateLabel`) positioned beside their heading or content, using DOM order plus responsive `order` classes so the label never sits above the heading at any breakpoint, including mobile stack.
-- **Do** reserve Space Mono strictly for figures and short data captions; set headlines and body copy in Big Shoulders.
+- **Do** reserve IBM Plex Mono strictly for figures and short data captions; set headlines in IBM Plex Serif and body copy/labels in IBM Plex Sans.
 - **Do** give every shadow real offset and blur (see the Panel-mount vocabulary); depth communicates through blur and material layering, not flat halos.
 - **Do** draw icons as authored SVG (e.g. the chevron) in a single consistent stroke weight — never a Unicode glyph or emoji.
+- **Do** tint secondary/dim text from the palette's own brass/bakelite hue (`ink-dim`) rather than a neutral gray, on both the light ground and inside colored surfaces.
 
 ### Don't:
 - **Don't** use a same-size icon+heading+text card grid for feature sections. This world's features are one continuous hairline-divided terminal strip off a shared trunk, not independent cards — the original build did this and was rebuilt.
@@ -196,3 +197,4 @@ The page's one true signature system. A `Jack` is a photographed brass socket (`
 - **Don't** render a panel, card, or inset as a flat CSS gradient with no photographed material underneath. Three surfaces shipped this way originally (hero, panels, jack sockets) and were rebuilt with real texture/photo assets.
 - **Don't** bake active-state color into a jack's own socket material. State lives in the separate glow-ring layered on top of a fixed-material photograph, matching how a real jack's metal doesn't change color while its indicator lamp does.
 - **Don't** use a hard-offset, zero-blur shadow anywhere in this system. It was never adopted and does not belong to this material world.
+- **Don't** reuse a signal color's dark-ground hex value unchanged after a light-ground revision (or vice versa). `income`, `expense`, `amber`, `brass`, and the hairline rgb all shifted a step darker in this revision specifically so they still clear text/small-element contrast against the new ivory ground; carrying the old values forward onto a new ground was the single biggest risk in this pass, not a rule that was tempting to break for effect.

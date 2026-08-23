@@ -87,14 +87,14 @@ function Nameplate() {
         className="w-7 h-7 rounded flex items-center justify-center shrink-0"
         style={{
           ...panelSurface([panel.bgRaised2, panel.bgDeep], 160),
-          boxShadow: 'inset 0 0 0 1px rgba(184,147,90,0.45)',
+          boxShadow: 'inset 0 0 0 1px rgba(138,106,53,0.45)',
         }}
       >
         <div className="w-2 h-2 rounded-full" style={{ background: panel.amber, boxShadow: `0 0 8px ${panel.amber}` }} />
       </div>
       <span
         className="font-semibold tracking-wide text-lg"
-        style={{ color: panel.cream, fontFamily: "'Big Shoulders Display', sans-serif" }}
+        style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}
       >
         Business Ledger
       </span>
@@ -122,14 +122,14 @@ function SignInPanel() {
       className="relative max-w-md mx-auto rounded-xl p-6 sm:p-8"
       style={{
         ...panelSurface([panel.bgRaised, panel.bgDeep], 165),
-        boxShadow: 'inset 0 0 0 1px rgba(184,147,90,0.35), 0 20px 50px rgba(0,0,0,0.55)',
+        boxShadow: 'inset 0 0 0 1px rgba(138,106,53,0.35), 0 20px 50px rgba(0,0,0,0.55)',
       }}
     >
       <BrassScrews />
       <div className="flex items-center justify-between gap-3 mb-6">
         <h2
           className="text-3xl font-bold tracking-tight"
-          style={{ color: panel.cream, fontFamily: "'Big Shoulders Display', sans-serif" }}
+          style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}
         >
           Sign in
         </h2>
@@ -139,7 +139,7 @@ function SignInPanel() {
         </div>
       </div>
       <form onSubmit={handleSubmit}>
-        <label className="block text-xs mb-1" style={{ color: panel.creamDim }}>
+        <label className="block text-xs mb-1" style={{ color: panel.inkDim }}>
           Email
         </label>
         <input
@@ -151,11 +151,11 @@ function SignInPanel() {
           className="w-full mb-4 rounded-lg px-3 py-2.5 text-sm focus:outline-none"
           style={{
             background: panel.bgDeep,
-            color: panel.cream,
+            color: panel.ink,
             boxShadow: `inset 0 0 0 1px ${panel.hairline}`,
           }}
         />
-        <label className="block text-xs mb-1" style={{ color: panel.creamDim }}>
+        <label className="block text-xs mb-1" style={{ color: panel.inkDim }}>
           Password
         </label>
         <input
@@ -167,7 +167,7 @@ function SignInPanel() {
           className="w-full mb-6 rounded-lg px-3 py-2.5 text-sm focus:outline-none"
           style={{
             background: panel.bgDeep,
-            color: panel.cream,
+            color: panel.ink,
             boxShadow: `inset 0 0 0 1px ${panel.hairline}`,
           }}
         />
@@ -180,7 +180,7 @@ function SignInPanel() {
           type="submit"
           disabled={loading}
           className="w-full rounded-lg py-2.5 font-medium text-sm transition disabled:opacity-60"
-          style={{ background: panel.income, color: panel.bgDeep }}
+          style={{ background: panel.income, color: panel.bgRaised }}
         >
           {loading ? 'Signing in…' : 'Sign in'}
         </button>
@@ -197,7 +197,7 @@ export function Landing() {
   }
 
   return (
-    <div style={{ background: panel.bgDeep, color: panel.cream, fontFamily: "'Big Shoulders Text', sans-serif" }}>
+    <div style={{ background: panel.bgDeep, color: panel.ink, fontFamily: "'IBM Plex Sans', sans-serif" }}>
       {/* Nav */}
       <header className="sticky top-0 z-20 backdrop-blur" style={{ background: `${panel.bgDeep}dd`, borderBottom: `1px solid ${panel.hairline}` }}>
         <div className="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
@@ -205,7 +205,7 @@ export function Landing() {
           <button
             onClick={() => scrollTo('signin')}
             className="text-sm font-medium px-4 py-2 rounded-lg transition"
-            style={{ background: panel.income, color: panel.bgDeep }}
+            style={{ background: panel.income, color: panel.bgRaised }}
           >
             Sign In
           </button>
@@ -223,7 +223,7 @@ export function Landing() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              'radial-gradient(ellipse 60% 45% at 60% 15%, rgba(184,147,90,0.10), transparent), radial-gradient(ellipse 55% 45% at 25% 90%, rgba(62,207,142,0.07), transparent)',
+              'radial-gradient(ellipse 60% 45% at 60% 15%, rgba(138,106,53,0.10), transparent), radial-gradient(ellipse 55% 45% at 25% 90%, rgba(28,128,84,0.07), transparent)',
           }}
         />
 
@@ -234,19 +234,19 @@ export function Landing() {
           className="relative max-w-3xl w-full rounded-lg p-8 sm:p-12 text-center"
           style={{
             ...panelSurface([panel.bgRaised, panel.bgDeep], 165),
-            boxShadow: 'inset 0 0 0 1px rgba(184,147,90,0.4), 0 20px 45px rgba(0,0,0,0.55)',
+            boxShadow: 'inset 0 0 0 1px rgba(138,106,53,0.4), 0 20px 45px rgba(0,0,0,0.55)',
           }}
         >
           <BrassScrews />
           <h1
             className="text-5xl sm:text-6xl md:text-7xl font-bold leading-[0.95] mb-6 tracking-tight"
-            style={{ color: panel.cream, fontFamily: "'Big Shoulders Display', sans-serif" }}
+            style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}
           >
             One ledger.
             <br />
             Every business.
           </h1>
-          <p className="text-base sm:text-lg mb-8 max-w-xl mx-auto" style={{ color: panel.creamDim }}>
+          <p className="text-base sm:text-lg mb-8 max-w-xl mx-auto" style={{ color: panel.inkDim }}>
             Log income and expenses for every business you run in one place. Pull a Profit &amp;
             Loss for all of them combined — or isolate any single one instantly.
           </p>
@@ -254,17 +254,17 @@ export function Landing() {
             <button
               onClick={() => scrollTo('signin')}
               className="px-5 py-2.5 rounded-lg font-medium text-sm transition active:scale-[0.98]"
-              style={{ background: panel.income, color: panel.bgDeep }}
+              style={{ background: panel.income, color: panel.bgRaised }}
             >
               Sign In
             </button>
             <button
               onClick={() => scrollTo('mechanism')}
               className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg font-medium text-sm transition"
-              style={{ boxShadow: `inset 0 0 0 1px ${panel.hairline}`, color: panel.cream }}
+              style={{ boxShadow: `inset 0 0 0 1px ${panel.hairline}`, color: panel.ink }}
             >
               See it work
-              <ChevronDown color={panel.cream} />
+              <ChevronDown color={panel.ink} />
             </button>
           </div>
         </motion.div>
@@ -273,10 +273,10 @@ export function Landing() {
       {/* Mechanism */}
       <Section id="mechanism" className="px-5 sm:px-8 py-20 sm:py-28" >
         <div className="max-w-4xl mx-auto text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: panel.cream, fontFamily: "'Big Shoulders Display', sans-serif" }}>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}>
             Combine everything, or isolate one.
           </h2>
-          <p className="text-base max-w-xl mx-auto" style={{ color: panel.creamDim }}>
+          <p className="text-base max-w-xl mx-auto" style={{ color: panel.inkDim }}>
             Click a business below. The others unplug, and the panel reads just that one — click it
             again to bring everyone back into the combined total.
           </p>
@@ -307,7 +307,7 @@ export function Landing() {
               <div className="relative flex flex-col items-center">
                 <span
                   className="absolute bottom-full mb-1.5 text-[9px] sm:text-[10px] whitespace-nowrap"
-                  style={{ color: isolated === i ? panel.income : panel.creamDim, fontFamily: "'Space Mono', monospace" }}
+                  style={{ color: isolated === i ? panel.income : panel.inkDim, fontFamily: "'IBM Plex Mono', monospace" }}
                 >
                   {b.name.split(' ')[0].toUpperCase()}
                 </span>
@@ -324,7 +324,7 @@ export function Landing() {
               className="relative rounded-lg px-4 py-2.5 sm:px-6 sm:py-3 text-center min-w-[140px]"
               style={{
                 ...panelSurface([panel.bgRaised2, panel.bgDeep], 160),
-                boxShadow: 'inset 0 0 0 1px rgba(184,147,90,0.4), 0 8px 20px rgba(0,0,0,0.5)',
+                boxShadow: 'inset 0 0 0 1px rgba(138,106,53,0.4), 0 8px 20px rgba(0,0,0,0.5)',
               }}
             >
               <BrassScrews />
@@ -351,7 +351,7 @@ export function Landing() {
       <Section className="px-5 sm:px-8 py-20 sm:py-28" style={{ background: panel.bg }}>
         <div className="max-w-4xl mx-auto">
           <div className="max-w-xl mb-10">
-            <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: panel.cream, fontFamily: "'Big Shoulders Display', sans-serif" }}>
+            <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}>
               Four circuits. Everything you need weekly.
             </h2>
           </div>
@@ -375,10 +375,10 @@ export function Landing() {
                     sm:order-first moves the tag back to a left column on
                     wider screens where it sits beside the heading instead. */}
                 <div className="flex-1 order-1 sm:order-2">
-                  <h3 className="text-lg font-semibold mb-1" style={{ color: panel.cream, fontFamily: "'Big Shoulders Display', sans-serif" }}>
+                  <h3 className="text-lg font-semibold mb-1" style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}>
                     {f.title}
                   </h3>
-                  <p className="text-sm leading-relaxed" style={{ color: panel.creamDim }}>
+                  <p className="text-sm leading-relaxed" style={{ color: panel.inkDim }}>
                     {f.body}
                   </p>
                 </div>
@@ -396,7 +396,7 @@ export function Landing() {
       <Section className="px-5 sm:px-8 py-20 sm:py-28">
         <div className="max-w-6xl mx-auto">
           <div className="max-w-xl mb-14">
-            <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: panel.cream, fontFamily: "'Big Shoulders Display', sans-serif" }}>
+            <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}>
               This is the real thing, running.
             </h2>
           </div>
@@ -428,10 +428,10 @@ export function Landing() {
       {/* Positioning */}
       <Section className="px-5 sm:px-8 py-20 sm:py-28" style={{ background: panel.bg }}>
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6" style={{ color: panel.cream, fontFamily: "'Big Shoulders Display', sans-serif" }}>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6" style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}>
             Not daily babysitting. A weekly sit-down.
           </h2>
-          <p className="text-base leading-relaxed" style={{ color: panel.creamDim }}>
+          <p className="text-base leading-relaxed" style={{ color: panel.inkDim }}>
             Most accounting software assumes one company at a time — separate logins, separate setups,
             separate exports to reconcile by hand. Business Ledger treats "which business" as just a
             field on the transaction. Sit down once a week, log what happened across every venture, and
@@ -442,7 +442,7 @@ export function Landing() {
 
       {/* Sign in */}
       <Section id="signin" className="px-5 sm:px-8 py-20 sm:py-28">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12" style={{ color: panel.cream, fontFamily: "'Big Shoulders Display', sans-serif" }}>
+        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12" style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}>
           Sign in to your ledger
         </h2>
         <SignInPanel />
@@ -452,7 +452,7 @@ export function Landing() {
       <footer className="px-5 sm:px-8 py-10" style={{ borderTop: `1px solid ${panel.hairline}` }}>
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <Nameplate />
-          <p className="text-xs" style={{ color: panel.creamDim, fontFamily: "'Space Mono', monospace" }}>
+          <p className="text-xs" style={{ color: panel.inkDim, fontFamily: "'IBM Plex Mono', monospace" }}>
             © {new Date().getFullYear()} Business Ledger
           </p>
         </div>

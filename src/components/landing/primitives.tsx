@@ -32,7 +32,7 @@ export function PlateLabel({ children, className = '' }: { children: React.React
   return (
     <span
       className={`inline-block font-medium tracking-[0.18em] uppercase text-[11px] ${className}`}
-      style={{ color: panel.brass, fontFamily: "'Big Shoulders Display', sans-serif" }}
+      style={{ color: panel.brass, fontFamily: "'IBM Plex Sans', sans-serif" }}
     >
       {children}
     </span>
@@ -197,8 +197,8 @@ export function PatchCable({
         cy={Math.max(from.y, to.y) - 16}
         rx={1.8}
         ry={1.8}
-        fill="#e3c383"
-        stroke="#2a2117"
+        fill={panel.brassBright}
+        stroke={panel.ink}
         strokeWidth={1}
         vectorEffect="non-scaling-stroke"
         initial={{ opacity: 0, scale: 0.4 }}
@@ -248,7 +248,7 @@ export function TickerTotal({
   }, [value, active])
 
   return (
-    <span className={className} style={{ fontFamily: "'Space Mono', monospace", ...style }}>
+    <span className={className} style={{ fontFamily: "'IBM Plex Mono', monospace", ...style }}>
       {prefix}
       {display.toLocaleString()}
     </span>
@@ -286,7 +286,7 @@ export function ScreenshotWindow({
       <BrassScrews />
       <div
         className="relative overflow-hidden rounded"
-        style={{ boxShadow: 'inset 0 0 0 1px rgba(184,147,90,0.35), inset 0 2px 12px rgba(0,0,0,0.7)' }}
+        style={{ boxShadow: 'inset 0 0 0 1px rgba(138,106,53,0.35), inset 0 2px 12px rgba(0,0,0,0.7)' }}
       >
         <img src={src} alt={alt} className="w-full h-auto block" loading="lazy" />
         <div
