@@ -8,6 +8,7 @@ import { LedgerPage } from './pages/LedgerPage'
 import { ReportsPage } from './pages/ReportsPage'
 import { BusinessesPage } from './pages/BusinessesPage'
 import { CategoriesPage } from './pages/CategoriesPage'
+import { InvoicesPage } from './pages/InvoicesPage'
 
 function App() {
   const [session, setSession] = useState<Session | null>(null)
@@ -44,6 +45,7 @@ function App() {
         <Route path="/reports" element={<ReportsPage />} />
         <Route path="/businesses" element={<BusinessesPage />} />
         <Route path="/categories" element={<CategoriesPage />} />
+        <Route path="/invoices" element={<InvoicesPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>

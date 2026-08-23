@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { supabase } from '../lib/supabase'
 import { useBusinesses } from '../lib/useBusinesses'
+import { BusinessProfileEditor } from '../components/BusinessProfileEditor'
 
 export function BusinessesPage() {
   const { businesses, loading, error: fetchError, refetch } = useBusinesses()
@@ -10,6 +11,7 @@ export function BusinessesPage() {
   const [error, setError] = useState<string | null>(null)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editingName, setEditingName] = useState('')
+  const [profileEditingId, setProfileEditingId] = useState<string | null>(null)
 
   async function handleAdd(e: FormEvent) {
     e.preventDefault()
@@ -112,65 +114,85 @@ export function BusinessesPage() {
         ) : (
           <ul className="divide-y divide-slate-200 dark:divide-slate-800">
             {businesses.map((b) => (
-              <li key={b.id} className="py-3 flex items-center justify-between gap-3">
-                {editingId === b.id ? (
-                  <input
-                    autoFocus
-                    value={editingName}
-                    onChange={(e) => setEditingName(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && saveEdit(b.id)}
-                    className="flex-1 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-slate-900 dark:text-slate-100 text-sm"
-                  />
-                ) : (
-                  <span
-                    className={`text-sm ${
-                      b.is_active
-                        ? 'text-slate-800 dark:text-slate-200'
-                        : 'text-slate-400 dark:text-slate-500 line-through'
-                    }`}
-                  >
-                    {b.name}
-                  </span>
-                )}
-                <div className="flex items-center gap-3 shrink-0">
+              <li key={b.id} className="py-3">
+                <div className="flex items-center justify-between gap-3">
                   {editingId === b.id ? (
-                    <>
-                      <button
-                        onClick={() => saveEdit(b.id)}
-                        className="text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={() => setEditingId(null)}
-                        className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
-                      >
-                        Cancel
-                      </button>
-                    </>
+                    <input
+                      autoFocus
+                      value={editingName}
+                      onChange={(e) => setEditingName(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && saveEdit(b.id)}
+                      className="flex-1 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-slate-900 dark:text-slate-100 text-sm"
+                    />
                   ) : (
-                    <>
-                      <button
-                        onClick={() => startEdit(b.id, b.name)}
-                        className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
-                      >
-                        Rename
-                      </button>
-                      <button
-                        onClick={() => toggleActive(b.id, b.is_active)}
-                        className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
-                      >
-                        {b.is_active ? 'Deactivate' : 'Reactivate'}
-                      </button>
-                      <button
-                        onClick={() => handleDelete(b.id, b.name)}
-                        className="text-xs text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400"
-                      >
-                        Delete
-                      </button>
-                    </>
+                    <span
+                      className={`text-sm ${
+                        b.is_active
+                          ? 'text-slate-800 dark:text-slate-200'
+                          : 'text-slate-400 dark:text-slate-500 line-through'
+                      }`}
+                    >
+                      {b.name}
+                    </span>
                   )}
+                  <div className="flex items-center gap-3 shrink-0">
+                    {editingId === b.id ? (
+                      <>
+                        <button
+                          onClick={() => saveEdit(b.id)}
+                          className="text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300"
+                        >
+                          Save
+                        </button>
+                        <button
+                          onClick={() => setEditingId(null)}
+                          className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+                        >
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() =>
+                            setProfileEditingId(profileEditingId === b.id ? null : b.id)
+                          }
+                          className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
+                        >
+                          {profileEditingId === b.id ? 'Hide details' : 'Edit details'}
+                        </button>
+                        <button
+                          onClick={() => startEdit(b.id, b.name)}
+                          className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
+                        >
+                          Rename
+                        </button>
+                        <button
+                          onClick={() => toggleActive(b.id, b.is_active)}
+                          className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
+                        >
+                          {b.is_active ? 'Deactivate' : 'Reactivate'}
+                        </button>
+                        <button
+                          onClick={() => handleDelete(b.id, b.name)}
+                          className="text-xs text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400"
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
+                {profileEditingId === b.id && (
+                  <BusinessProfileEditor
+                    business={b}
+                    onSaved={() => {
+                      setProfileEditingId(null)
+                      refetch()
+                    }}
+                    onCancel={() => setProfileEditingId(null)}
+                  />
+                )}
               </li>
             ))}
           </ul>
