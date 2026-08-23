@@ -290,13 +290,13 @@ export function InvoicesPage() {
         </div>
         {businesses.length === 0 && (
           <p className="text-xs text-amber-600 dark:text-amber-400">
-            Add a business on the Businesses page before creating invoices.
+            Add a business in Settings before creating invoices.
           </p>
         )}
         {!business?.address && !business?.email && !business?.phone && business && (
           <p className="text-xs text-amber-600 dark:text-amber-400">
             This business has no contact info yet — add a logo, address, and contact details on the
-            Businesses page so invoices look complete.
+            Settings page so invoices look complete.
           </p>
         )}
       </section>

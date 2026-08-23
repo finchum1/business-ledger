@@ -5,10 +5,9 @@ import { ThemeToggle } from './ThemeToggle'
 
 const NAV = [
   { to: '/', label: 'Ledger', end: true },
-  { to: '/reports', label: 'P&L Reports', end: false },
-  { to: '/businesses', label: 'Businesses', end: false },
-  { to: '/categories', label: 'Categories', end: false },
   { to: '/invoices', label: 'Invoices', end: false },
+  { to: '/reports', label: 'P&L Reports', end: false },
+  { to: '/settings', label: 'Settings', end: false },
 ]
 
 export function Sidebar({ session }: { session: Session }) {

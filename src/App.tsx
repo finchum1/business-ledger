@@ -6,8 +6,7 @@ import { Landing } from './pages/Landing'
 import { Sidebar } from './components/Sidebar'
 import { LedgerPage } from './pages/LedgerPage'
 import { ReportsPage } from './pages/ReportsPage'
-import { BusinessesPage } from './pages/BusinessesPage'
-import { CategoriesPage } from './pages/CategoriesPage'
+import { SettingsPage } from './pages/SettingsPage'
 import { InvoicesPage } from './pages/InvoicesPage'
 
 function App() {
@@ -43,10 +42,11 @@ function App() {
       <main className="min-w-0 flex-1">
         <Routes>
           <Route path="/" element={<LedgerPage />} />
-          <Route path="/reports" element={<ReportsPage />} />
-          <Route path="/businesses" element={<BusinessesPage />} />
-          <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/invoices" element={<InvoicesPage />} />
+          <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/businesses" element={<Navigate to="/settings" replace />} />
+          <Route path="/categories" element={<Navigate to="/settings" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

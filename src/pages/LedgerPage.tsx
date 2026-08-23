@@ -236,7 +236,7 @@ export function LedgerPage() {
               options={categoryOptions}
             />
             <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
-              Click the arrow to browse, or type any category — manage the list on the Categories page.
+              Click the arrow to browse, or type any category — manage the list in Settings.
             </p>
           </div>
 
@@ -320,7 +320,7 @@ export function LedgerPage() {
         )}
         {!businessesLoading && activeBusinesses.length === 0 && (
           <p className="text-sm text-amber-600 dark:text-amber-400 mt-3">
-            Add a business on the Businesses page before recording transactions.
+            Add a business in Settings before recording transactions.
           </p>
         )}
       </section>
