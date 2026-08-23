@@ -7,7 +7,6 @@ const NAV = [
   { to: '/', label: 'Ledger', end: true },
   { to: '/invoices', label: 'Invoices', end: false },
   { to: '/reports', label: 'P&L Reports', end: false },
-  { to: '/settings', label: 'Settings', end: false },
 ]
 
 export function Sidebar({ session }: { session: Session }) {
@@ -37,8 +36,20 @@ export function Sidebar({ session }: { session: Session }) {
       </nav>
 
       <div className="border-t border-slate-200 dark:border-slate-800 pt-4 space-y-2">
-        <div className="flex items-center justify-between px-1">
-          <span className="truncate text-xs text-slate-500 dark:text-slate-400">{session.user.email}</span>
+        <div className="flex items-center gap-2">
+          <NavLink
+            to="/settings"
+            title="Settings"
+            className={({ isActive }) =>
+              `flex-1 min-w-0 truncate rounded-lg px-2 py-1.5 text-xs font-medium transition ${
+                isActive
+                  ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400'
+                  : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
+              }`
+            }
+          >
+            {session.user.email}
+          </NavLink>
           <ThemeToggle />
         </div>
         <button
