@@ -3,6 +3,7 @@ import type { FormEvent } from 'react'
 import { supabase } from '../lib/supabase'
 import { useBusinesses } from '../lib/useBusinesses'
 import { useCategories } from '../lib/useCategories'
+import { useContractors } from '../lib/useContractors'
 import { deleteReceipt, getReceiptUrl, uploadReceipt } from '../lib/receipts'
 import { Combobox } from '../components/Combobox'
 import { ReceiptDropZone } from '../components/ReceiptDropZone'
@@ -21,11 +22,13 @@ const emptyForm = {
   amount: '',
   description: '',
   receipt_path: null as string | null,
+  contractor: '',
 }
 
 export function LedgerPage() {
   const { businesses, loading: businessesLoading } = useBusinesses()
   const { categories } = useCategories()
+  const { contractors } = useContractors()
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -82,6 +85,11 @@ export function LedgerPage() {
     [categories, form.type],
   )
 
+  const contractorOptions = useMemo(
+    () => contractors.filter((c) => c.is_active).map((c) => c.name),
+    [contractors],
+  )
+
   function startEdit(tx: Transaction) {
     setForm({
       id: tx.id,
@@ -92,6 +100,7 @@ export function LedgerPage() {
       amount: String(tx.amount),
       description: tx.description ?? '',
       receipt_path: tx.receipt_path,
+      contractor: tx.contractor ?? '',
     })
     setReceiptFile(null)
     setRemovingReceipt(false)
@@ -131,6 +140,7 @@ export function LedgerPage() {
         amount,
         description: form.description.trim() || null,
         receipt_path: receiptPath,
+        contractor: form.type === 'expense' ? form.contractor.trim() || null : null,
       }
       const { error } = form.id
         ? await supabase.from('transactions').update(payload).eq('id', form.id)
@@ -211,7 +221,9 @@ export function LedgerPage() {
                 <button
                   type="button"
                   key={t}
-                  onClick={() => setForm((f) => ({ ...f, type: t, category: '' }))}
+                  onClick={() =>
+                    setForm((f) => ({ ...f, type: t, category: '', contractor: t === 'income' ? '' : f.contractor }))
+                  }
                   className={`flex-1 py-2 font-medium transition ${
                     form.type === t
                       ? t === 'income'
@@ -254,7 +266,24 @@ export function LedgerPage() {
             />
           </div>
 
-          <div className="sm:col-span-2 lg:col-span-4">
+          {form.type === 'expense' && (
+            <div className="lg:col-span-2">
+              <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">
+                Contractor (optional)
+              </label>
+              <Combobox
+                placeholder="e.g. Bob's Plumbing"
+                value={form.contractor}
+                onChange={(contractor) => setForm((f) => ({ ...f, contractor }))}
+                options={contractorOptions}
+              />
+              <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
+                Who this was paid to — drives the Contractor Report.
+              </p>
+            </div>
+          )}
+
+          <div className={`sm:col-span-2 ${form.type === 'expense' ? 'lg:col-span-3' : 'lg:col-span-4'}`}>
             <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">
               Description (optional)
             </label>
@@ -367,6 +396,7 @@ export function LedgerPage() {
                   <th className="py-2 pr-3 font-medium">Date</th>
                   <th className="py-2 pr-3 font-medium">Business</th>
                   <th className="py-2 pr-3 font-medium">Category</th>
+                  <th className="py-2 pr-3 font-medium">Contractor</th>
                   <th className="py-2 pr-3 font-medium">Description</th>
                   <th className="py-2 pr-3 font-medium text-right">Amount</th>
                   <th className="py-2 pr-3 font-medium"></th>
@@ -396,6 +426,9 @@ export function LedgerPage() {
                           {receiptBusy === tx.id ? '…' : '📎'}
                         </button>
                       )}
+                    </td>
+                    <td className="py-2 pr-3 text-slate-400 dark:text-slate-500 whitespace-nowrap">
+                      {tx.contractor ?? ''}
                     </td>
                     <td className="py-2 pr-3 text-slate-400 dark:text-slate-500">{tx.description}</td>
                     <td

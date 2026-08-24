@@ -7,7 +7,7 @@ const NAV = [
   { to: '/', label: 'Home', end: true },
   { to: '/ledger', label: 'Ledger', end: false },
   { to: '/sales', label: 'Sales', end: false },
-  { to: '/reports', label: 'P&L Reports', end: false },
+  { to: '/reports', label: 'Reports', end: false },
 ]
 
 export function Sidebar({ session }: { session: Session }) {

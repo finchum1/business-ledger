@@ -17,9 +17,9 @@ business contacts) — it should read as a real, confident product pitch, not pu
 ## Product Purpose
 
 Lets someone who runs multiple businesses record income and expenses in one shared ledger, attach
-receipts to expenses, bill clients with branded per-business invoices, and generate Profit & Loss
-reports either combined across every business or filtered to a single one — without separate
-bookkeeping software or spreadsheets per entity.
+receipts to expenses, bill clients with branded per-business invoices, track how much has been paid to
+each contractor, and generate Profit & Loss reports either combined across every business or filtered
+to a single one — without separate bookkeeping software or spreadsheets per entity.
 
 ## Positioning
 
@@ -47,9 +47,13 @@ viewed on screen, or exported as a clean PDF to hand to an accountant or keep fo
   never blocked.
 - Receipts are stored privately (not public) and viewed via short-lived signed URLs; attaching one
   supports drag-and-drop or click-to-browse.
-- P&L reports: combined ("All businesses") or single-business scope, with date-range presets (this
-  month, last month, this quarter, YTD, last year, all time, custom) and a PDF export that lists which
-  businesses are rolled into a combined report.
+- Reports page (in-app nav label "Reports", not "P&L Reports") holds two report types as tabs: Profit
+  & Loss and Contractors. Both share the same combined/single-business scope and date-range presets
+  (this month, last month, this quarter, YTD, last year, all time, custom) and both export as a PDF
+  that lists which businesses are rolled into a combined report.
+- Contractors are a self-managed list (add/rename/deactivate), same free-text-with-suggestions pattern
+  as categories — an expense can optionally be tagged with who it was paid to, and the Contractor
+  Report totals how much has gone to each contractor over a period.
 - Invoicing: each business carries its own profile (logo, contact info) that prints onto that
   business's invoices, so a client sees the right branding regardless of which of the owner's
   businesses billed them. Invoices have line items, a due date, and an unpaid/paid status, and export

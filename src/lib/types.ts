@@ -24,6 +24,14 @@ export interface Category {
   created_at: string
 }
 
+export interface Contractor {
+  id: string
+  name: string
+  is_active: boolean
+  sort_order: number
+  created_at: string
+}
+
 export interface Transaction {
   id: string
   business_id: string
@@ -33,6 +41,7 @@ export interface Transaction {
   amount: number
   description: string | null
   receipt_path: string | null
+  contractor: string | null
   created_at: string
 }
 
