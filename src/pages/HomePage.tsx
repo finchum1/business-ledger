@@ -94,6 +94,44 @@ export function HomePage() {
         </p>
       </div>
 
+      <section>
+        <h2 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
+          Quick create
+        </h2>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            to="/ledger"
+            className="rounded-lg border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white px-4 py-2 text-sm font-medium transition"
+          >
+            + Transaction
+          </Link>
+          <Link
+            to="/sales?new=quote"
+            className="rounded-lg border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white px-4 py-2 text-sm font-medium transition"
+          >
+            + Quote
+          </Link>
+          <Link
+            to="/sales?new=invoice"
+            className="rounded-lg border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white px-4 py-2 text-sm font-medium transition"
+          >
+            + Invoice
+          </Link>
+          <Link
+            to="/customers?new=1"
+            className="rounded-lg border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white px-4 py-2 text-sm font-medium transition"
+          >
+            + Customer
+          </Link>
+          <Link
+            to="/contractors?new=1"
+            className="rounded-lg border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white px-4 py-2 text-sm font-medium transition"
+          >
+            + Contractor
+          </Link>
+        </div>
+      </section>
+
       {error && (
         <p className="text-sm text-rose-600 dark:text-rose-400" role="alert">
           {error}

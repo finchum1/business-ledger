@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useBusinesses } from '../lib/useBusinesses'
 import { useContractors } from '../lib/useContractors'
@@ -7,12 +8,14 @@ import { useContractors } from '../lib/useContractors'
 export function ContractorsPage() {
   const { businesses } = useBusinesses()
   const { contractors, loading, error: fetchError, refetch } = useContractors()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [businessId, setBusinessId] = useState('')
   const [name, setName] = useState('')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editingName, setEditingName] = useState('')
+  const nameInputRef = useRef<HTMLInputElement>(null)
 
   const activeBusinesses = useMemo(() => businesses.filter((b) => b.is_active), [businesses])
 
@@ -21,6 +24,24 @@ export function ContractorsPage() {
       setBusinessId((activeBusinesses[0] ?? businesses[0]).id)
     }
   }, [businesses, activeBusinesses, businessId])
+
+  // Quick-create deep link from Home (`/contractors?new=1`) -- focuses the
+  // "Add a contractor" field once a business is selected, then strips the
+  // param so a refresh doesn't refocus it.
+  useEffect(() => {
+    if (businessId && searchParams.get('new') === '1') {
+      nameInputRef.current?.focus()
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev)
+          next.delete('new')
+          return next
+        },
+        { replace: true },
+      )
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [businessId, searchParams])
 
   const list = useMemo(
     () => contractors.filter((c) => c.business_id === businessId),
@@ -112,6 +133,7 @@ export function ContractorsPage() {
         </div>
         <form onSubmit={handleAdd} className="flex gap-2">
           <input
+            ref={nameInputRef}
             type="text"
             placeholder="e.g. Bob's Plumbing"
             value={name}

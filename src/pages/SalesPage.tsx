@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useBusinesses } from '../lib/useBusinesses'
 import { useCustomers } from '../lib/useCustomers'
 import { getLogoUrl } from '../lib/logos'
@@ -45,6 +46,7 @@ const TONE_CLASSES: Record<string, string> = {
 export function SalesPage() {
   const { businesses } = useBusinesses()
   const { customers } = useCustomers()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [businessId, setBusinessId] = useState('')
   const [typeFilter, setTypeFilter] = useState<'all' | DocType>('all')
   const [invoices, setInvoices] = useState<Invoice[]>([])
@@ -74,6 +76,26 @@ export function SalesPage() {
       setBusinessId((activeBusinesses[0] ?? businesses[0]).id)
     }
   }, [businesses, activeBusinesses, businessId])
+
+  // Quick-create deep link from Home (`/sales?new=quote` or `?new=invoice`) --
+  // waits for businessId to be ready (needed to generate a document number),
+  // opens the form, then strips the param so a refresh doesn't reopen it.
+  useEffect(() => {
+    const wanted = searchParams.get('new')
+    if (businessId && (wanted === 'quote' || wanted === 'invoice')) {
+      openCreateForm(wanted)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev)
+          next.delete('new')
+          return next
+        },
+        { replace: true },
+      )
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [businessId, searchParams])
 
   const business = businesses.find((b) => b.id === businessId) ?? null
 

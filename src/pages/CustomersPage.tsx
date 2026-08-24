@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useBusinesses } from '../lib/useBusinesses'
 import { useCustomers } from '../lib/useCustomers'
@@ -14,6 +15,7 @@ const emptyDetails = { email: '', phone: '', address: '' }
 export function CustomersPage() {
   const { businesses } = useBusinesses()
   const { customers, loading, error: fetchError, refetch } = useCustomers()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [businessId, setBusinessId] = useState('')
   const [name, setName] = useState('')
   const [saving, setSaving] = useState(false)
@@ -23,6 +25,7 @@ export function CustomersPage() {
   const [editingName, setEditingName] = useState('')
   const [detailsId, setDetailsId] = useState<string | null>(null)
   const [details, setDetails] = useState(emptyDetails)
+  const nameInputRef = useRef<HTMLInputElement>(null)
 
   const activeBusinesses = useMemo(() => businesses.filter((b) => b.is_active), [businesses])
 
@@ -31,6 +34,24 @@ export function CustomersPage() {
       setBusinessId((activeBusinesses[0] ?? businesses[0]).id)
     }
   }, [businesses, activeBusinesses, businessId])
+
+  // Quick-create deep link from Home (`/customers?new=1`) -- focuses the
+  // "Add a customer" field once a business is selected, then strips the
+  // param so a refresh doesn't refocus it.
+  useEffect(() => {
+    if (businessId && searchParams.get('new') === '1') {
+      nameInputRef.current?.focus()
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev)
+          next.delete('new')
+          return next
+        },
+        { replace: true },
+      )
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [businessId, searchParams])
 
   const list = useMemo(
     () => customers.filter((c) => c.business_id === businessId),
@@ -147,6 +168,7 @@ export function CustomersPage() {
         </div>
         <form onSubmit={handleAdd} className="flex gap-2">
           <input
+            ref={nameInputRef}
             type="text"
             placeholder="e.g. Meridian Corp"
             value={name}
