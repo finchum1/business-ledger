@@ -11,6 +11,7 @@ import { SettingsPage } from './pages/SettingsPage'
 import { SalesPage } from './pages/SalesPage'
 import { ContractorsPage } from './pages/ContractorsPage'
 import { CustomersPage } from './pages/CustomersPage'
+import { BankingPage } from './pages/BankingPage'
 
 function App() {
   const [session, setSession] = useState<Session | null>(null)
@@ -49,6 +50,7 @@ function App() {
           <Route path="/contractors" element={<ContractorsPage />} />
           <Route path="/sales" element={<SalesPage />} />
           <Route path="/customers" element={<CustomersPage />} />
+          <Route path="/banking" element={<BankingPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/invoices" element={<Navigate to="/sales" replace />} />

@@ -67,8 +67,16 @@ viewed on screen, or exported as a clean PDF to hand to an accountant or keep fo
   business's invoices, so a client sees the right branding regardless of which of the owner's
   businesses billed them. Invoices have line items, a due date, and an unpaid/paid status, and export
   as a clean PDF.
-- Built with React + Vite + TypeScript + Tailwind v4 + Supabase (Postgres + Auth + Storage), deployed on
-  Vercel.
+- Banking: bank accounts connect per business via SimpleFIN (simplefin.org) — the operator gets a
+  one-time setup token from SimpleFIN's own site (their bank login never touches this app) and pastes
+  it in to connect. A Supabase Edge Function (`bank-sync`) holds the resulting access credential
+  server-side and does the actual SimpleFIN calls; the client never reads it back. Synced transactions
+  land in a **review queue**, not straight in the Ledger — each one needs a category (and optional
+  contractor) picked before "Import" turns it into a real transaction, so nothing duplicates or
+  misfires. "Sync now" is manual, matching SimpleFIN's own ≤24-requests/day guidance and this app's
+  weekly-sit-down operating rhythm rather than real-time polling.
+- Built with React + Vite + TypeScript + Tailwind v4 + Supabase (Postgres + Auth + Storage + one Deno
+  Edge Function for the SimpleFIN bank sync), deployed on Vercel.
 
 ## Brand Commitments
 
