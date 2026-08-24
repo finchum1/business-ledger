@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from 'react'
 export function Combobox({
   value,
   onChange,
+  onSelect,
   options,
   placeholder,
   required,
@@ -16,6 +17,12 @@ export function Combobox({
 }: {
   value: string
   onChange: (value: string) => void
+  /**
+   * Fires only when a suggestion is clicked, not on every keystroke -- lets a
+   * caller react to an explicit pick (e.g. autofilling other fields from the
+   * matched record) without doing it on every char typed by hand.
+   */
+  onSelect?: (value: string) => void
   options: string[]
   placeholder?: string
   required?: boolean
@@ -75,6 +82,7 @@ export function Combobox({
                   // preventDefault so this fires before the input's onBlur closes the list
                   e.preventDefault()
                   onChange(opt)
+                  onSelect?.(opt)
                   setOpen(false)
                 }}
                 className="w-full text-left px-3 py-1.5 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"

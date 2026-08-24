@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useBusinesses } from '../lib/useBusinesses'
+import { useCustomers } from '../lib/useCustomers'
 import { getLogoUrl } from '../lib/logos'
 import { StatCard } from '../components/StatCard'
+import { Combobox } from '../components/Combobox'
 import {
   convertQuoteToInvoice,
   createInvoice,
@@ -42,6 +44,7 @@ const TONE_CLASSES: Record<string, string> = {
 
 export function SalesPage() {
   const { businesses } = useBusinesses()
+  const { customers } = useCustomers()
   const [businessId, setBusinessId] = useState('')
   const [typeFilter, setTypeFilter] = useState<'all' | DocType>('all')
   const [invoices, setInvoices] = useState<Invoice[]>([])
@@ -73,6 +76,25 @@ export function SalesPage() {
   }, [businesses, activeBusinesses, businessId])
 
   const business = businesses.find((b) => b.id === businessId) ?? null
+
+  const customerOptions = useMemo(
+    () =>
+      customers
+        .filter((c) => c.is_active && c.business_id === businessId)
+        .map((c) => c.name),
+    [customers, businessId],
+  )
+
+  /** Autofill email/address from the matched customer -- only on an explicit
+   * pick from the suggestion list, not on every keystroke, so typing a fresh
+   * one-off client never gets fought by a stale customer's saved details. */
+  function handleSelectCustomer(name: string) {
+    const match = customers.find((c) => c.business_id === businessId && c.name === name)
+    if (match) {
+      setClientEmail(match.email ?? '')
+      setClientAddress(match.address ?? '')
+    }
+  }
 
   async function loadInvoices() {
     if (!businessId) {
@@ -411,12 +433,17 @@ export function SalesPage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <label className={labelClass}>Client name</label>
-                <input
+                <Combobox
                   required
                   value={clientName}
-                  onChange={(e) => setClientName(e.target.value)}
-                  className={inputClass}
+                  onChange={setClientName}
+                  onSelect={handleSelectCustomer}
+                  options={customerOptions}
                 />
+                <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
+                  Pick a saved customer to fill in their email and address, or type a one-off client —
+                  manage the list on the Customers page.
+                </p>
               </div>
               <div>
                 <label className={labelClass}>Client email</label>

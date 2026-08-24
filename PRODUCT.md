@@ -58,8 +58,11 @@ viewed on screen, or exported as a clean PDF to hand to an accountant or keep fo
   text with suggestions (matching categories), but those suggestions are scoped to the transaction's
   own business — Contractor Report totals still aggregate by name text, so the same name used across
   two businesses' rosters is treated as the same contractor in a combined-scope report. Customers carry
-  optional email/phone/address and are currently a tracking directory only — not yet wired into the
-  Sales/invoice creation form's client fields, which stay free text.
+  optional email/phone/address and are wired into the Sales/quote/invoice creation form: the Client
+  name field is a Combobox suggesting that business's saved customers, and picking one autofills client
+  email/address from the customer record (still free text otherwise, so a one-off client is never
+  blocked) — no `customer_id` is persisted on the invoice/quote itself, this is autofill-on-select, not
+  a hard link.
 - Invoicing: each business carries its own profile (logo, contact info) that prints onto that
   business's invoices, so a client sees the right branding regardless of which of the owner's
   businesses billed them. Invoices have line items, a due date, and an unpaid/paid status, and export
