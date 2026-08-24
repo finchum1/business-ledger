@@ -1,25 +1,41 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { supabase } from '../lib/supabase'
+import { useBusinesses } from '../lib/useBusinesses'
 import { useContractors } from '../lib/useContractors'
 
 export function ContractorsPage() {
+  const { businesses } = useBusinesses()
   const { contractors, loading, error: fetchError, refetch } = useContractors()
+  const [businessId, setBusinessId] = useState('')
   const [name, setName] = useState('')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editingName, setEditingName] = useState('')
 
+  const activeBusinesses = useMemo(() => businesses.filter((b) => b.is_active), [businesses])
+
+  useEffect(() => {
+    if (!businessId && businesses.length > 0) {
+      setBusinessId((activeBusinesses[0] ?? businesses[0]).id)
+    }
+  }, [businesses, activeBusinesses, businessId])
+
+  const list = useMemo(
+    () => contractors.filter((c) => c.business_id === businessId),
+    [contractors, businessId],
+  )
+
   async function handleAdd(e: FormEvent) {
     e.preventDefault()
-    if (!name.trim()) return
+    if (!name.trim() || !businessId) return
     setSaving(true)
     setError(null)
     try {
       const { error } = await supabase
         .from('contractors')
-        .insert({ name: name.trim(), sort_order: contractors.length })
+        .insert({ business_id: businessId, name: name.trim(), sort_order: list.length })
       if (error) throw error
       setName('')
       refetch()
@@ -79,23 +95,43 @@ export function ContractorsPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
       <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Add a contractor</h2>
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Contractors</h2>
+          <select
+            value={businessId}
+            onChange={(e) => setBusinessId(e.target.value)}
+            className="rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-900 dark:text-slate-100 text-sm"
+          >
+            {businesses.length === 0 && <option value="">No businesses yet</option>}
+            {businesses.map((b) => (
+              <option key={b.id} value={b.id}>
+                {b.name}
+              </option>
+            ))}
+          </select>
+        </div>
         <form onSubmit={handleAdd} className="flex gap-2">
           <input
             type="text"
             placeholder="e.g. Bob's Plumbing"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="flex-1 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            disabled={!businessId}
+            className="flex-1 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:opacity-60"
           />
           <button
             type="submit"
-            disabled={saving}
+            disabled={saving || !businessId}
             className="rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60 text-white font-medium px-4 py-2 text-sm transition"
           >
             {saving ? 'Adding…' : 'Add'}
           </button>
         </form>
+        {businesses.length === 0 && (
+          <p className="text-xs text-amber-600 dark:text-amber-400 mt-3">
+            Add a business in Settings before adding contractors.
+          </p>
+        )}
         {(error || fetchError) && (
           <p className="text-sm text-rose-600 dark:text-rose-400 mt-3">{error ?? fetchError}</p>
         )}
@@ -103,17 +139,17 @@ export function ContractorsPage() {
 
       <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
         <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
-          Your contractors
+          Contractors for this business
         </h2>
         {loading ? (
           <p className="text-slate-500 dark:text-slate-400 text-sm">Loading…</p>
-        ) : contractors.length === 0 ? (
+        ) : list.length === 0 ? (
           <p className="text-slate-400 dark:text-slate-500 text-sm">
-            No contractors yet — add one above.
+            No contractors yet for this business — add one above.
           </p>
         ) : (
           <ul className="divide-y divide-slate-200 dark:divide-slate-800">
-            {contractors.map((c) => (
+            {list.map((c) => (
               <li key={c.id} className="py-2.5 flex items-center justify-between gap-3">
                 {editingId === c.id ? (
                   <input
@@ -179,10 +215,11 @@ export function ContractorsPage() {
         )}
       </section>
       <p className="text-xs text-slate-400 dark:text-slate-500">
-        Deactivated contractors drop out of the "Add transaction" suggestions but stay visible in the
-        Contractor Report and keep their history. You can still type any contractor by hand when adding
-        an expense — this list just drives the suggestions and keeps naming consistent so payments to the
-        same contractor add up correctly.
+        Contractors belong to the business you have selected above — switch businesses to manage a
+        different roster. Deactivated contractors drop out of the "Add transaction" suggestions but stay
+        visible in the Contractor Report and keep their history. You can still type any contractor by
+        hand when adding an expense — this list just drives the suggestions and keeps naming consistent
+        so payments to the same contractor add up correctly.
       </p>
     </div>
   )

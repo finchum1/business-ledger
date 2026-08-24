@@ -26,7 +26,20 @@ export interface Category {
 
 export interface Contractor {
   id: string
+  business_id: string
   name: string
+  is_active: boolean
+  sort_order: number
+  created_at: string
+}
+
+export interface Customer {
+  id: string
+  business_id: string
+  name: string
+  email: string | null
+  phone: string | null
+  address: string | null
   is_active: boolean
   sort_order: number
   created_at: string

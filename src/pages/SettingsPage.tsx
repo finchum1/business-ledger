@@ -1,14 +1,12 @@
 import { useState } from 'react'
 import { BusinessesPage } from './BusinessesPage'
 import { CategoriesPage } from './CategoriesPage'
-import { ContractorsPage } from './ContractorsPage'
 
-type Tab = 'businesses' | 'categories' | 'contractors'
+type Tab = 'businesses' | 'categories'
 
 const TABS: { key: Tab; label: string }[] = [
   { key: 'businesses', label: 'Businesses' },
   { key: 'categories', label: 'Categories' },
-  { key: 'contractors', label: 'Contractors' },
 ]
 
 export function SettingsPage() {
@@ -35,13 +33,7 @@ export function SettingsPage() {
         </div>
       </div>
 
-      {tab === 'businesses' ? (
-        <BusinessesPage />
-      ) : tab === 'categories' ? (
-        <CategoriesPage />
-      ) : (
-        <ContractorsPage />
-      )}
+      {tab === 'businesses' ? <BusinessesPage /> : <CategoriesPage />}
     </div>
   )
 }

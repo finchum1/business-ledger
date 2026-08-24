@@ -51,9 +51,15 @@ viewed on screen, or exported as a clean PDF to hand to an accountant or keep fo
   & Loss and Contractors. Both share the same combined/single-business scope and date-range presets
   (this month, last month, this quarter, YTD, last year, all time, custom) and both export as a PDF
   that lists which businesses are rolled into a combined report.
-- Contractors are a self-managed list (add/rename/deactivate), same free-text-with-suggestions pattern
-  as categories — an expense can optionally be tagged with who it was paid to, and the Contractor
-  Report totals how much has gone to each contractor over a period.
+- Contractors and Customers each have their own top-level nav item (not tucked under Settings) and are
+  both **per-business rosters** — every contractor/customer belongs to exactly one business (a required
+  business assignment on the record itself), and each page has a business selector to switch which
+  roster you're viewing/editing. An expense's free-text "who this was paid to" field still stays free
+  text with suggestions (matching categories), but those suggestions are scoped to the transaction's
+  own business — Contractor Report totals still aggregate by name text, so the same name used across
+  two businesses' rosters is treated as the same contractor in a combined-scope report. Customers carry
+  optional email/phone/address and are currently a tracking directory only — not yet wired into the
+  Sales/invoice creation form's client fields, which stay free text.
 - Invoicing: each business carries its own profile (logo, contact info) that prints onto that
   business's invoices, so a client sees the right branding regardless of which of the owner's
   businesses billed them. Invoices have line items, a due date, and an unpaid/paid status, and export

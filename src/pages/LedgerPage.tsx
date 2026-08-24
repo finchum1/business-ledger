@@ -86,8 +86,11 @@ export function LedgerPage() {
   )
 
   const contractorOptions = useMemo(
-    () => contractors.filter((c) => c.is_active).map((c) => c.name),
-    [contractors],
+    () =>
+      contractors
+        .filter((c) => c.is_active && c.business_id === form.business_id)
+        .map((c) => c.name),
+    [contractors, form.business_id],
   )
 
   function startEdit(tx: Transaction) {
