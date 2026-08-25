@@ -107,19 +107,51 @@ function Nameplate() {
   )
 }
 
-function SignInPanel() {
+type AuthMode = 'signin' | 'signup'
+
+function SignInPanel({ mode, onModeChange }: { mode: AuthMode; onModeChange: (m: AuthMode) => void }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const [notice, setNotice] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const isSignUp = mode === 'signup'
+
+  function switchMode(next: AuthMode) {
+    setError(null)
+    setNotice(null)
+    setConfirmPassword('')
+    onModeChange(next)
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setError(null)
+    setNotice(null)
+
+    if (isSignUp && password !== confirmPassword) {
+      setError("Passwords don't match.")
+      return
+    }
+
     setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    setLoading(false)
-    if (error) setError(error.message)
+    if (isSignUp) {
+      const { data, error } = await supabase.auth.signUp({ email, password })
+      setLoading(false)
+      if (error) {
+        setError(error.message)
+      } else if (!data.session) {
+        // Email confirmation is on for this project -- no session yet.
+        setNotice('Check your email to confirm your account, then sign in.')
+      }
+      // If a session came back immediately, the app-level auth listener
+      // picks it up and routes straight into the app -- nothing else to do.
+    } else {
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
+      setLoading(false)
+      if (error) setError(error.message)
+    }
   }
 
   return (
@@ -136,11 +168,11 @@ function SignInPanel() {
           className="text-3xl font-bold tracking-tight"
           style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}
         >
-          Sign in
+          {isSignUp ? 'Create your ledger' : 'Sign in'}
         </h2>
         <div className="flex items-center gap-2 shrink-0">
           <Lamp active color={panel.amber} size={8} />
-          <PlateLabel>Operator Access</PlateLabel>
+          <PlateLabel>{isSignUp ? 'New Operator' : 'Operator Access'}</PlateLabel>
         </div>
       </div>
       <form onSubmit={handleSubmit}>
@@ -166,19 +198,45 @@ function SignInPanel() {
         <input
           type="password"
           required
-          autoComplete="current-password"
+          autoComplete={isSignUp ? 'new-password' : 'current-password'}
+          minLength={isSignUp ? 8 : undefined}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full mb-6 rounded-lg px-3 py-2.5 text-sm focus:outline-none"
+          className={`w-full rounded-lg px-3 py-2.5 text-sm focus:outline-none ${isSignUp ? 'mb-4' : 'mb-6'}`}
           style={{
             background: panel.bgDeep,
             color: panel.ink,
             boxShadow: `inset 0 0 0 1px ${panel.hairline}`,
           }}
         />
+        {isSignUp && (
+          <>
+            <label className="block text-xs mb-1" style={{ color: panel.inkDim }}>
+              Confirm password
+            </label>
+            <input
+              type="password"
+              required
+              autoComplete="new-password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full mb-6 rounded-lg px-3 py-2.5 text-sm focus:outline-none"
+              style={{
+                background: panel.bgDeep,
+                color: panel.ink,
+                boxShadow: `inset 0 0 0 1px ${panel.hairline}`,
+              }}
+            />
+          </>
+        )}
         {error && (
           <p className="text-sm mb-4" style={{ color: panel.expense }} role="alert">
             {error}
+          </p>
+        )}
+        {notice && (
+          <p className="text-sm mb-4" style={{ color: panel.income }} role="status">
+            {notice}
           </p>
         )}
         <button
@@ -187,18 +245,51 @@ function SignInPanel() {
           className="w-full rounded-lg py-2.5 font-medium text-sm transition disabled:opacity-60"
           style={{ background: panel.income, color: panel.bgRaised }}
         >
-          {loading ? 'Signing in…' : 'Sign in'}
+          {loading ? (isSignUp ? 'Creating account…' : 'Signing in…') : isSignUp ? 'Create account' : 'Sign in'}
         </button>
       </form>
+      <p className="text-xs text-center mt-4" style={{ color: panel.inkDim }}>
+        {isSignUp ? (
+          <>
+            Already have a ledger?{' '}
+            <button
+              type="button"
+              onClick={() => switchMode('signin')}
+              className="underline"
+              style={{ color: panel.income }}
+            >
+              Sign in
+            </button>
+          </>
+        ) : (
+          <>
+            New here?{' '}
+            <button
+              type="button"
+              onClick={() => switchMode('signup')}
+              className="underline"
+              style={{ color: panel.income }}
+            >
+              Create your own ledger
+            </button>
+          </>
+        )}
+      </p>
     </div>
   )
 }
 
 export function Landing() {
   const [isolated, setIsolated] = useState<number | null>(null)
+  const [authMode, setAuthMode] = useState<AuthMode>('signup')
 
   function scrollTo(id: string) {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  function goToAuth(mode: AuthMode) {
+    setAuthMode(mode)
+    scrollTo('signin')
   }
 
   return (
@@ -207,13 +298,22 @@ export function Landing() {
       <header className="sticky top-0 z-20 backdrop-blur" style={{ background: `${panel.bgDeep}dd`, borderBottom: `1px solid ${panel.hairline}` }}>
         <div className="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
           <Nameplate />
-          <button
-            onClick={() => scrollTo('signin')}
-            className="text-sm font-medium px-4 py-2 rounded-lg transition"
-            style={{ background: panel.income, color: panel.bgRaised }}
-          >
-            Sign In
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => goToAuth('signin')}
+              className="text-sm font-medium px-4 py-2 rounded-lg transition"
+              style={{ color: panel.ink }}
+            >
+              Sign In
+            </button>
+            <button
+              onClick={() => goToAuth('signup')}
+              className="text-sm font-medium px-4 py-2 rounded-lg transition"
+              style={{ background: panel.income, color: panel.bgRaised }}
+            >
+              Get Started
+            </button>
+          </div>
         </div>
       </header>
 
@@ -257,11 +357,11 @@ export function Landing() {
           </p>
           <div className="flex items-center justify-center gap-3">
             <button
-              onClick={() => scrollTo('signin')}
+              onClick={() => goToAuth('signup')}
               className="px-5 py-2.5 rounded-lg font-medium text-sm transition active:scale-[0.98]"
               style={{ background: panel.income, color: panel.bgRaised }}
             >
-              Sign In
+              Get Started
             </button>
             <button
               onClick={() => scrollTo('mechanism')}
@@ -452,12 +552,12 @@ export function Landing() {
         </div>
       </Section>
 
-      {/* Sign in */}
+      {/* Sign in / sign up */}
       <Section id="signin" className="px-5 sm:px-8 py-20 sm:py-28">
         <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12" style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}>
-          Sign in to your ledger
+          {authMode === 'signup' ? 'Start your own ledger' : 'Sign in to your ledger'}
         </h2>
-        <SignInPanel />
+        <SignInPanel mode={authMode} onModeChange={setAuthMode} />
       </Section>
 
       {/* Footer */}

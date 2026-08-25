@@ -11,8 +11,10 @@ web
 The primary user is an owner-operator who runs multiple separate businesses (e.g. a film-services
 company, a home inspection business, other ventures) and needs one place to record income and expenses
 across all of them, rather than juggling separate spreadsheets or separate accounting-software instances
-per business. The landing page will also be shown to others (potential partners, an accountant, other
-business contacts) — it should read as a real, confident product pitch, not purely a private utility page.
+per business. The app is multi-tenant: anyone can sign up from the landing page and gets their own
+fully private ledger (own businesses, categories, contractors, customers, transactions, invoices) —
+there is no shared data between accounts. The landing page is a real product pitch aimed at those
+signups, not just a private login screen.
 
 ## Product Purpose
 
@@ -39,9 +41,14 @@ viewed on screen, or exported as a clean PDF to hand to an accountant or keep fo
 
 ## Capabilities and Constraints
 
-- Single hand-created login (Supabase Auth → Users → Add user), no public sign-up — this is a private
-  tool for one operator, not multi-tenant SaaS. The landing page's call to action is "Sign In," never a
-  signup flow.
+- Public sign-up (Supabase Auth email/password) from the landing page, added when the app went
+  multi-tenant. Every table carries an `owner_id` (defaults to `auth.uid()` on insert) and RLS scopes
+  every read/write to `auth.uid() = owner_id`, so each account's data is fully isolated — proven by
+  simulating a stranger's JWT against the database directly and confirming zero rows are visible across
+  every table, alongside the original operator's data being completely unaffected. The landing page nav
+  and hero both offer "Sign In" and "Get Started" (sign-up); the sign-in panel toggles between the two
+  modes in place rather than being a separate page. If Supabase Auth email confirmation is enabled,
+  sign-up shows a "check your email" notice instead of auto-logging in (session comes back null).
 - Businesses and categories are both self-managed lists (add/rename/deactivate) inside the app, not
   hardcoded. Categories stay free text even with a managed suggestion list, so a one-off category is
   never blocked.
@@ -74,7 +81,10 @@ viewed on screen, or exported as a clean PDF to hand to an accountant or keep fo
   land in a **review queue**, not straight in the Ledger — each one needs a category (and optional
   contractor) picked before "Import" turns it into a real transaction, so nothing duplicates or
   misfires. "Sync now" is manual, matching SimpleFIN's own ≤24-requests/day guidance and this app's
-  weekly-sit-down operating rhythm rather than real-time polling.
+  weekly-sit-down operating rhythm rather than real-time polling. Banking is held back from new public
+  signups for now (an email allowlist in `src/lib/betaAccess.ts`, checked in both the sidebar nav and
+  the `/banking` route) — a deliberate, temporary decision made when the app went multi-tenant, not a
+  technical limitation; the plan is to open it up once it's been live and solid for a while.
 - Built with React + Vite + TypeScript + Tailwind v4 + Supabase (Postgres + Auth + Storage + one Deno
   Edge Function for the SimpleFIN bank sync), deployed on Vercel.
 

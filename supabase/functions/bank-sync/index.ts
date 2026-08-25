@@ -2,14 +2,23 @@
 // specifically so the SimpleFIN access URL -- a bearer credential (HTTP
 // Basic Auth embedded in the URL itself) -- never has to be read back into
 // the browser after the initial connect. `verify_jwt` is enabled on this
-// function's deployment, so the platform itself rejects any request without
-// a valid Supabase session before this code runs at all.
+// function's deployment, so the platform rejects any request without a
+// valid Supabase session before this code runs at all.
+//
+// This function uses the SERVICE ROLE key, which bypasses row-level
+// security entirely -- so unlike every client-side call in this app, RLS
+// does not scope anything here automatically. Every write below sets
+// owner_id explicitly (copied from the verified caller, or checked against
+// the row being acted on) so one tenant's data can never end up attributed
+// to -- or triggered by -- another tenant, the same guarantee RLS gives the
+// client-side code for free.
 //
 // Two actions, one function so there's only one thing to redeploy:
 //   { action: 'connect', business_id, setup_token } -- claims a one-time
-//     SimpleFIN setup token, stores the resulting access URL, runs an
-//     immediate first sync so accounts show up right away.
-//   { action: 'sync', connection_id } -- re-syncs an existing connection.
+//     SimpleFIN setup token, stores the resulting access URL under a
+//     business the caller actually owns, runs an immediate first sync.
+//   { action: 'sync', connection_id } -- re-syncs a connection the caller
+//     owns.
 //
 // Synced transactions land in bank_transactions with status
 // 'pending_review' -- nothing here ever writes to the real `transactions`
@@ -19,6 +28,7 @@ import { createClient } from 'jsr:@supabase/supabase-js@2'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+const ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -47,6 +57,7 @@ async function runSync(
   connectionId: string,
   accessUrl: string,
   businessId: string,
+  ownerId: string,
   lastSyncedAt: string | null,
 ) {
   const { baseUrl, authHeader } = splitAccessUrl(accessUrl)
@@ -86,6 +97,7 @@ async function runSync(
     const accountRow = {
       connection_id: connectionId,
       business_id: businessId,
+      owner_id: ownerId,
       external_account_id: String(acct.id),
       name: String(acct.name ?? 'Account'),
       org_name: acct?.org?.name ?? null,
@@ -125,6 +137,7 @@ async function runSync(
       const row = {
         bank_account_id: bankAccountId,
         business_id: businessId,
+        owner_id: ownerId,
         external_transaction_id: String(t.id),
         posted_date: t.posted ? new Date(t.posted * 1000).toISOString().slice(0, 10) : null,
         amount: Number(t.amount),
@@ -154,6 +167,17 @@ Deno.serve(async (req: Request) => {
   const body = await req.json().catch(() => null)
   if (!body || typeof body !== 'object') return json({ error: 'Invalid request body' }, 400)
 
+  // Resolve the real, verified caller from their own JWT (not the service
+  // role) -- verify_jwt already proved the token is valid, but we still
+  // need the actual user id to scope every write below.
+  const authHeader = req.headers.get('Authorization') ?? ''
+  const callerClient = createClient(SUPABASE_URL, ANON_KEY, {
+    global: { headers: { Authorization: authHeader } },
+  })
+  const { data: callerData, error: callerErr } = await callerClient.auth.getUser()
+  if (callerErr || !callerData?.user) return json({ error: 'Not authenticated' }, 401)
+  const ownerId = callerData.user.id
+
   const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY)
 
   try {
@@ -162,6 +186,17 @@ Deno.serve(async (req: Request) => {
       if (!business_id || !setup_token) {
         return json({ error: 'business_id and setup_token are required' }, 400)
       }
+
+      // The admin client bypasses RLS, so ownership has to be checked by
+      // hand here -- confirm this business actually belongs to the caller
+      // before creating anything under it.
+      const { data: business } = await admin
+        .from('businesses')
+        .select('id')
+        .eq('id', business_id)
+        .eq('owner_id', ownerId)
+        .maybeSingle()
+      if (!business) return json({ error: 'Business not found.' }, 404)
 
       let claimUrl: string
       try {
@@ -184,14 +219,14 @@ Deno.serve(async (req: Request) => {
 
       const { data: connection, error: insErr } = await admin
         .from('bank_connections')
-        .insert({ business_id, access_url: accessUrl })
+        .insert({ business_id, owner_id: ownerId, access_url: accessUrl })
         .select('id')
         .single()
       if (insErr || !connection) {
         return json({ error: insErr?.message ?? 'Failed to save the connection.' }, 500)
       }
 
-      const result = await runSync(admin, connection.id as string, accessUrl, business_id, null)
+      const result = await runSync(admin, connection.id as string, accessUrl, business_id, ownerId, null)
       return json({ ok: true, connection_id: connection.id, ...result })
     }
 
@@ -203,7 +238,8 @@ Deno.serve(async (req: Request) => {
         .from('bank_connections')
         .select('*')
         .eq('id', connection_id)
-        .single()
+        .eq('owner_id', ownerId)
+        .maybeSingle()
       if (connErr || !connection) return json({ error: 'Connection not found' }, 404)
 
       const result = await runSync(
@@ -211,6 +247,7 @@ Deno.serve(async (req: Request) => {
         connection.id as string,
         connection.access_url as string,
         connection.business_id as string,
+        ownerId,
         connection.last_synced_at as string | null,
       )
       return json({ ok: true, ...result })

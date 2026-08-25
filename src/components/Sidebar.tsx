@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import type { Session } from '@supabase/supabase-js'
 import { ThemeToggle } from './ThemeToggle'
+import { hasBankingAccess } from '../lib/betaAccess'
 
 const NAV = [
   { to: '/', label: 'Home', end: true },
@@ -9,11 +10,14 @@ const NAV = [
   { to: '/contractors', label: 'Contractors', end: false },
   { to: '/sales', label: 'Sales', end: false },
   { to: '/customers', label: 'Customers', end: false },
-  { to: '/banking', label: 'Banking', end: false },
   { to: '/reports', label: 'Reports', end: false },
 ]
 
 export function Sidebar({ session }: { session: Session }) {
+  const nav = hasBankingAccess(session.user.email)
+    ? [...NAV.slice(0, 5), { to: '/banking', label: 'Banking', end: false }, ...NAV.slice(5)]
+    : NAV
+
   return (
     <aside className="flex h-screen w-60 shrink-0 sticky top-0 flex-col border-r border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 px-4 py-5">
       <div className="px-1 pb-6">
@@ -21,7 +25,7 @@ export function Sidebar({ session }: { session: Session }) {
       </div>
 
       <nav className="flex flex-1 flex-col gap-1">
-        {NAV.map((item) => (
+        {nav.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
