@@ -8,29 +8,37 @@ web
 
 ## Users
 
-The primary user is an owner-operator who runs multiple separate businesses (e.g. a film-services
-company, a home inspection business, other ventures) and needs one place to record income and expenses
-across all of them, rather than juggling separate spreadsheets or separate accounting-software instances
-per business. The app is multi-tenant: anyone can sign up from the landing page and gets their own
-fully private ledger (own businesses, categories, contractors, customers, transactions, invoices) —
-there is no shared data between accounts. The landing page is a real product pitch aimed at those
-signups, not just a private login screen.
+The primary user is a small-business owner-operator doing their own bookkeeping — anywhere from one
+business to several (e.g. a film-services company, a home inspection business, other ventures). A
+single-business owner is a full, equally-served user, not an edge case: everything (income/expense
+logging, receipts, branded invoices, contractor tracking, P&L) works the moment they add their first
+business, and nothing in the product nags them to add a second. Multi-business support is real headroom
+this product has that spreadsheets and single-tenant tools don't, not a requirement to use it. The app is
+multi-tenant: anyone can sign up from the landing page and gets their own fully private ledger (own
+businesses, categories, contractors, customers, transactions, invoices) — there is no shared data between
+accounts. The landing page is a real product pitch aimed at those signups, not just a private login
+screen, and its messaging must read as true and inviting to a one-business owner first, with room-to-grow
+for more as a supporting point — not the other way around.
 
 ## Product Purpose
 
-Lets someone who runs multiple businesses record income and expenses in one shared ledger, attach
-receipts to expenses, bill clients with branded per-business invoices, track how much has been paid to
-each contractor, and generate Profit & Loss reports either combined across every business or filtered
-to a single one — without separate bookkeeping software or spreadsheets per entity.
+Lets a small-business owner record income and expenses, attach receipts to expenses, bill clients with a
+branded invoice, track how much has been paid to each contractor, and generate a Profit & Loss report —
+without separate bookkeeping software or a spreadsheet. It scales cleanly from one business to several:
+add a second business at any time and every report gains a combined-vs-single-business toggle for free,
+with no migration, no new account, and no separate subscription per entity.
 
 ## Positioning
 
 Generic accounting software (QuickBooks-style tools) is built around one company/tenant at a time; plain
 spreadsheets require manual per-business upkeep and don't roll up cleanly. Business Ledger treats "which
-business" as just a field on every transaction — one login, one ledger, and a Profit & Loss report that
-either combines every business or isolates any single one instantly. Businesses and categories are
-self-managed lists inside the app (add/rename/deactivate), not hardcoded or requiring a code change or a
-separate account per entity.
+business" as just a field on every transaction — one login, one ledger, whether that ledger covers one
+business today or several later, and a Profit & Loss report that either combines every business or
+isolates any single one instantly. Businesses and categories are self-managed lists inside the app
+(add/rename/deactivate), not hardcoded or requiring a code change or a separate account per entity. The
+pitch to a one-business owner is the everyday bookkeeping itself — clean books, branded invoices,
+receipts, a real P&L; the multi-business capability is the thing that's simply still there, unlocked and
+free, the day they need it.
 
 ## Operating Context
 

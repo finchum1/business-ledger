@@ -1,0 +1,9 @@
+{
+  "prompt": "A desktop website homepage screenshot mockup, 16:9 landscape, showing the top navigation bar and hero section of a financial bookkeeping web app called \"Business Ledger\". TOP: a sticky navigation bar spanning the full width, deep bottle-green (#0f2b21) background with a thin gold hairline rule at its bottom edge. Far left: a small gold-foil wordmark reading \"Business Ledger\" set in a refined high-contrast serif typeface. Far right: two buttons side by side — a plain outlined \"Sign In\" text button in cream, and a solid gold-foil filled \"Get Started\" button with dark green text. BELOW THE NAV, the hero section, also on a deep bottle-green leather-textured background: centered and dominant, a large bound accounting ledger book, its cover deep bottle-green leather with gold foil tooling and corner ornaments, lying open flat and facing the viewer straight-on, symmetric, filling most of the hero's width. The open pages are cream/parchment ledger paper ruled with fine hairline horizontal tables, rows of small business names in serif type each followed by a dollar figure in tabular serif numerals, the bottommost row larger and bold, underlined with a gold foil rule, as the combined total. Above the ledger, a large headline in high-contrast serif display type, cream colored, reading \"One ledger. Every business.\" Below the headline, a smaller line of body text in a lighter serif. Below that, one solid gold-foil \"Get Started\" button.",
+  "model": "nano-banana-pro",
+  "ratio": "16:9",
+  "imageSize": "2K",
+  "direction": "The House Ledger",
+  "compLabel": "Comp A -- symmetric, ledger front and center",
+  "approved": true
+}

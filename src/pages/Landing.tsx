@@ -4,23 +4,16 @@ import { motion, useInView } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { panel } from '../lib/landingTheme'
 import {
-  BrassScrews,
-  Jack,
-  Lamp,
-  PatchCable,
+  GoldCorners,
+  giltEdgeShadow,
+  LedgerStamp,
   PlateLabel,
   ScreenshotWindow,
   TickerTotal,
-  panelSurface,
+  leatherSurface,
+  paperSurface,
 } from '../components/landing/primitives'
-
-function ChevronDown({ color }: { color: string }) {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
-    </svg>
-  )
-}
+import ledgerBookHeroUrl from '../assets/landing/ledger-book-hero.jpg'
 
 const SAMPLE_BUSINESSES = [
   { name: 'Riverside Landscaping', income: 6400, expenses: 2150 },
@@ -31,9 +24,9 @@ const SAMPLE_NET = SAMPLE_BUSINESSES.reduce((s, b) => s + (b.income - b.expenses
 
 const FEATURES = [
   {
-    label: 'MULTI-BUSINESS',
-    title: 'Every business, one ledger',
-    body: 'Add, rename, or deactivate a business right from the app — no separate account, no code change, no per-entity setup. Every transaction just gets tagged to one.',
+    label: 'GROWS WITH YOU',
+    title: 'Add businesses as you grow',
+    body: 'Start with one. Add a second, a fifth, a tenth whenever you need to — no separate account, no code change, no per-entity setup. Every transaction just gets tagged to one.',
   },
   {
     label: 'CATEGORIES',
@@ -91,15 +84,15 @@ function Nameplate() {
       <div
         className="w-7 h-7 rounded flex items-center justify-center shrink-0"
         style={{
-          ...panelSurface([panel.bgRaised2, panel.bgDeep], 160),
-          boxShadow: 'inset 0 0 0 1px rgba(138,106,53,0.45)',
+          ...paperSurface(160),
+          boxShadow: `inset 0 0 0 1px ${panel.hairline}`,
         }}
       >
-        <div className="w-2 h-2 rounded-full" style={{ background: panel.amber, boxShadow: `0 0 8px ${panel.amber}` }} />
+        <div className="w-2 h-2 rounded-full" style={{ background: panel.brass, boxShadow: `0 0 8px ${panel.brass}` }} />
       </div>
       <span
         className="font-semibold tracking-wide text-lg"
-        style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}
+        style={{ color: panel.cream, fontFamily: "'Bodoni Moda', serif" }}
       >
         Business Ledger
       </span>
@@ -158,25 +151,25 @@ function SignInPanel({ mode, onModeChange }: { mode: AuthMode; onModeChange: (m:
     <div
       className="relative max-w-md mx-auto rounded-xl p-6 sm:p-8"
       style={{
-        ...panelSurface([panel.bgRaised, panel.bgDeep], 165),
-        boxShadow: 'inset 0 0 0 1px rgba(138,106,53,0.35), 0 20px 50px rgba(0,0,0,0.55)',
+        ...paperSurface(165),
+        boxShadow: `inset 0 0 0 1px ${panel.hairline}, 0 24px 60px rgba(0,0,0,0.45), ${giltEdgeShadow}`,
       }}
     >
-      <BrassScrews />
+      <GoldCorners />
       <div className="flex items-center justify-between gap-3 mb-6">
         <h2
           className="text-3xl font-bold tracking-tight"
-          style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}
+          style={{ color: panel.ink, fontFamily: "'Bodoni Moda', serif" }}
         >
           {isSignUp ? 'Create your ledger' : 'Sign in'}
         </h2>
         <div className="flex items-center gap-2 shrink-0">
-          <Lamp active color={panel.amber} size={8} />
-          <PlateLabel>{isSignUp ? 'New Operator' : 'Operator Access'}</PlateLabel>
+          <LedgerStamp active size={18} />
+          <PlateLabel dark>{isSignUp ? 'New Operator' : 'Operator Access'}</PlateLabel>
         </div>
       </div>
       <form onSubmit={handleSubmit}>
-        <label className="block text-xs mb-1" style={{ color: panel.inkDim }}>
+        <label className="block text-xs mb-1" style={{ color: panel.inkDim, fontFamily: "'Work Sans', sans-serif" }}>
           Email
         </label>
         <input
@@ -187,12 +180,12 @@ function SignInPanel({ mode, onModeChange }: { mode: AuthMode; onModeChange: (m:
           onChange={(e) => setEmail(e.target.value)}
           className="w-full mb-4 rounded-lg px-3 py-2.5 text-sm focus:outline-none"
           style={{
-            background: panel.bgDeep,
+            background: panel.bgRaised2,
             color: panel.ink,
             boxShadow: `inset 0 0 0 1px ${panel.hairline}`,
           }}
         />
-        <label className="block text-xs mb-1" style={{ color: panel.inkDim }}>
+        <label className="block text-xs mb-1" style={{ color: panel.inkDim, fontFamily: "'Work Sans', sans-serif" }}>
           Password
         </label>
         <input
@@ -204,14 +197,14 @@ function SignInPanel({ mode, onModeChange }: { mode: AuthMode; onModeChange: (m:
           onChange={(e) => setPassword(e.target.value)}
           className={`w-full rounded-lg px-3 py-2.5 text-sm focus:outline-none ${isSignUp ? 'mb-4' : 'mb-6'}`}
           style={{
-            background: panel.bgDeep,
+            background: panel.bgRaised2,
             color: panel.ink,
             boxShadow: `inset 0 0 0 1px ${panel.hairline}`,
           }}
         />
         {isSignUp && (
           <>
-            <label className="block text-xs mb-1" style={{ color: panel.inkDim }}>
+            <label className="block text-xs mb-1" style={{ color: panel.inkDim, fontFamily: "'Work Sans', sans-serif" }}>
               Confirm password
             </label>
             <input
@@ -222,7 +215,7 @@ function SignInPanel({ mode, onModeChange }: { mode: AuthMode; onModeChange: (m:
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full mb-6 rounded-lg px-3 py-2.5 text-sm focus:outline-none"
               style={{
-                background: panel.bgDeep,
+                background: panel.bgRaised2,
                 color: panel.ink,
                 boxShadow: `inset 0 0 0 1px ${panel.hairline}`,
               }}
@@ -243,12 +236,12 @@ function SignInPanel({ mode, onModeChange }: { mode: AuthMode; onModeChange: (m:
           type="submit"
           disabled={loading}
           className="w-full rounded-lg py-2.5 font-medium text-sm transition disabled:opacity-60"
-          style={{ background: panel.income, color: panel.bgRaised }}
+          style={{ background: panel.bgDeep, color: panel.cream, fontFamily: "'Work Sans', sans-serif" }}
         >
           {loading ? (isSignUp ? 'Creating account…' : 'Signing in…') : isSignUp ? 'Create account' : 'Sign in'}
         </button>
       </form>
-      <p className="text-xs text-center mt-4" style={{ color: panel.inkDim }}>
+      <p className="text-xs text-center mt-4" style={{ color: panel.inkDim, fontFamily: "'Work Sans', sans-serif" }}>
         {isSignUp ? (
           <>
             Already have a ledger?{' '}
@@ -293,23 +286,26 @@ export function Landing() {
   }
 
   return (
-    <div style={{ background: panel.bgDeep, color: panel.ink, fontFamily: "'IBM Plex Sans', sans-serif" }}>
+    <div style={{ background: panel.bgDeep, color: panel.cream, fontFamily: "'Spectral', serif" }}>
       {/* Nav */}
-      <header className="sticky top-0 z-20 backdrop-blur" style={{ background: `${panel.bgDeep}dd`, borderBottom: `1px solid ${panel.hairline}` }}>
+      <header
+        className="sticky top-0 z-20 backdrop-blur"
+        style={{ background: `${panel.bgDeep}e6`, borderBottom: `1px solid ${panel.hairline}` }}
+      >
         <div className="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
           <Nameplate />
           <div className="flex items-center gap-2">
             <button
               onClick={() => goToAuth('signin')}
               className="text-sm font-medium px-4 py-2 rounded-lg transition"
-              style={{ color: panel.ink }}
+              style={{ color: panel.cream, boxShadow: `inset 0 0 0 1px ${panel.hairline}`, fontFamily: "'Work Sans', sans-serif" }}
             >
               Sign In
             </button>
             <button
               onClick={() => goToAuth('signup')}
               className="text-sm font-medium px-4 py-2 rounded-lg transition"
-              style={{ background: panel.income, color: panel.bgRaised }}
+              style={{ background: panel.brass, color: panel.bgDeep, fontFamily: "'Work Sans', sans-serif" }}
             >
               Get Started
             </button>
@@ -317,133 +313,175 @@ export function Landing() {
         </div>
       </header>
 
-      {/* Hero -- a single centered nameplate is the entire first viewport;
-          the switchboard demo lives in the Mechanism section below so the
-          two aren't showing the same thing back to back. */}
+      {/* Hero -- the approved comp: a photographed open ledger book, centered
+          and dominant, on the same deep-green ground as the nav above it. */}
       <section
-        className="relative overflow-hidden flex items-center justify-center px-5 sm:px-8 py-24 sm:py-32 min-h-[85vh]"
-        style={panelSurface([panel.bgRaised2, panel.bgDeep], 150)}
+        className="relative overflow-hidden flex flex-col items-center px-5 sm:px-8 pt-16 sm:pt-20 pb-12 sm:pb-16"
+        style={leatherSurface(150)}
       >
         <div
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              'radial-gradient(ellipse 60% 45% at 60% 15%, rgba(138,106,53,0.10), transparent), radial-gradient(ellipse 55% 45% at 25% 90%, rgba(28,128,84,0.07), transparent)',
+              'radial-gradient(ellipse 60% 40% at 50% 0%, rgba(184,145,74,0.10), transparent)',
           }}
         />
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          className="relative max-w-3xl w-full rounded-lg p-8 sm:p-12 text-center"
-          style={{
-            ...panelSurface([panel.bgRaised, panel.bgDeep], 165),
-            boxShadow: 'inset 0 0 0 1px rgba(138,106,53,0.4), 0 20px 45px rgba(0,0,0,0.55)',
-          }}
+          className="relative max-w-2xl w-full text-center mb-10 sm:mb-12"
         >
-          <BrassScrews />
           <h1
-            className="text-5xl sm:text-6xl md:text-7xl font-bold leading-[0.95] mb-6 tracking-tight"
-            style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}
+            className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-5 tracking-tight"
+            style={{ color: panel.cream, fontFamily: "'Bodoni Moda', serif" }}
           >
-            One ledger.
-            <br />
-            Every business.
+            One ledger — for every business you run.
           </h1>
-          <p className="text-base sm:text-lg mb-8 max-w-xl mx-auto" style={{ color: panel.inkDim }}>
-            Log income and expenses for every business you run in one place. Pull a Profit &amp;
-            Loss for all of them combined — or isolate any single one instantly.
+          <p className="text-base sm:text-lg mb-8 max-w-xl mx-auto" style={{ color: panel.creamDim }}>
+            Log income and expenses, bill clients, and pull a clean Profit &amp; Loss — for one
+            business today, or every business you add later, all in the same ledger.
           </p>
-          <div className="flex items-center justify-center gap-3">
+          <div className="flex items-center justify-center">
             <button
               onClick={() => goToAuth('signup')}
               className="px-5 py-2.5 rounded-lg font-medium text-sm transition active:scale-[0.98]"
-              style={{ background: panel.income, color: panel.bgRaised }}
+              style={{ background: panel.brass, color: panel.bgDeep, fontFamily: "'Work Sans', sans-serif" }}
             >
               Get Started
             </button>
-            <button
-              onClick={() => scrollTo('mechanism')}
-              className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg font-medium text-sm transition"
-              style={{ boxShadow: `inset 0 0 0 1px ${panel.hairline}`, color: panel.ink }}
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="relative w-full max-w-4xl"
+          style={{ aspectRatio: '5504 / 3072', containerType: 'inline-size' }}
+        >
+          <img
+            src={ledgerBookHeroUrl}
+            alt="An open ledger book with blank ruled pages, real business rows and a combined total set as live text over the left and right page"
+            className="absolute inset-0 w-full h-full object-contain rounded-sm"
+            style={{ boxShadow: '0 30px 70px rgba(0,0,0,0.5)' }}
+          />
+          {/* Real live text set over the photographed blank ruled pages --
+              never baked into the generated asset, so it stays crisp and
+              legible (a raster attempt at this text rendered as garbled
+              lettering) and uses the same sample data as the Mechanism
+              section below, so the hero reads as the real product rather
+              than a decorative object next to it. Positioned in container-
+              query percentage units so it stays registered to the ruled
+              lines at any width. */}
+          {SAMPLE_BUSINESSES.map((b, i) => (
+            <div
+              key={b.name}
+              className="absolute"
+              style={{
+                left: '23%',
+                width: '16.5%',
+                top: `${32.6 + i * 11.2}%`,
+                fontSize: '1.55cqw',
+                color: panel.ink,
+                fontFamily: "'Spectral', serif",
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
             >
-              See it work
-              <ChevronDown color={panel.ink} />
-            </button>
+              {b.name}
+            </div>
+          ))}
+          {SAMPLE_BUSINESSES.map((b, i) => (
+            <div
+              key={`${b.name}-amt`}
+              className="absolute text-right"
+              style={{
+                left: '40%',
+                width: '7.5%',
+                top: `${32.6 + i * 11.2}%`,
+                fontSize: '1.6cqw',
+                color: panel.income,
+                fontFamily: "'Courier Prime', monospace",
+              }}
+            >
+              ${(b.income - b.expenses).toLocaleString()}
+            </div>
+          ))}
+          <div
+            className="absolute"
+            style={{ left: '51%', width: '23%', top: '46%', fontFamily: "'Work Sans', sans-serif" }}
+          >
+            <div style={{ fontSize: '1.15cqw', letterSpacing: '0.14em', color: panel.brass, textTransform: 'uppercase' }}>
+              Combined total
+            </div>
+            <div style={{ fontSize: '3.4cqw', color: panel.ink, fontFamily: "'Bodoni Moda', serif", fontWeight: 700, borderBottom: `0.25cqw solid ${panel.brass}`, paddingBottom: '0.4cqw' }}>
+              ${SAMPLE_NET.toLocaleString()}
+            </div>
           </div>
         </motion.div>
       </section>
 
-      {/* Mechanism */}
-      <Section id="mechanism" className="px-5 sm:px-8 py-20 sm:py-28" >
-        <div className="max-w-4xl mx-auto text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}>
+      {/* Mechanism -- a real ledger page: click a business row to isolate
+          it, click again to return to the combined total. */}
+      <Section id="mechanism" className="px-5 sm:px-8 py-20 sm:py-28" style={paperSurface(150)}>
+        <div className="max-w-3xl mx-auto text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: panel.ink, fontFamily: "'Bodoni Moda', serif" }}>
             Combine everything, or isolate one.
           </h2>
           <p className="text-base max-w-xl mx-auto" style={{ color: panel.inkDim }}>
-            Click a business below. The others unplug, and the panel reads just that one — click it
-            again to bring everyone back into the combined total.
+            Stamp a business below to isolate it — stamp it again to bring everyone back into the
+            combined total.
           </p>
         </div>
 
-        <div className="relative w-full max-w-xl mx-auto" style={{ aspectRatio: '4 / 2.5' }}>
-          {[15, 50, 85].map((x, i) => (
-            <PatchCable
-              key={i}
-              from={{ x, y: 12 }}
-              to={{ x: 50, y: 82 }}
-              color={isolated === null || isolated === i ? panel.income : panel.wire}
-              active={isolated === null || isolated === i}
-              sag={22}
-              delay={0}
-            />
-          ))}
-          {SAMPLE_BUSINESSES.map((b, i) => (
-            <button
-              key={i}
-              onClick={() => setIsolated(isolated === i ? null : i)}
-              className="absolute -translate-x-1/2 cursor-pointer"
-              style={{ left: `${[15, 50, 85][i]}%`, top: '2%' }}
-            >
-              {/* Label sits above the jack via absolute positioning rather
-                  than flex order, so the jack itself never moves from the
-                  spot the patch cable's "from" coordinate is tuned to. */}
-              <div className="relative flex flex-col items-center">
-                <span
-                  className="absolute bottom-full mb-1.5 text-[9px] sm:text-[10px] whitespace-nowrap"
-                  style={{ color: isolated === i ? panel.income : panel.inkDim, fontFamily: "'IBM Plex Mono', monospace" }}
+        <div
+          className="relative max-w-xl mx-auto rounded-lg p-6 sm:p-8"
+          style={{ background: panel.bgRaised, boxShadow: `inset 0 0 0 1px ${panel.hairline}, 0 16px 40px rgba(0,0,0,0.12), ${giltEdgeShadow}` }}
+        >
+          <GoldCorners />
+          <PlateLabel dark className="mb-4 block">
+            {new Date().getFullYear()} — {isolated === null ? 'Combined' : SAMPLE_BUSINESSES[isolated].name}
+          </PlateLabel>
+          <div className="space-y-0">
+            {SAMPLE_BUSINESSES.map((b, i) => {
+              const net = b.income - b.expenses
+              const active = isolated === null || isolated === i
+              return (
+                <button
+                  key={b.name}
+                  onClick={() => setIsolated(isolated === i ? null : i)}
+                  className="w-full flex items-center gap-3 py-3 text-left cursor-pointer"
+                  style={{ borderTop: i > 0 ? `1px solid ${panel.hairline}` : undefined }}
                 >
-                  {b.name.split(' ')[0].toUpperCase()}
-                </span>
-                <Jack active={isolated === null || isolated === i} color={panel.income} size={26} />
-              </div>
-            </button>
-          ))}
-          <div
-            className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2"
-            style={{ left: '50%', top: '82%' }}
-          >
-            <Lamp active color={panel.amber} size={10} />
-            <div
-              className="relative rounded-lg px-4 py-2.5 sm:px-6 sm:py-3 text-center min-w-[140px]"
-              style={{
-                ...panelSurface([panel.bgRaised2, panel.bgDeep], 160),
-                boxShadow: 'inset 0 0 0 1px rgba(138,106,53,0.4), 0 8px 20px rgba(0,0,0,0.5)',
-              }}
-            >
-              <BrassScrews />
-              <PlateLabel className="block mb-1">
-                {isolated === null ? 'Combined' : SAMPLE_BUSINESSES[isolated].name.split(' ')[0]}
-              </PlateLabel>
+                  <LedgerStamp active={isolated === i} size={20} />
+                  <span
+                    className="text-sm sm:text-base"
+                    style={{ color: active ? panel.ink : panel.inkDim, fontFamily: "'Spectral', serif" }}
+                  >
+                    {b.name}
+                  </span>
+                  <span className="flex-1 border-b border-dotted mx-2 mb-1" style={{ borderColor: panel.hairline }} />
+                  <TickerTotal
+                    value={net}
+                    active={active}
+                    className="text-sm sm:text-base font-medium tabular-nums shrink-0"
+                    style={{ color: active ? panel.income : panel.inkDim }}
+                    key={`${i}-${active}`}
+                  />
+                </button>
+              )
+            })}
+          </div>
+          <div className="mt-2 pt-4" style={{ borderTop: `2px solid ${panel.brass}` }}>
+            <div className="flex items-baseline justify-between">
+              <PlateLabel dark>{isolated === null ? 'Grand total' : 'Total, isolated'}</PlateLabel>
               <TickerTotal
-                value={
-                  isolated === null
-                    ? SAMPLE_NET
-                    : SAMPLE_BUSINESSES[isolated].income - SAMPLE_BUSINESSES[isolated].expenses
-                }
-                className="text-xl sm:text-2xl font-bold block"
-                style={{ color: panel.income }}
+                value={isolated === null ? SAMPLE_NET : SAMPLE_BUSINESSES[isolated].income - SAMPLE_BUSINESSES[isolated].expenses}
+                className="text-2xl sm:text-3xl font-bold tabular-nums"
+                style={{ color: panel.ink }}
                 key={isolated ?? 'combined'}
               />
             </div>
@@ -451,20 +489,21 @@ export function Landing() {
         </div>
       </Section>
 
-      {/* Features -- one continuous terminal strip, not a grid of same-size
-          cards: each feature is a row off a shared trunk, not its own box. */}
-      <Section className="px-5 sm:px-8 py-20 sm:py-28" style={{ background: panel.bg }}>
+      {/* Features -- one continuous ledger-insert strip, not a grid of
+          same-size cards: each feature is a row on a shared page, not its
+          own box. */}
+      <Section className="px-5 sm:px-8 py-20 sm:py-28" style={leatherSurface(150)}>
         <div className="max-w-4xl mx-auto">
           <div className="max-w-xl mb-10">
-            <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}>
-              Five circuits. Everything you need weekly.
+            <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: panel.cream, fontFamily: "'Bodoni Moda', serif" }}>
+              Five entries. Everything you need weekly.
             </h2>
           </div>
           <div
             className="relative rounded-xl overflow-hidden"
-            style={{ ...panelSurface([panel.bgRaised, panel.bgDeep], 165), boxShadow: `inset 0 0 0 1px ${panel.hairline}` }}
+            style={{ ...paperSurface(165), boxShadow: `inset 0 0 0 1px ${panel.hairline}, ${giltEdgeShadow}` }}
           >
-            <BrassScrews />
+            <GoldCorners />
             {FEATURES.map((f, i) => (
               <motion.div
                 key={f.label}
@@ -480,7 +519,7 @@ export function Landing() {
                     sm:order-first moves the tag back to a left column on
                     wider screens where it sits beside the heading instead. */}
                 <div className="flex-1 order-1 sm:order-2">
-                  <h3 className="text-lg font-semibold mb-1" style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}>
+                  <h3 className="text-lg font-semibold mb-1" style={{ color: panel.ink, fontFamily: "'Bodoni Moda', serif" }}>
                     {f.title}
                   </h3>
                   <p className="text-sm leading-relaxed" style={{ color: panel.inkDim }}>
@@ -488,8 +527,8 @@ export function Landing() {
                   </p>
                 </div>
                 <div className="flex items-center gap-2 order-2 sm:order-1 sm:w-40 sm:shrink-0">
-                  <Lamp active color={panel.income} size={7} />
-                  <PlateLabel>{f.label}</PlateLabel>
+                  <LedgerStamp active size={16} />
+                  <PlateLabel dark>{f.label}</PlateLabel>
                 </div>
               </motion.div>
             ))}
@@ -498,10 +537,10 @@ export function Landing() {
       </Section>
 
       {/* Screenshots */}
-      <Section className="px-5 sm:px-8 py-20 sm:py-28">
+      <Section className="px-5 sm:px-8 py-20 sm:py-28" style={paperSurface(150)}>
         <div className="max-w-6xl mx-auto">
           <div className="max-w-xl mb-14">
-            <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}>
+            <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: panel.ink, fontFamily: "'Bodoni Moda', serif" }}>
               This is the real thing, running.
             </h2>
           </div>
@@ -538,33 +577,34 @@ export function Landing() {
       </Section>
 
       {/* Positioning */}
-      <Section className="px-5 sm:px-8 py-20 sm:py-28" style={{ background: panel.bg }}>
+      <Section className="px-5 sm:px-8 py-20 sm:py-28" style={leatherSurface(150)}>
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6" style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6" style={{ color: panel.cream, fontFamily: "'Bodoni Moda', serif" }}>
             Not daily babysitting. A weekly sit-down.
           </h2>
-          <p className="text-base leading-relaxed" style={{ color: panel.inkDim }}>
+          <p className="text-base leading-relaxed" style={{ color: panel.creamDim }}>
             Most accounting software assumes one company at a time — separate logins, separate setups,
             separate exports to reconcile by hand. Business Ledger treats "which business" as just a
-            field on the transaction. Sit down once a week, log what happened across every venture, and
-            pull whatever report you need — one click for everything combined, one click for just one.
+            field on the transaction. Sit down once a week, log what happened, and pull whatever report
+            you need — one click for everything combined, one click for just one, whether that's the
+            only business you run or the fifth you've added.
           </p>
         </div>
       </Section>
 
       {/* Sign in / sign up */}
-      <Section id="signin" className="px-5 sm:px-8 py-20 sm:py-28">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12" style={{ color: panel.ink, fontFamily: "'IBM Plex Serif', serif" }}>
+      <Section id="signin" className="px-5 sm:px-8 py-20 sm:py-28" style={leatherSurface(150)}>
+        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12" style={{ color: panel.cream, fontFamily: "'Bodoni Moda', serif" }}>
           {authMode === 'signup' ? 'Start your own ledger' : 'Sign in to your ledger'}
         </h2>
         <SignInPanel mode={authMode} onModeChange={setAuthMode} />
       </Section>
 
       {/* Footer */}
-      <footer className="px-5 sm:px-8 py-10" style={{ borderTop: `1px solid ${panel.hairline}` }}>
+      <footer className="px-5 sm:px-8 py-10" style={{ ...leatherSurface(150), borderTop: `1px solid ${panel.hairline}` }}>
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <Nameplate />
-          <p className="text-xs" style={{ color: panel.inkDim, fontFamily: "'IBM Plex Mono', monospace" }}>
+          <p className="text-xs" style={{ color: panel.creamDim, fontFamily: "'Courier Prime', monospace" }}>
             © {new Date().getFullYear()} Business Ledger
           </p>
         </div>

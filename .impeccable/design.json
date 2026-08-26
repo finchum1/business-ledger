@@ -1,44 +1,39 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-23T00:00:00.000Z",
-  "title": "Design System: Business Ledger — Landing (Switchboard World)",
+  "generatedAt": "2026-08-25T00:00:00Z",
+  "title": "Design System: Business Ledger — Landing (House Ledger World)",
   "extensions": {
     "colorMeta": {
-      "bg-deep": { "role": "neutral", "displayName": "Ivory Deep", "canonical": "#f1ead9", "tonalRamp": ["#211d12", "#4d4125", "#7c6736", "#ad8f44", "#c5ab6b", "#d4c49c", "#f1ead9", "#faf8f5"] },
-      "bg": { "role": "neutral", "displayName": "Ivory", "canonical": "#f8f3e6", "tonalRamp": ["#231e10", "#514421", "#836c2e", "#b99538", "#cfb161", "#dac796", "#e8dfc7", "#f8f3e6"] },
-      "bg-raised": { "role": "neutral", "displayName": "Ivory Raised", "canonical": "#fffdf7", "tonalRamp": ["#2a2209", "#644f0e", "#a47f0d", "#ebb206", "#fac937", "#f4d67c", "#f5e6ba", "#fffdf7"] },
-      "bg-raised-2": { "role": "neutral", "displayName": "Ivory Raised 2", "canonical": "#fbf6e8", "tonalRamp": ["#251f0e", "#57471b", "#8e7224", "#c99f28", "#ddb954", "#e2cc8d", "#ece1c3", "#fbf6e8"] },
-      "brass-dim": { "role": "neutral", "displayName": "Brass Dim", "canonical": "#5c4a28", "tonalRamp": ["#201c13", "#5c4a28", "#77623b", "#a6864b", "#bfa472", "#d0bfa0", "#e3dbcc", "#f9f8f5"] },
-      "brass": { "role": "accent", "displayName": "Brass", "canonical": "#8a6a35", "tonalRamp": ["#211b12", "#4c3e26", "#8a6a35", "#ac8546", "#c4a36d", "#d3bf9d", "#e5dbcb", "#faf8f5"] },
-      "brass-bright": { "role": "accent", "displayName": "Brass Bright", "canonical": "#b8935a", "tonalRamp": ["#201b13", "#4a3d28", "#775f3b", "#a6824b", "#b8935a", "#d0bda0", "#e3dacc", "#f9f8f5"] },
-      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#241f16", "tonalRamp": ["#241f16", "#443c2f", "#6b5e47", "#94805d", "#b09f81", "#c7bca9", "#dfdad1", "#f9f8f6"] },
-      "ink-dim": { "role": "neutral", "displayName": "Ink Dim", "canonical": "#6b6252", "tonalRamp": ["#1c1a17", "#3f3b34", "#6b6252", "#887d69", "#a59c8b", "#c0bab0", "#dcd9d4", "#f8f8f7"] },
-      "income": { "role": "primary", "displayName": "Signal Emerald", "canonical": "#1c8054", "tonalRamp": ["#0f241b", "#1e553c", "#1c8054", "#2fc281", "#5ad7a0", "#91dfbd", "#c5ebda", "#f4fbf8"] },
-      "income-dim": { "role": "primary", "displayName": "Signal Emerald Dim", "canonical": "#bfe0cf", "tonalRamp": ["#141f19", "#2a4839", "#3f7358", "#51a077", "#76ba97", "#a3cdb7", "#bfe0cf", "#f6f9f7"] },
-      "expense": { "role": "secondary", "displayName": "Rust Expense", "canonical": "#c1502a", "tonalRamp": ["#24140f", "#552c1e", "#894128", "#c1502a", "#d7795a", "#dfa591", "#ebcec5", "#fbf6f4"] },
-      "expense-dim": { "role": "secondary", "displayName": "Rust Expense Dim", "canonical": "#f0d2c2", "tonalRamp": ["#24160f", "#53311f", "#874b2b", "#be6333", "#d3865d", "#ddad93", "#f0d2c2", "#faf6f4"] },
-      "amber": { "role": "tertiary", "displayName": "Amber Lamp", "canonical": "#c98a1f", "tonalRamp": ["#261d0d", "#59411a", "#906722", "#c98a1f", "#e0ab51", "#e4c38c", "#edddc2", "#fbf8f4"] },
-      "wire": { "role": "neutral", "displayName": "Dead Wire", "canonical": "#d9cdb0", "tonalRamp": ["#1f1c14", "#483f2a", "#73643e", "#a18950", "#baa676", "#d9cdb0", "#e2dccd", "#f9f8f6"] }
+      "bg-deep": { "role": "primary", "displayName": "Bottle-Green Leather Deep", "canonical": "#0f2b21", "tonalRamp": ["#050f0b", "#0a1c15", "#0f2b21", "#173d30", "#215243", "#3c7a63", "#7db09b", "#c8e3d3"] },
+      "bg": { "role": "primary", "displayName": "Bottle-Green Leather", "canonical": "#0c231b", "tonalRamp": ["#040d0a", "#081b14", "#0c231b", "#123528", "#1c4b38", "#357057", "#71a68d", "#c2ddce"] },
+      "brass": { "role": "secondary", "displayName": "Gold Foil", "canonical": "#b8914a", "tonalRamp": ["#3a2c14", "#5c4720", "#8a6a2e", "#b8914a", "#c9a768", "#d9b876", "#e8d1a1", "#f6ecd3"] },
+      "brass-dim": { "role": "secondary", "displayName": "Gold Foil Dim", "canonical": "#8a6a2e", "tonalRamp": ["#241b0d", "#4a3818", "#6f551f", "#8a6a2e", "#a5814a", "#c2a06f", "#dcc296", "#f0e2c6"] },
+      "brass-bright": { "role": "secondary", "displayName": "Gold Foil Bright", "canonical": "#d9b876", "tonalRamp": ["#4a3a1a", "#755d2a", "#a3833e", "#d9b876", "#e2c58c", "#ead4a8", "#f2e2c4", "#f9f1e0"] },
+      "income": { "role": "tertiary", "displayName": "Income Green", "canonical": "#1c7a4d", "tonalRamp": ["#06231b", "#0c3624", "#114a30", "#1c7a4d", "#279e63", "#52bd82", "#8ad4a9", "#ddf3e6"] },
+      "expense": { "role": "tertiary", "displayName": "Expense Oxblood", "canonical": "#6b2a24", "tonalRamp": ["#180907", "#290f0c", "#3d1712", "#6b2a24", "#8a3c30", "#a8584a", "#c78576", "#efd7d0"] },
+      "bg-raised": { "role": "neutral", "displayName": "Ledger Paper Cream", "canonical": "#f4ecdb", "tonalRamp": ["#3a3220", "#6b5f3f", "#9a8c64", "#c7b98f", "#e0d4b7", "#f4ecdb", "#f8f2e6", "#fbf8f0"] },
+      "bg-raised-2": { "role": "neutral", "displayName": "Ledger Paper Cream Deep", "canonical": "#efe3cc", "tonalRamp": ["#362d1a", "#655536", "#93815a", "#bfab82", "#dccbaa", "#efe3cc", "#f5ecdd", "#faf5ec"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#16140f", "tonalRamp": ["#050403", "#0b0a07", "#16140f", "#2a271c", "#45402e", "#6b6249", "#a89d7c", "#dcd3bd"] },
+      "ink-dim": { "role": "neutral", "displayName": "Ink Dim", "canonical": "#5a5142", "tonalRamp": ["#181510", "#2c281f", "#443d31", "#5a5142", "#736858", "#948a76", "#bcb2a0", "#e3ddd0"] },
+      "cream": { "role": "neutral", "displayName": "Cream (on leather)", "canonical": "#f4ecdb", "tonalRamp": ["#3a3220", "#6b5f3f", "#9a8c64", "#c7b98f", "#e0d4b7", "#f4ecdb", "#f8f2e6", "#fbf8f0"] },
+      "cream-dim": { "role": "neutral", "displayName": "Cream Dim (on leather)", "canonical": "#b9ad93", "tonalRamp": ["#2c2519", "#4f4530", "#726448", "#93825f", "#b9ad93", "#cbc2ac", "#ded8c8", "#f0ede3"] }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Hero headline only, set in IBM Plex Serif, tracked tight." },
-      "headline": { "displayName": "Headline", "purpose": "Section h2 headings across the page, IBM Plex Serif." },
-      "title": { "displayName": "Title", "purpose": "Feature-row h3 headings and the sign-in card heading, IBM Plex Serif." },
-      "body": { "displayName": "Body", "purpose": "Running copy, always ink-dim against the light ivory ground, set in IBM Plex Sans." },
-      "label": { "displayName": "Plate Label", "purpose": "Engraved brass-plate captions beside jacks, lamps, and feature tags — never above a heading. Set in IBM Plex Sans, not the display serif, because a tracked uppercase 11px micro-label reads cleaner in a sans." },
-      "mono": { "displayName": "Tabular Mono", "purpose": "Every dollar figure and business-name data caption, set in IBM Plex Mono; never headlines or body." }
+      "display": { "displayName": "Display", "purpose": "Hero headline only, set in Bodoni Moda." },
+      "headline": { "displayName": "Headline", "purpose": "Section h2 headings, Bodoni Moda." },
+      "title": { "displayName": "Title", "purpose": "Sign-in card heading and feature-row h3s, Bodoni Moda." },
+      "body": { "displayName": "Body", "purpose": "Running copy in Spectral, including live text over the hero photo." },
+      "label": { "displayName": "Plate Label", "purpose": "Small tracked-uppercase captions (PlateLabel), Work Sans." },
+      "mono": { "displayName": "Mono/Tabular", "purpose": "Every dollar figure, Courier Prime — never headlines or body." }
     },
     "shadows": [
-      { "name": "panel-mount", "value": "inset 0 0 0 1px rgba(138,107,58,0.35–0.45), 0 12px–20px 30px–50px rgba(0,0,0,0.5–0.55)", "purpose": "Standard raised-insert treatment for hero card, sign-in card, feature strip, mechanism readout. Shadow rgba stayed dark (not lightened) even though the ground did — only the ring tint and gradient stops moved to the light palette." },
-      { "name": "screenshot-mount", "value": "0 12px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.03)", "purpose": "Screenshot window mount, slightly lighter than card-level panel-mount." },
-      { "name": "lamp-glow-active", "value": "0 0 Npx N*0.5px {color}66, 0 0 N*0.5px {color}", "purpose": "Ambient glow on a Lamp primitive when active; absent at rest." },
-      { "name": "jack-active-ring", "value": "inset 0 0 0 2px {color}aa, inset 0 0 {size*0.3}px {color}55, 0 0 {size*0.45}px {color}55", "purpose": "Glow ring layered over the fixed-material jack photo when a jack is active." }
+      { "name": "card-mount", "value": "inset 0 0 0 1px rgba(184,145,74,0.32), 0 12px-30px / 30px-70px rgba(0,0,0,0.12-0.5)", "purpose": "Standard treatment for every raised card (hero photo, sign-in card, Mechanism card, screenshot windows, Features inset panel)." },
+      { "name": "gilt-edge-subtle", "value": "inset -3px 0 0 rgba(184,145,74,0.55), inset -5px 0 0 rgba(184,145,74,0.22)", "purpose": "Composed into card boxShadow chains to suggest a gilded page edge; shipped but judged not clearly perceptible in finish review — treat as a faint detail, not an established device." },
+      { "name": "stamp-flash", "value": "0 0 0 2px {brass} animating to scale:1.6, opacity:0 over 500ms", "purpose": "One-shot ring pulse when LedgerStamp transitions to active." }
     ],
     "motion": [
-      { "name": "section-reveal", "value": "opacity/translateY(24-32px)->0, duration 0.6-0.7s, ease [0.16,1,0.3,1]", "purpose": "The one authored section-entrance moment, used by the Section wrapper and ScreenshotWindow." },
-      { "name": "cable-spring", "value": "type spring, stiffness 90, damping 15", "purpose": "Patch cable draw-in, mechanical/damped per the direction contract." },
-      { "name": "ticker-easeout", "value": "cubic ease-out, duration 900ms", "purpose": "TickerTotal's adding-machine climb to its value, rendered in IBM Plex Mono." },
-      { "name": "seat-flash", "value": "scale 1->1.7, opacity 0.9->0, duration 550ms ease-out", "purpose": "One-shot ring pulse fired when a jack transitions to active; timed to the component's real 550ms setTimeout." }
+      { "name": "ease-section-reveal", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Section and card entrance transitions (opacity/y) on scroll into view." },
+      { "name": "ticker-ease", "value": "cubic (1 - (1-t)^3) over 900ms", "purpose": "TickerTotal's adding-machine digit climb." }
     ],
     "breakpoints": [
       { "name": "sm", "value": "640px" }
@@ -49,78 +44,88 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Sign In / form submit — the only filled action in the system.",
-      "html": "<button class=\"ds-btn-primary\">Sign In</button>",
-      "css": ".ds-btn-primary { background: #1c8054; color: #fffdf7; padding: 10px 20px; border-radius: 8px; font-weight: 500; font-size: 14px; font-family: 'IBM Plex Sans', sans-serif; border: none; transition: transform 0.15s; } .ds-btn-primary:hover { filter: brightness(1.05); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: 2px solid #b8935a; outline-offset: 2px; } .ds-btn-primary:disabled { opacity: 0.6; }"
+      "description": "Gold-filled primary action button (nav/hero 'Get Started').",
+      "html": "<button class=\"ds-btn-primary\">Get Started</button>",
+      "css": ".ds-btn-primary { background: #b8914a; color: #0f2b21; font-family: 'Work Sans', sans-serif; font-weight: 500; font-size: 14px; padding: 10px 20px; border-radius: 8px; border: none; transition: transform 0.15s ease; } .ds-btn-primary:hover { filter: brightness(1.06); } .ds-btn-primary:focus-visible { outline: 2px solid #d9b876; outline-offset: 2px; } .ds-btn-primary:active { transform: scale(0.98); }"
     },
     {
       "name": "Ghost Button",
       "kind": "button",
       "refersTo": "button-ghost",
-      "description": "Secondary in-page-anchor action, e.g. 'See it work'.",
-      "html": "<button class=\"ds-btn-ghost\">See it work</button>",
-      "css": ".ds-btn-ghost { background: transparent; color: #241f16; padding: 10px 20px; border-radius: 8px; font-weight: 500; font-size: 14px; font-family: 'IBM Plex Sans', sans-serif; border: none; box-shadow: inset 0 0 0 1px rgba(138,107,58,0.22); } .ds-btn-ghost:hover { box-shadow: inset 0 0 0 1px rgba(138,107,58,0.4); } .ds-btn-ghost:focus-visible { outline: 2px solid #b8935a; outline-offset: 2px; }"
+      "description": "Transparent secondary action button on the leather ground (nav 'Sign In').",
+      "html": "<button class=\"ds-btn-ghost\">Sign In</button>",
+      "css": ".ds-btn-ghost { background: transparent; color: #f4ecdb; font-family: 'Work Sans', sans-serif; font-weight: 500; font-size: 14px; padding: 10px 16px; border-radius: 8px; border: none; box-shadow: inset 0 0 0 1px rgba(184,145,74,0.32); transition: background 0.15s ease; } .ds-btn-ghost:hover { background: rgba(184,145,74,0.08); } .ds-btn-ghost:focus-visible { outline: 2px solid #d9b876; outline-offset: 2px; }"
     },
     {
-      "name": "Input Field",
+      "name": "Email/Password Input",
       "kind": "input",
       "refersTo": "input-field",
-      "description": "Sign-in email/password field.",
-      "html": "<input class=\"ds-input\" type=\"email\" placeholder=\"you@business.com\" />",
-      "css": ".ds-input { background: #f1ead9; color: #241f16; padding: 10px 12px; border-radius: 8px; border: none; box-shadow: inset 0 0 0 1px rgba(138,107,58,0.22); font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; } .ds-input:focus-visible { outline: 2px solid #b8935a; outline-offset: 1px; }"
+      "description": "Sign-in/sign-up form fields, cream fill on a paper card.",
+      "html": "<input class=\"ds-input\" type=\"email\" placeholder=\"Email\" />",
+      "css": ".ds-input { background: #efe3cc; color: #16140f; font-family: 'Spectral', serif; font-size: 14px; padding: 10px 12px; border-radius: 8px; border: none; box-shadow: inset 0 0 0 1px rgba(184,145,74,0.32); } .ds-input:focus { outline: none; }"
+    },
+    {
+      "name": "Sign-In Card",
+      "kind": "card",
+      "refersTo": "sign-in-panel",
+      "description": "The cream paper card housing the auth form, with gold corner brackets and a subtle gilt edge.",
+      "html": "<div class=\"ds-card\"><h2 class=\"ds-card-title\">Sign in</h2><p class=\"ds-card-body\">Ledger paper inset with gold corner tooling.</p></div>",
+      "css": ".ds-card { background: linear-gradient(165deg, rgba(244,236,219,0.9), rgba(239,227,204,0.94)); border-radius: 12px; padding: 32px; box-shadow: inset 0 0 0 1px rgba(184,145,74,0.32), 0 24px 60px rgba(0,0,0,0.45), inset -3px 0 0 rgba(184,145,74,0.55), inset -5px 0 0 rgba(184,145,74,0.22); position: relative; } .ds-card-title { font-family: 'Bodoni Moda', serif; font-weight: 700; font-size: 28px; color: #16140f; margin-bottom: 12px; } .ds-card-body { font-family: 'Spectral', serif; color: #5a5142; font-size: 14px; }"
+    },
+    {
+      "name": "Ledger Stamp",
+      "kind": "custom",
+      "refersTo": "ledger-stamp",
+      "description": "Signature row-selector: authored SVG seal, ink/gold fill with checkmark on activation, radial tick marks at rest.",
+      "html": "<svg class=\"ds-stamp\" viewBox=\"0 0 40 40\" width=\"22\" height=\"22\"><circle cx=\"20\" cy=\"20\" r=\"12.5\" fill=\"#b8914a\" stroke=\"#d9b876\" stroke-width=\"1.5\" /><path d=\"M14 20l4 4 8-9\" fill=\"none\" stroke=\"#0f2b21\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /></svg>",
+      "css": ".ds-stamp { display: block; }"
     },
     {
       "name": "Plate Label",
       "kind": "custom",
-      "description": "Engraved brass-plate caption grammar; sits beside content, never above a heading. Set in IBM Plex Sans even though headlines moved to serif — a tracked uppercase 11px label reads cleaner in a sans.",
-      "html": "<span class=\"ds-plate-label\">MULTI-BUSINESS</span>",
-      "css": ".ds-plate-label { display: inline-block; font-family: 'IBM Plex Sans', sans-serif; font-weight: 500; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #8a6a35; }"
+      "refersTo": "plate-label",
+      "description": "Small tracked-uppercase caption used beside headings, row labels, and nav items.",
+      "html": "<span class=\"ds-plate-label\">Grand Total</span>",
+      "css": ".ds-plate-label { display: inline-block; font-family: 'Work Sans', sans-serif; font-weight: 500; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #b8914a; text-shadow: 0 1px 0 rgba(244,236,219,0.5), 0 -0.5px 0 rgba(0,0,0,0.2); }"
     },
     {
-      "name": "Panel Card",
-      "kind": "card",
-      "description": "The system's one card shape: photographed-texture-under-tint surface with brass corner screws.",
-      "html": "<div class=\"ds-panel\"><div class=\"ds-screw ds-screw-tl\"></div><div class=\"ds-screw ds-screw-tr\"></div><div class=\"ds-screw ds-screw-bl\"></div><div class=\"ds-screw ds-screw-br\"></div><h3 class=\"ds-panel-title\">Sign in</h3></div>",
-      "css": ".ds-panel { position: relative; border-radius: 12px; padding: 24px; background: linear-gradient(165deg, rgba(251,246,232,0.86), rgba(241,234,217,0.93)); box-shadow: inset 0 0 0 1px rgba(138,107,58,0.35), 0 20px 50px rgba(0,0,0,0.55); } .ds-panel-title { font-family: 'IBM Plex Serif', serif; font-weight: 600; font-size: 18px; color: #241f16; margin: 0; } .ds-screw { position: absolute; width: 14px; height: 14px; border-radius: 9999px; background: #5c4a28; box-shadow: 0 1px 2px rgba(0,0,0,0.7); } .ds-screw-tl { top: 6px; left: 6px; } .ds-screw-tr { top: 6px; right: 6px; } .ds-screw-bl { bottom: 6px; left: 6px; } .ds-screw-br { bottom: 6px; right: 6px; }"
-    },
-    {
-      "name": "Jack + Lamp",
+      "name": "Ticker Total",
       "kind": "custom",
-      "description": "Signature component: a socket whose fixed-material photo never changes color, plus a separate glow-ring and idle/active lamp for state. Ferrule fill/stroke on adjoining cables use panel.brassBright/panel.ink tokens rather than hardcoded hex.",
-      "html": "<div class=\"ds-jack-wrap\"><div class=\"ds-jack-ring\"></div><div class=\"ds-lamp ds-lamp-active\"></div></div>",
-      "css": ".ds-jack-wrap { position: relative; width: 30px; height: 30px; border-radius: 9999px; background: radial-gradient(circle, #cba86f, #8a6a35); } .ds-jack-ring { position: absolute; inset: 0; border-radius: 9999px; box-shadow: inset 0 0 0 2px rgba(28,128,84,0.67), inset 0 0 9px rgba(28,128,84,0.33), 0 0 13px rgba(28,128,84,0.33); } .ds-lamp { width: 8px; height: 8px; border-radius: 9999px; background: #3a2f1e; margin-top: 8px; } .ds-lamp-active { background: #c98a1f; box-shadow: 0 0 12px 4px rgba(201,138,31,0.4), 0 0 4px #c98a1f; }"
+      "refersTo": "ticker-total",
+      "description": "Tabular dollar readout that climbs digit-by-digit like an adding machine.",
+      "html": "<span class=\"ds-ticker\">$19,730</span>",
+      "css": ".ds-ticker { font-family: 'Courier Prime', monospace; font-variant-numeric: tabular-nums; color: #1c7a4d; font-weight: 700; }"
     }
   ],
   "narrative": {
-    "northStar": "The Switchboard",
-    "overview": "The landing page is a single warm ivory enamel patch panel, not a page of floating text over a gradient wash. Every surface — hero, feature strip, screenshot mounts, the sign-in card — is a physical insert bolted into the same panel material with real brass screws at its corners. Business identity is expressed as jacks on a trunk line: three businesses patch into one master total, isolating a business means unplugging the others rather than filtering a list. This is a fixed light world, not part of the app's own toggleable theme. This is the shipped result of two build passes. The page originally shipped as a near-black bakelite panel with a condensed cast-metal display face (Big Shoulders) and Space Mono figures; the user then asked for the whole page lightened ('a little too dark') and for more business-like typography, carried out together as one revision since a lighter ground and a corporate typeset read as one coherent direction. Vintage switchboards were as often cream/ivory bakelite as black, so the lighter material is period-accurate to the same object. Every panel surface still layers the photographed bakelite/gunmetal texture under a semi-transparent color-tint gradient via panelSurface() — only the tint pair changed, from near-black stops to warm ivory ones.",
+    "northStar": "The House Ledger",
+    "overview": "The landing page is a bound accounting ledger, not an industrial panel and not a generic dark-fintech gradient. The product's own real output — a business's running total, a tabular P&L — becomes the entire visual system: a photographed open ledger book anchors the hero with live HTML business names and dollar figures set directly over its blank ruled pages, and every section down the page alternates between deep bottle-green leather grounds and cream ledger-paper insets, the way a physical ledger alternates a leather cover and its paper interior. Gold foil corner-tooling brackets (GoldCorners) mark every card's corners in place of the old world's brass screws, and a hand-drawn ink/gold stamp (LedgerStamp) is the page's one interactive diagram element, replacing the previous world's jack-and-patch-cable metaphor outright. This is the second visual world this page has shipped. The prior 'Switchboard' world (warm ivory patch-bay panel, jacks/cables/lamps, IBM Plex family) was retired in full at the user's explicit request — 'too industrial... premium / elegant finance' — not revised in place. Nothing from that world's component vocabulary carries forward.",
     "keyCharacteristics": [
-      "One continuous panel material (photographed texture + tint), never a flat gradient standing in for it.",
-      "Jacks, cables, and lamps as the literal visual grammar for \"business\" / \"connection\" / \"active state.\"",
-      "Brass-plate labels sit beside headings, never above them, at every breakpoint.",
-      "Deep emerald reads income/active, rust-red reads expense, amber reads an idle lamp turning on.",
-      "Tabular figures are always IBM Plex Mono; running copy and headlines are never set in it."
+      "A real photographed ledger book as the hero's own image, with live text (not baked into the raster) overlaid in container-query percentage units so it stays crisp and registered to the ruled lines.",
+      "Section grounds alternate leatherSurface() (deep green) and paperSurface() (cream) down the page, mirroring a ledger's cover-to-page structure.",
+      "Gold foil corner brackets (authored SVG) mark every card/panel's four corners; a gold/ink stamp seal is the one interactive selector device, reused as the Features-strip bullet icon.",
+      "Every dollar figure is set in Courier Prime; display headlines are Bodoni Moda; body copy (including the live text over the hero photo) is Spectral.",
+      "Real dollar figures inside a card use a dotted CSS leader line between name and amount — classic ledger dot-leader typography — never a plain flex-justify gap."
     ],
     "rules": [
-      { "name": "The Two-Signal Rule", "body": "Only emerald and rust-red carry semantic meaning (positive/negative, active/isolated). Amber is reserved exclusively for the lamp's own idle→active transition and never doubles as a third semantic color.", "section": "colors" },
-      { "name": "The Mono-Is-For-Numbers Rule", "body": "IBM Plex Mono renders only figures and short data captions (dollar totals, business-name tags under jacks). It never sets a headline, a body paragraph, or a label — monospace here means \"measurement,\" not \"technical\" costume.", "section": "typography" },
-      { "name": "The Material-Before-Gradient Rule", "body": "No panel surface is a flat CSS gradient. Every panel, card, and inset layers a photographed texture (bakelite grain or brass screw/jack photography) under a semi-transparent color tint via panelSurface(); the tint sets mood, the photograph supplies material.", "section": "elevation" }
+      { "name": "The Two-Ground Rule", "body": "Every section is either a leatherSurface() (deep green) or paperSurface() (cream) ground — there is no third page background. Text color follows the ground: cream/cream-dim on leather, ink/ink-dim on paper.", "section": "colors" },
+      { "name": "The Mono-Is-For-Money Rule", "body": "Courier Prime renders only dollar figures and the running total ticker — never a headline, a label, or body prose. A number set in any other face is not a system figure.", "section": "typography" },
+      { "name": "The Material-Before-Gradient Rule", "body": "No section ground or card surface is a flat CSS gradient. Every one layers a photographed texture (leather or ledger-paper grain) under a semi-transparent color-tint gradient via leatherSurface()/paperSurface(); the tint sets mood, the photograph supplies material.", "section": "elevation" }
     ],
     "dos": [
-      "Do build every panel surface with panelSurface() (photographed texture + tint gradient) — never a flat CSS gradient standing in for bakelite or brass.",
-      "Do keep plate labels (PlateLabel) positioned beside their heading or content, using DOM order plus responsive order classes so the label never sits above the heading at any breakpoint, including mobile stack.",
-      "Do reserve IBM Plex Mono strictly for figures and short data captions; set headlines in IBM Plex Serif and body copy/labels in IBM Plex Sans.",
-      "Do give every shadow real offset and blur (see the Panel-mount vocabulary); depth communicates through blur and material layering, not flat halos.",
-      "Do draw icons as authored SVG (e.g. the chevron) in a single consistent stroke weight — never a Unicode glyph or emoji.",
-      "Do tint secondary/dim text from the palette's own brass/bakelite hue (ink-dim) rather than a neutral gray, on both the light ground and inside colored surfaces."
+      "Do build every section ground and card surface with leatherSurface() or paperSurface() (photographed texture + tint gradient) — never a flat CSS gradient standing in for leather or ledger paper.",
+      "Do alternate leather and paper grounds strictly section-by-section down the page; don't introduce a third page background.",
+      "Do reserve Courier Prime strictly for dollar figures and the running-total ticker; set headlines in Bodoni Moda and body copy/labels in Spectral/Work Sans respectively.",
+      "Do overlay live HTML text on photographed ledger-page assets in container-query percentage units (cqw) rather than baking numbers into a raster image — a raster attempt at this text rendered as garbled lettering during the build.",
+      "Do draw signature diagram elements (corner brackets, the stamp seal) as authored SVG, not photographed objects, since they are flat countable ornaments rather than lit physical objects.",
+      "Do use a dotted leader line between a label and its trailing figure inside ledger-style rows (Mechanism card) — this is the system's one recurring ledger-typography device."
     ],
     "donts": [
-      "Don't use a same-size icon+heading+text card grid for feature sections. This world's features are one continuous hairline-divided terminal strip off a shared trunk, not independent cards — the original build did this and was rebuilt.",
-      "Don't place a kicker/eyebrow label directly above a heading at any breakpoint. Plate labels sit beside content via flex-order, never stacked above it — two instances of the banned pattern were found and repositioned during finish review.",
-      "Don't render a panel, card, or inset as a flat CSS gradient with no photographed material underneath. Three surfaces shipped this way originally (hero, panels, jack sockets) and were rebuilt with real texture/photo assets.",
-      "Don't bake active-state color into a jack's own socket material. State lives in the separate glow-ring layered on top of a fixed-material photograph, matching how a real jack's metal doesn't change color while its indicator lamp does.",
-      "Don't use a hard-offset, zero-blur shadow anywhere in this system. It was never adopted and does not belong to this material world.",
-      "Don't reuse a signal color's dark-ground hex value unchanged after a light-ground revision (or vice versa). income, expense, amber, brass, and the hairline rgb all shifted a step darker in this revision specifically so they still clear text/small-element contrast against the new ivory ground."
+      "Don't reintroduce the retired Switchboard world's jack/cable/lamp vocabulary, brass-screw photography, or IBM Plex typeface family on this page. That world was replaced in full, not layered under this one.",
+      "Don't render a section ground or card as a flat CSS gradient with no photographed material underneath.",
+      "Don't treat the gilt-edge card shadow or the foil-stamp text-shadow on gold PlateLabel text as an established, legible material device to extend onto new surfaces. Both shipped and remain in code, but finish review judged them too subtle to read clearly in screenshots, and the user chose to ship rather than fund a fix; describe them as a present-but-faint implementation detail, not a house rule to imitate.",
+      "Don't place a kicker/eyebrow label directly above a heading. PlateLabel sits beside content (row labels, nav caption) in this build, never stacked above a heading as a standalone eyebrow — no instance of that pattern shipped on this page, and none should be added.",
+      "Don't use a hard-offset, zero-blur shadow anywhere in this system; every recorded shadow carries real blur."
     ]
   }
 }

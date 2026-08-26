@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react'
 import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { panel } from '../../lib/landingTheme'
-import panelTextureUrl from '../../assets/landing/panel-texture.jpg'
-import brassScrewUrl from '../../assets/landing/brass-screw.png'
-import jackSocketUrl from '../../assets/landing/jack-socket.png'
+import leatherTextureUrl from '../../assets/landing/leather-texture.jpg'
+import ledgerPaperTextureUrl from '../../assets/landing/ledger-paper-texture.jpg'
 
 function hexToRgba(hex: string, alpha: number) {
   const n = parseInt(hex.replace('#', ''), 16)
@@ -15,204 +14,171 @@ function hexToRgba(hex: string, alpha: number) {
 }
 
 /**
- * Real photographed bakelite/gunmetal texture layered under a color-tint
- * gradient (semi-transparent, so the grain/scratches show through) -- every
- * panel surface on the page uses this instead of a flat CSS gradient.
+ * Real photographed deep bottle-green leather, layered under a color-tint
+ * gradient -- every dark ground on the page (nav, hero, section backgrounds)
+ * uses this instead of a flat CSS gradient.
  */
-export function panelSurface(tint: [string, string] = [panel.bgRaised2, panel.bgDeep], angle = 160) {
+export function leatherSurface(angle = 160) {
   return {
-    backgroundImage: `linear-gradient(${angle}deg, ${hexToRgba(tint[0], 0.86)}, ${hexToRgba(tint[1], 0.93)}), url(${panelTextureUrl})`,
+    backgroundImage: `linear-gradient(${angle}deg, ${hexToRgba(panel.bg, 0.75)}, ${hexToRgba(panel.bgDeep, 0.88)}), url(${leatherTextureUrl})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   }
 }
 
-/** An engraved brass-plate label, the panel's caption grammar throughout. */
-export function PlateLabel({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+/**
+ * Real photographed cream ledger-paper grain, layered under a color-tint
+ * gradient -- every light inset (sign-in card, feature strip, screenshot
+ * mats) uses this instead of a flat CSS fill.
+ */
+export function paperSurface(angle = 160) {
+  return {
+    backgroundImage: `linear-gradient(${angle}deg, ${hexToRgba(panel.bgRaised, 0.9)}, ${hexToRgba(panel.bgRaised2, 0.94)}), url(${ledgerPaperTextureUrl})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  }
+}
+
+/**
+ * A small tracked uppercase utility label -- the panel's caption grammar
+ * throughout. A faint two-tone text-shadow on the gold `dark` variant
+ * suggests a foil-stamped impression (a lifted highlight above, a pressed
+ * shadow below) rather than flat printed color.
+ */
+export function PlateLabel({ children, className = '', dark = false }: { children: React.ReactNode; className?: string; dark?: boolean }) {
   return (
     <span
-      className={`inline-block font-medium tracking-[0.18em] uppercase text-[11px] ${className}`}
-      style={{ color: panel.brass, fontFamily: "'IBM Plex Sans', sans-serif" }}
+      className={`inline-block font-medium tracking-[0.16em] uppercase text-[11px] ${className}`}
+      style={{
+        color: dark ? panel.brass : panel.inkDim,
+        fontFamily: "'Work Sans', sans-serif",
+        textShadow: dark ? `0 1px 0 ${hexToRgba(panel.bgRaised, 0.5)}, 0 -0.5px 0 rgba(0,0,0,0.2)` : undefined,
+      }}
     >
       {children}
     </span>
   )
 }
 
-/** Four real brass screws (photographed macro asset), used on every panel/insert. */
-export function BrassScrews() {
-  const positions = [
-    { top: 6, left: 6 },
-    { top: 6, right: 6 },
-    { bottom: 6, left: 6 },
-    { bottom: 6, right: 6 },
+/**
+ * A single corner's gold-foil tooling bracket -- two ruled lines meeting at
+ * a small scrollwork curl, drawn as authored SVG (a flat, countable
+ * ornament, not a photographed object) rather than a raster asset, so it
+ * stays crisp at any size instead of a shrunk photo reading as a dot.
+ */
+function CornerGlyph() {
+  return (
+    <svg viewBox="0 0 32 32" width={22} height={22} fill="none">
+      <path d="M5 17 V8.5 Q5 5 8.5 5 H17" stroke={panel.brass} strokeWidth={1.1} strokeLinecap="round" />
+      <path d="M9 21 V12.5 Q9 9 12.5 9 H21" stroke={panel.brass} strokeWidth={0.7} strokeLinecap="round" opacity={0.75} />
+      <circle cx={5} cy={5} r={1.6} fill={panel.brass} />
+    </svg>
+  )
+}
+
+/** Four gold-foil corner tooling brackets, used on every card/panel. */
+export function GoldCorners() {
+  const corners = [
+    { style: { top: 6, left: 6 } },
+    { style: { top: 6, right: 6, transform: 'scaleX(-1)' } },
+    { style: { bottom: 6, left: 6, transform: 'scaleY(-1)' } },
+    { style: { bottom: 6, right: 6, transform: 'scale(-1,-1)' } },
   ]
   return (
     <>
-      {positions.map((pos, i) => (
-        <img
-          key={i}
-          src={brassScrewUrl}
-          alt=""
-          aria-hidden
-          className="absolute w-3.5 h-3.5 rounded-full object-cover pointer-events-none select-none"
-          style={{ ...pos, boxShadow: '0 1px 2px rgba(0,0,0,0.7)' }}
-          draggable={false}
-        />
+      {corners.map((c, i) => (
+        <div key={i} className="absolute pointer-events-none select-none opacity-80" style={c.style}>
+          <CornerGlyph />
+        </div>
       ))}
     </>
   )
 }
 
-/** A round lamp indicator -- dark when idle, warm amber glow when active. */
-export function Lamp({ active, color = panel.amber, size = 8 }: { active: boolean; color?: string; size?: number }) {
-  return (
-    <motion.div
-      className="rounded-full"
-      style={{ width: size, height: size, background: active ? color : '#3a2f1e' }}
-      animate={{
-        boxShadow: active ? `0 0 ${size * 1.6}px ${size * 0.5}px ${color}66, 0 0 ${size * 0.5}px ${color}` : '0 0 0px rgba(0,0,0,0)',
-      }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
-    />
-  )
-}
+/**
+ * A slim gilt page-edge -- a thin gold-to-transparent gradient sliver along
+ * a card's right edge, standing in for the gilded edge of a stack of ledger
+ * pages seen side-on. Composed into a card's own boxShadow chain.
+ */
+export const giltEdgeShadow = `inset -3px 0 0 ${hexToRgba(panel.brass, 0.55)}, inset -5px 0 0 ${hexToRgba(panel.brass, 0.22)}`
 
-/** A single jack socket -- the physical object each business plugs into. */
-export function Jack({
-  label,
-  active,
-  color = panel.brass,
-  size = 30,
-}: {
-  label?: string
-  active: boolean
-  color?: string
-  size?: number
-}) {
-  const [justSeated, setJustSeated] = useState(false)
+/**
+ * A ledger ink/gold stamp -- the mark a business row gets when selected,
+ * standing in for the old world's jack socket. Drawn as authored SVG (a
+ * flat, countable seal shape, not a photographed material) rather than a
+ * new photographed asset, since this is a diagram element, not an object
+ * with lighting and depth.
+ */
+export function LedgerStamp({ active, size = 22 }: { active: boolean; size?: number }) {
+  const [justStamped, setJustStamped] = useState(false)
   const wasActive = useRef(active)
   useEffect(() => {
     if (active && !wasActive.current) {
-      setJustSeated(true)
-      const t = setTimeout(() => setJustSeated(false), 550)
+      setJustStamped(true)
+      const t = setTimeout(() => setJustStamped(false), 500)
       wasActive.current = true
       return () => clearTimeout(t)
     }
     wasActive.current = active
   }, [active])
 
+  const ticks = Array.from({ length: 16 }, (_, i) => (i / 16) * Math.PI * 2)
+
   return (
-    <div className="flex flex-col items-center gap-2">
-      <div className="relative" style={{ width: size, height: size }}>
-        {/* Real photographed jack-socket metal (fixed material, doesn't
-            change with state) -- the active-state color lives entirely in
-            the glow ring layered on top, matching how a real jack's own
-            metal never changes color while a separate lamp signals state. */}
-        <img
-          src={jackSocketUrl}
-          alt=""
-          aria-hidden
-          draggable={false}
-          className="absolute inset-0 w-full h-full rounded-full object-cover pointer-events-none select-none"
-          style={{ filter: active ? 'none' : 'brightness(0.6) saturate(0.7)', transition: 'filter 0.45s ease' }}
+    <div className="relative" style={{ width: size, height: size }}>
+      <motion.svg
+        viewBox="0 0 40 40"
+        className="absolute inset-0 w-full h-full"
+        animate={{ scale: active ? 1 : 0.94 }}
+        transition={{ duration: 0.35, ease: 'easeOut' }}
+      >
+        {ticks.map((a, i) => (
+          <line
+            key={i}
+            x1={20 + Math.cos(a) * 15}
+            y1={20 + Math.sin(a) * 15}
+            x2={20 + Math.cos(a) * 18}
+            y2={20 + Math.sin(a) * 18}
+            stroke={active ? panel.brass : panel.hairline}
+            strokeWidth={1.4}
+          />
+        ))}
+        <circle
+          cx={20}
+          cy={20}
+          r={12.5}
+          fill={active ? panel.brass : 'transparent'}
+          stroke={active ? panel.brassBright : panel.hairline}
+          strokeWidth={1.5}
+          style={{ transition: 'fill 0.35s ease, stroke 0.35s ease' }}
         />
-        <div
-          className="absolute inset-0 rounded-full pointer-events-none"
-          style={{
-            boxShadow: active
-              ? `inset 0 0 0 2px ${color}aa, inset 0 0 ${size * 0.3}px ${color}55, 0 0 ${size * 0.45}px ${color}55`
-              : 'inset 0 0 0 1px rgba(0,0,0,0.4)',
-            transition: 'box-shadow 0.45s ease',
-          }}
-        />
-        {justSeated && (
-          <motion.div
-            className="absolute inset-0 rounded-full pointer-events-none"
-            style={{ boxShadow: `0 0 0 2px ${color}` }}
-            initial={{ opacity: 0.9, scale: 1 }}
-            animate={{ opacity: 0, scale: 1.7 }}
-            transition={{ duration: 0.55, ease: 'easeOut' }}
+        {active && (
+          <path
+            d="M14 20l4 4 8-9"
+            fill="none"
+            stroke={panel.bgDeep}
+            strokeWidth={2.4}
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         )}
-      </div>
-      {label && <PlateLabel>{label}</PlateLabel>}
+      </motion.svg>
+      {justStamped && (
+        <motion.div
+          className="absolute inset-0 rounded-full pointer-events-none"
+          style={{ boxShadow: `0 0 0 2px ${panel.brass}` }}
+          initial={{ opacity: 0.9, scale: 1 }}
+          animate={{ opacity: 0, scale: 1.6 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+        />
+      )}
     </div>
   )
 }
 
 /**
- * An animated patch cable drawn in percentage-space (0-100 on both axes) so
- * it stays in sync with sibling jacks positioned by percentage in the same
- * box, at any width -- swings in and "clicks" via a spring, per the
- * direction contract's mechanical, damped motion.
- */
-export function PatchCable({
-  from,
-  to,
-  color,
-  delay = 0,
-  active = true,
-  sag = 28,
-}: {
-  from: { x: number; y: number }
-  to: { x: number; y: number }
-  color: string
-  delay?: number
-  active?: boolean
-  sag?: number
-}) {
-  const ref = useRef<SVGSVGElement>(null)
-  const inView = useInView(ref, { once: true, amount: 0.4 })
-  const midY = Math.max(from.y, to.y) + sag
-  const path = `M ${from.x} ${from.y} C ${from.x} ${midY}, ${to.x} ${midY}, ${to.x} ${to.y}`
-
-  return (
-    <svg
-      ref={ref}
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none"
-      className="absolute inset-0 w-full h-full overflow-visible pointer-events-none"
-    >
-      <motion.path
-        d={path}
-        fill="none"
-        stroke={color}
-        strokeWidth={1.4}
-        strokeLinecap="round"
-        vectorEffect="non-scaling-stroke"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={inView && active ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
-        transition={{ type: 'spring', stiffness: 90, damping: 15, delay }}
-      />
-      {/* Plug ferrule -- a filled brass cap right where the cable meets the
-          jack, reading as a real connector tip rather than a wire that
-          dissolves into the socket. A small ellipse (not a circle) on
-          purpose: the SVG's non-uniform preserveAspectRatio="none" scaling
-          would distort a true circle anyway, so this matches that stretch
-          instead of fighting it, and is sized to stay visible at any
-          container aspect ratio. */}
-      <motion.ellipse
-        cx={to.x}
-        cy={Math.max(from.y, to.y) - 16}
-        rx={1.8}
-        ry={1.8}
-        fill={panel.brassBright}
-        stroke={panel.ink}
-        strokeWidth={1}
-        vectorEffect="non-scaling-stroke"
-        initial={{ opacity: 0, scale: 0.4 }}
-        animate={inView && active ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.4 }}
-        transition={{ duration: 0.25, delay: delay + 0.4, ease: 'backOut' }}
-        style={{ transformOrigin: `${to.x}px ${to.y}px` }}
-      />
-    </svg>
-  )
-}
-
-/**
- * A ticking numeric total -- climbs digit-by-digit like an adding machine
- * rather than a smooth linear count, per the direction contract.
+ * A ticking numeric total, set in tabular typewriter figures -- climbs
+ * digit-by-digit like an adding machine rather than a smooth linear count.
  */
 export function TickerTotal({
   value,
@@ -248,7 +214,7 @@ export function TickerTotal({
   }, [value, active])
 
   return (
-    <span className={className} style={{ fontFamily: "'IBM Plex Mono', monospace", ...style }}>
+    <span className={className} style={{ fontFamily: "'Courier Prime', monospace", ...style }}>
       {prefix}
       {display.toLocaleString()}
     </span>
@@ -256,9 +222,8 @@ export function TickerTotal({
 }
 
 /**
- * A CRT/meter-style readout window mounted into the panel -- houses the real
- * app screenshots so they read as instruments built into the switchboard,
- * not floating browser chrome.
+ * A ledger-page mat housing a real app screenshot -- reads as a page bound
+ * into the ledger, not floating browser chrome.
  */
 export function ScreenshotWindow({
   src,
@@ -279,30 +244,30 @@ export function ScreenshotWindow({
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className="relative rounded-lg p-2.5"
       style={{
-        ...panelSurface(),
-        boxShadow: '0 12px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.03)',
+        ...paperSurface(),
+        boxShadow: `0 12px 30px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(184,145,74,0.25), ${giltEdgeShadow}`,
       }}
     >
-      <BrassScrews />
+      <GoldCorners />
       <div
         className="relative overflow-hidden rounded"
-        style={{ boxShadow: 'inset 0 0 0 1px rgba(138,106,53,0.35), inset 0 2px 12px rgba(0,0,0,0.7)' }}
+        style={{ boxShadow: `inset 0 0 0 1px ${panel.hairline}, inset 0 2px 12px rgba(0,0,0,0.25)` }}
       >
         <img src={src} alt={alt} className="w-full h-auto block" loading="lazy" />
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.05), transparent 40%)' }}
+          style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.06), transparent 40%)' }}
         />
       </div>
       <div className="mt-2.5 flex items-center gap-2">
-        <Lamp active color={panel.income} size={6} />
+        <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: panel.income }} />
         <PlateLabel>{label}</PlateLabel>
       </div>
     </motion.div>
   )
 }
 
-/** Animated count-up used for small stat readouts (jack counts, etc). */
+/** Animated count-up used for small stat readouts. */
 export function useCountUp(target: number, inView: boolean) {
   const mv = useMotionValue(0)
   const spring = useSpring(mv, { stiffness: 60, damping: 20 })

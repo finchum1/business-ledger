@@ -24,3 +24,8 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# impeccable — transient decision-page server logs/state (the comps
+# themselves and their approval sidecars in .impeccable/mocks/ ARE kept,
+# as provenance for which direction/comp was approved and why)
+.impeccable/questions/
