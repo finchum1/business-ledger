@@ -21,7 +21,7 @@ export function Sidebar({ session }: { session: Session }) {
   return (
     <aside className="flex h-screen w-60 shrink-0 sticky top-0 flex-col border-r border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 px-4 py-5">
       <div className="px-1 pb-6">
-        <div className="font-semibold text-slate-900 dark:text-slate-100">Business Ledger</div>
+        <div className="font-semibold text-slate-900 dark:text-slate-100">Sovereign Books</div>
       </div>
 
       <nav className="flex flex-1 flex-col gap-1">

@@ -77,7 +77,7 @@ export function ContractorReportPDF({
     <Document>
       <Page size="LETTER" style={styles.page}>
         <View style={styles.header}>
-          <Text style={styles.brand}>Business Ledger</Text>
+          <Text style={styles.brand}>Sovereign Books</Text>
           <Text style={styles.title}>Contractor Report</Text>
           <Text style={styles.subtitle}>{scopeLabel}</Text>
           <Text style={styles.subtitle}>{periodLabel}</Text>
@@ -113,7 +113,7 @@ export function ContractorReportPDF({
         </View>
 
         <Text style={styles.footer} fixed>
-          Generated {new Date().toLocaleString()} · Business Ledger
+          Generated {new Date().toLocaleString()} · Sovereign Books
         </Text>
       </Page>
     </Document>

@@ -3,68 +3,70 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * The app's own light/dark theme retinted to match the landing page's
- * "House Ledger" world (deep bottle-green leather, gold foil, cream ledger
- * paper) instead of the earlier switchboard world's warm ivory/brass "tan".
- * Overriding the color tokens here (rather than editing every bg-slate and
- * text-emerald class across every page) retints the whole app in one place
- * and keeps every existing light/dark pairing correct, since the light-vs-
- * dark relationship in this app is "which shade number," not "which
- * palette" -- shifting the hue of every step keeps that relationship intact.
- * slate: cream ledger paper (50) down to near-black bottle-green (950), the
- * same two endpoints as the landing page's own paper and leather grounds.
+ * The app's own light/dark theme retinted a third time, now to match the
+ * landing page's "played straight" premium-fintech-SaaS world (near-black
+ * graphite ground, one champagne-gold accent) instead of the prior "House
+ * Ledger" world's deep green/gold. Overriding the color tokens here (rather
+ * than editing every bg-slate and text-emerald class across every page)
+ * retints the whole app in one place and keeps every existing light/dark
+ * pairing correct, since the light-vs-dark relationship in this app is
+ * "which shade number," not "which palette" -- shifting the hue of every
+ * step keeps that relationship intact.
+ * slate: a true neutral ramp, near-white (50) to near-black graphite (950),
+ * matching the landing page's own restrained neutral-plus-one-accent
+ * palette rather than a colored material family.
  * emerald/rose/amber: re-derived from the landing page's income/expense/
- * gold-foil hues so the app's positive/negative/accent colors read as the
- * same brand colors as the website, not a coincidentally-similar green/red.
+ * gold-accent hues so the app's positive/negative/accent colors read as the
+ * same brand colors as the website.
  */
 @theme {
-  --color-slate-50: #f6f1e6;
-  --color-slate-100: #e9dfc5;
-  --color-slate-200: #cdc09b;
-  --color-slate-300: #a89f74;
-  --color-slate-400: #7d7d54;
-  --color-slate-500: #55603f;
-  --color-slate-600: #3c4930;
-  --color-slate-700: #2a3624;
-  --color-slate-800: #1c2619;
-  --color-slate-900: #121a10;
-  --color-slate-950: #0a120a;
+  --color-slate-50: #f7f7f7;
+  --color-slate-100: #ececed;
+  --color-slate-200: #d6d6d8;
+  --color-slate-300: #b3b3b7;
+  --color-slate-400: #8a8b90;
+  --color-slate-500: #64656b;
+  --color-slate-600: #48494e;
+  --color-slate-700: #333438;
+  --color-slate-800: #202124;
+  --color-slate-900: #131418;
+  --color-slate-950: #0a0b0d;
 
-  --color-emerald-50: #f2faf5;
-  --color-emerald-100: #ddf3e6;
-  --color-emerald-200: #b8e6cb;
-  --color-emerald-300: #8ad4a9;
-  --color-emerald-400: #52bd82;
-  --color-emerald-500: #279e63;
-  --color-emerald-600: #1c7a4d;
-  --color-emerald-700: #165f3d;
-  --color-emerald-800: #114a30;
-  --color-emerald-900: #0c3624;
-  --color-emerald-950: #071f15;
+  --color-emerald-50: #ecfdf5;
+  --color-emerald-100: #d1fae5;
+  --color-emerald-200: #a7f3d0;
+  --color-emerald-300: #6ee7b7;
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #059669;
+  --color-emerald-700: #047857;
+  --color-emerald-800: #065f46;
+  --color-emerald-900: #064e3b;
+  --color-emerald-950: #022c22;
 
-  --color-rose-50: #f7ece9;
-  --color-rose-100: #efd7d0;
-  --color-rose-200: #ddb0a3;
-  --color-rose-300: #c78576;
-  --color-rose-400: #a8584a;
-  --color-rose-500: #8a3c30;
-  --color-rose-600: #6b2a24;
-  --color-rose-700: #521f1a;
-  --color-rose-800: #3d1712;
-  --color-rose-900: #290f0c;
-  --color-rose-950: #180907;
+  --color-rose-50: #fef2f2;
+  --color-rose-100: #fee2e2;
+  --color-rose-200: #fecaca;
+  --color-rose-300: #fca5a5;
+  --color-rose-400: #f87171;
+  --color-rose-500: #ef4444;
+  --color-rose-600: #dc2626;
+  --color-rose-700: #b91c1c;
+  --color-rose-800: #991b1b;
+  --color-rose-900: #7f1d1d;
+  --color-rose-950: #450a0a;
 
-  --color-amber-50: #faf6ec;
-  --color-amber-100: #f2e7cc;
-  --color-amber-200: #e4cf9d;
-  --color-amber-300: #d3b473;
-  --color-amber-400: #c39f56;
-  --color-amber-500: #b8914a;
-  --color-amber-600: #9c7a3c;
-  --color-amber-700: #7d612f;
-  --color-amber-800: #5f4a24;
-  --color-amber-900: #43341a;
-  --color-amber-950: #2a2110;
+  --color-amber-50: #faf8f3;
+  --color-amber-100: #f3ede1;
+  --color-amber-200: #e6d9bd;
+  --color-amber-300: #d8c298;
+  --color-amber-400: #cbb078;
+  --color-amber-500: #b89a5c;
+  --color-amber-600: #967d49;
+  --color-amber-700: #74613a;
+  --color-amber-800: #56482c;
+  --color-amber-900: #3a301e;
+  --color-amber-950: #211a10;
 }
 
 :root {
@@ -77,14 +79,14 @@
 
 body {
   margin: 0;
-  background: #f6f1e6;
-  color: #121a10;
-  font-family: 'Work Sans', system-ui, 'Segoe UI', Roboto, sans-serif;
+  background: #f7f7f7;
+  color: #131418;
+  font-family: 'Hanken Grotesk', system-ui, 'Segoe UI', Roboto, sans-serif;
 }
 
 .dark body {
-  background: #0a120a;
-  color: #e9dfc5;
+  background: #0a0b0d;
+  color: #ececed;
 }
 
 #root {
@@ -97,4 +99,38 @@ input[type='date']::-webkit-calendar-picker-indicator {
 
 .dark input[type='date']::-webkit-calendar-picker-indicator {
   filter: invert(1);
+}
+
+/* Landing-page brand touches -- text selection and the three auth-form
+   focus rings pick up the same champagne-gold accent as the rest of the
+   page instead of the browser's unbranded default blue/outline. */
+::selection {
+  background: rgba(203, 176, 120, 0.35);
+  color: inherit;
+}
+
+/* Base + focus box-shadow both live in CSS (not the element's inline
+   style) so the focus rule can actually win -- an inline box-shadow set
+   from React would otherwise always beat a class selector, :focus or not. */
+.sb-input {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.sb-input:focus {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 0 3px rgba(203, 176, 120, 0.35);
+}
+
+/* A faint grain layer over the landing page's flat dark grounds -- the
+   depth cue this canon actually uses (Mercury/Brex both grain their dark
+   fields) in place of the two prior worlds' photographed material. */
+.sb-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }

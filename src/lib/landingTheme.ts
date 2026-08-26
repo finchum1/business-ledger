@@ -1,43 +1,36 @@
-// Palette for the marketing landing page's "House Ledger" world -- a bound
-// accounting ledger book: deep bottle-green leather, gold foil tooling,
-// cream ledger-paper insets. Replaces the earlier switchboard/patch-bay
-// world entirely (see DESIGN.md history) at the user's explicit request
-// ("too industrial... premium / elegant finance").
+// Palette for the marketing landing page's third world: "played straight"
+// premium fintech SaaS -- the category standard (Mercury, Ramp, Brex named
+// explicitly as the craft bar), executed at full fidelity rather than a
+// governing object/place metaphor. Replaces "The House Ledger" (bound
+// ledger book, deep green/gold) entirely, which itself replaced the
+// original "Switchboard" world -- see DESIGN.md for the full lineage.
 //
 // Deliberately separate from the app's own theme.ts (light/dark toggle) --
-// the landing page is a fixed light-on-dark visual world, not
-// user-toggleable. The app's own Tailwind tokens (src/index.css) were
-// retinted to derive from these same hex values, at the user's explicit
-// request, matching how the switchboard world's palette was carried into
-// the app last time.
+// the landing page is a fixed dark visual world, not user-toggleable. The
+// app's own Tailwind tokens (src/index.css) were retinted to derive from
+// these same hex values, per explicit user confirmation, same relationship
+// as both prior worlds.
 export const panel = {
-  // Deep bottle-green leather -- the dominant ground.
-  bgDeep: '#0f2b21',
-  bg: '#0c231b',
-  bgRaised: '#f4ecdb',
-  bgRaised2: '#efe3cc',
-  // Gold foil -- the metal/foil family (renamed from brass* to gold* since
-  // the material itself changed; kept the same three-step naming shape the
-  // old world used, dim/base/bright, so every callsite still reads).
-  brassDim: '#8a6a2e',
-  brass: '#b8914a',
-  brassBright: '#d9b876',
-  // Ink reads dark-on-cream inside paper insets; cream reads light-on-green
-  // everywhere else -- both live under `ink`/`inkDim` per the old world's
-  // naming, resolved per-surface at each call site the same way the old
-  // world did.
-  ink: '#16140f',
-  inkDim: '#5a5142',
-  // On the dark green ground, text needs the light neutral instead --
-  // components on `bgDeep`/`bg` use `cream`/`creamDim`, mirroring how the
-  // pre-lightening switchboard revision handled its own dark ground.
-  cream: '#f4ecdb',
-  creamDim: '#b9ad93',
-  income: '#1c7a4d',
-  incomeDim: '#c8e3d3',
-  expense: '#6b2a24',
-  expenseDim: '#e3c9c3',
-  amber: '#b8914a',
-  wire: '#3c5346',
-  hairline: 'rgba(184, 145, 74, 0.32)',
+  // Near-black graphite ground -- restrained, not drenched: a neutral field
+  // the one gold accent sits on, matching how Mercury/Ramp/Brex actually
+  // use color (an accent, never a saturated wash).
+  bgDeep: '#0a0b0d',
+  bg: '#0d0f12',
+  bgRaised: '#16181c',
+  bgRaised2: '#1d2025',
+  ink: '#f4f4f2',
+  inkDim: '#9a9ca3',
+  // Champagne gold -- the one accent, ties back to "Sovereign" without
+  // reaching for the literal brass/gold-foil material language of the
+  // prior ledger-book world. Used sparingly: primary button, small marks,
+  // never a wash.
+  gold: '#cbb078',
+  goldBright: '#ddc48f',
+  goldDim: '#8a7856',
+  income: '#34d399',
+  incomeDim: '#123b2c',
+  expense: '#f87171',
+  expenseDim: '#3d1e1e',
+  border: 'rgba(255, 255, 255, 0.08)',
+  borderStrong: 'rgba(255, 255, 255, 0.14)',
 } as const

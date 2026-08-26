@@ -31,7 +31,7 @@ with no migration, no new account, and no separate subscription per entity.
 ## Positioning
 
 Generic accounting software (QuickBooks-style tools) is built around one company/tenant at a time; plain
-spreadsheets require manual per-business upkeep and don't roll up cleanly. Business Ledger treats "which
+spreadsheets require manual per-business upkeep and don't roll up cleanly. Sovereign Books treats "which
 business" as just a field on every transaction — one login, one ledger, whether that ledger covers one
 business today or several later, and a Profit & Loss report that either combines every business or
 isolates any single one instantly. Businesses and categories are self-managed lists inside the app
@@ -98,9 +98,22 @@ viewed on screen, or exported as a clean PDF to hand to an accountant or keep fo
 
 ## Brand Commitments
 
-Name is **Business Ledger** — kept plain and functional rather than given a separate brand name,
-confirmed explicitly this session. No existing logo/mark; the landing page may use a simple
-wordmark/icon treatment rather than assuming an existing visual identity.
+Name is **Sovereign Books** — renamed from the original plain/functional "Business Ledger" (which
+shared its literal name with an unrelated well-known crypto hardware wallet brand) to something with
+real brand character, aimed at a "quietly wealthy, established, trustworthy" register rather than a
+generic small-business-SaaS one. Chosen from a brainstormed shortlist alongside Folio, Gilt Books,
+Bespoke Books, Cavendish Books, Crest Books, Meridian Books, Aurum Books, Keystone Books, and Bellwether
+Books — "Sovereign" for its direct tie to sovereign wealth/independence/authority, "Books" to sit
+plainly in the same naming convention as its real competitors (QuickBooks, FreshBooks) rather than
+around it. No existing logo/mark carries forward; the landing page's visual identity is being rebuilt
+around this name as a "luxury finance SaaS" direction (see DESIGN.md).
+
+**Standing visual preference, confirmed explicitly this session**: when offered a bespoke-tailoring
+concept direction ("Cut to Measure") for the third landing-page world in one day, the user said "play it
+straight" — the category-standard premium-fintech look, executed at full craft, no governing metaphor.
+Craft bar named explicitly: **Mercury, Ramp, Brex** (dark, precise, restrained SaaS polish — not a
+literal object/place metaphor like the two prior worlds). Future landing-page work should default to
+this canon register rather than proposing another concept-driven world, unless the user asks otherwise.
 
 ## Evidence on Hand
 

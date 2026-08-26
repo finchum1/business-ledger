@@ -3,17 +3,7 @@ import type { FormEvent } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { panel } from '../lib/landingTheme'
-import {
-  GoldCorners,
-  giltEdgeShadow,
-  LedgerStamp,
-  PlateLabel,
-  ScreenshotWindow,
-  TickerTotal,
-  leatherSurface,
-  paperSurface,
-} from '../components/landing/primitives'
-import ledgerBookHeroUrl from '../assets/landing/ledger-book-hero.jpg'
+import { BrowserFrame, Card, RowDot, ScreenshotWindow, Tag, TickerTotal } from '../components/landing/primitives'
 
 const SAMPLE_BUSINESSES = [
   { name: 'Riverside Landscaping', income: 6400, expenses: 2150 },
@@ -67,9 +57,9 @@ function Section({
     <motion.section
       ref={ref}
       id={id}
-      initial={{ opacity: 0, y: 32 }}
+      initial={{ opacity: 0, y: 24 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className={className}
       style={style}
     >
@@ -78,23 +68,14 @@ function Section({
   )
 }
 
-function Nameplate() {
+function Wordmark() {
   return (
-    <div className="flex items-center gap-2.5">
-      <div
-        className="w-7 h-7 rounded flex items-center justify-center shrink-0"
-        style={{
-          ...paperSurface(160),
-          boxShadow: `inset 0 0 0 1px ${panel.hairline}`,
-        }}
-      >
-        <div className="w-2 h-2 rounded-full" style={{ background: panel.brass, boxShadow: `0 0 8px ${panel.brass}` }} />
+    <div className="flex items-center gap-2">
+      <div className="w-6 h-6 rounded-md flex items-center justify-center shrink-0" style={{ background: panel.gold }}>
+        <div className="w-2 h-2 rounded-full" style={{ background: panel.bgDeep }} />
       </div>
-      <span
-        className="font-semibold tracking-wide text-lg"
-        style={{ color: panel.cream, fontFamily: "'Bodoni Moda', serif" }}
-      >
-        Business Ledger
+      <span className="font-semibold tracking-tight text-[15px]" style={{ color: panel.ink }}>
+        Sovereign Books
       </span>
     </div>
   )
@@ -148,28 +129,15 @@ function SignInPanel({ mode, onModeChange }: { mode: AuthMode; onModeChange: (m:
   }
 
   return (
-    <div
-      className="relative max-w-md mx-auto rounded-xl p-6 sm:p-8"
-      style={{
-        ...paperSurface(165),
-        boxShadow: `inset 0 0 0 1px ${panel.hairline}, 0 24px 60px rgba(0,0,0,0.45), ${giltEdgeShadow}`,
-      }}
-    >
-      <GoldCorners />
+    <Card className="relative max-w-md mx-auto p-6 sm:p-8" style={{ boxShadow: `0 0 0 1px ${panel.border}, 0 30px 60px -20px rgba(0,0,0,0.6)` }}>
       <div className="flex items-center justify-between gap-3 mb-6">
-        <h2
-          className="text-3xl font-bold tracking-tight"
-          style={{ color: panel.ink, fontFamily: "'Bodoni Moda', serif" }}
-        >
-          {isSignUp ? 'Create your ledger' : 'Sign in'}
+        <h2 className="text-2xl font-semibold tracking-tight" style={{ color: panel.ink }}>
+          {isSignUp ? 'Create your account' : 'Sign in'}
         </h2>
-        <div className="flex items-center gap-2 shrink-0">
-          <LedgerStamp active size={18} />
-          <PlateLabel dark>{isSignUp ? 'New Operator' : 'Operator Access'}</PlateLabel>
-        </div>
+        <Tag>{isSignUp ? 'New account' : 'Welcome back'}</Tag>
       </div>
       <form onSubmit={handleSubmit}>
-        <label className="block text-xs mb-1" style={{ color: panel.inkDim, fontFamily: "'Work Sans', sans-serif" }}>
+        <label className="block text-xs mb-1.5" style={{ color: panel.inkDim }}>
           Email
         </label>
         <input
@@ -178,14 +146,10 @@ function SignInPanel({ mode, onModeChange }: { mode: AuthMode; onModeChange: (m:
           autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full mb-4 rounded-lg px-3 py-2.5 text-sm focus:outline-none"
-          style={{
-            background: panel.bgRaised2,
-            color: panel.ink,
-            boxShadow: `inset 0 0 0 1px ${panel.hairline}`,
-          }}
+          className="sb-input w-full mb-4 rounded-lg px-3 py-2.5 text-sm focus:outline-none"
+          style={{ background: panel.bgRaised2, color: panel.ink, caretColor: panel.gold }}
         />
-        <label className="block text-xs mb-1" style={{ color: panel.inkDim, fontFamily: "'Work Sans', sans-serif" }}>
+        <label className="block text-xs mb-1.5" style={{ color: panel.inkDim }}>
           Password
         </label>
         <input
@@ -195,16 +159,12 @@ function SignInPanel({ mode, onModeChange }: { mode: AuthMode; onModeChange: (m:
           minLength={isSignUp ? 8 : undefined}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className={`w-full rounded-lg px-3 py-2.5 text-sm focus:outline-none ${isSignUp ? 'mb-4' : 'mb-6'}`}
-          style={{
-            background: panel.bgRaised2,
-            color: panel.ink,
-            boxShadow: `inset 0 0 0 1px ${panel.hairline}`,
-          }}
+          className={`sb-input w-full rounded-lg px-3 py-2.5 text-sm focus:outline-none ${isSignUp ? 'mb-4' : 'mb-6'}`}
+          style={{ background: panel.bgRaised2, color: panel.ink, caretColor: panel.gold }}
         />
         {isSignUp && (
           <>
-            <label className="block text-xs mb-1" style={{ color: panel.inkDim, fontFamily: "'Work Sans', sans-serif" }}>
+            <label className="block text-xs mb-1.5" style={{ color: panel.inkDim }}>
               Confirm password
             </label>
             <input
@@ -213,12 +173,8 @@ function SignInPanel({ mode, onModeChange }: { mode: AuthMode; onModeChange: (m:
               autoComplete="new-password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full mb-6 rounded-lg px-3 py-2.5 text-sm focus:outline-none"
-              style={{
-                background: panel.bgRaised2,
-                color: panel.ink,
-                boxShadow: `inset 0 0 0 1px ${panel.hairline}`,
-              }}
+              className="sb-input w-full mb-6 rounded-lg px-3 py-2.5 text-sm focus:outline-none"
+              style={{ background: panel.bgRaised2, color: panel.ink, caretColor: panel.gold }}
             />
           </>
         )}
@@ -235,40 +191,30 @@ function SignInPanel({ mode, onModeChange }: { mode: AuthMode; onModeChange: (m:
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-lg py-2.5 font-medium text-sm transition disabled:opacity-60"
-          style={{ background: panel.bgDeep, color: panel.cream, fontFamily: "'Work Sans', sans-serif" }}
+          className="w-full rounded-lg py-2.5 font-medium text-sm transition hover:brightness-110 active:scale-[0.98] disabled:opacity-60 disabled:hover:brightness-100"
+          style={{ background: panel.gold, color: panel.bgDeep }}
         >
           {loading ? (isSignUp ? 'Creating account…' : 'Signing in…') : isSignUp ? 'Create account' : 'Sign in'}
         </button>
       </form>
-      <p className="text-xs text-center mt-4" style={{ color: panel.inkDim, fontFamily: "'Work Sans', sans-serif" }}>
+      <p className="text-xs text-center mt-4" style={{ color: panel.inkDim }}>
         {isSignUp ? (
           <>
-            Already have a ledger?{' '}
-            <button
-              type="button"
-              onClick={() => switchMode('signin')}
-              className="underline"
-              style={{ color: panel.income }}
-            >
+            Already have an account?{' '}
+            <button type="button" onClick={() => switchMode('signin')} className="underline transition hover:opacity-75" style={{ color: panel.gold }}>
               Sign in
             </button>
           </>
         ) : (
           <>
             New here?{' '}
-            <button
-              type="button"
-              onClick={() => switchMode('signup')}
-              className="underline"
-              style={{ color: panel.income }}
-            >
-              Create your own ledger
+            <button type="button" onClick={() => switchMode('signup')} className="underline transition hover:opacity-75" style={{ color: panel.gold }}>
+              Create an account
             </button>
           </>
         )}
       </p>
-    </div>
+    </Card>
   )
 }
 
@@ -286,26 +232,24 @@ export function Landing() {
   }
 
   return (
-    <div style={{ background: panel.bgDeep, color: panel.cream, fontFamily: "'Spectral', serif" }}>
+    <div className="relative" style={{ background: panel.bgDeep, color: panel.ink, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+      <div className="sb-grain" aria-hidden />
       {/* Nav */}
-      <header
-        className="sticky top-0 z-20 backdrop-blur"
-        style={{ background: `${panel.bgDeep}e6`, borderBottom: `1px solid ${panel.hairline}` }}
-      >
+      <header className="sticky top-0 z-20 backdrop-blur" style={{ background: `${panel.bgDeep}e6`, borderBottom: `1px solid ${panel.border}` }}>
         <div className="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
-          <Nameplate />
+          <Wordmark />
           <div className="flex items-center gap-2">
             <button
               onClick={() => goToAuth('signin')}
-              className="text-sm font-medium px-4 py-2 rounded-lg transition"
-              style={{ color: panel.cream, boxShadow: `inset 0 0 0 1px ${panel.hairline}`, fontFamily: "'Work Sans', sans-serif" }}
+              className="text-sm font-medium px-4 py-2 rounded-lg transition hover:bg-white/5 active:scale-[0.98]"
+              style={{ color: panel.ink }}
             >
               Sign In
             </button>
             <button
               onClick={() => goToAuth('signup')}
-              className="text-sm font-medium px-4 py-2 rounded-lg transition"
-              style={{ background: panel.brass, color: panel.bgDeep, fontFamily: "'Work Sans', sans-serif" }}
+              className="text-sm font-medium px-4 py-2 rounded-lg transition hover:brightness-110 active:scale-[0.98]"
+              style={{ background: panel.gold, color: panel.bgDeep }}
             >
               Get Started
             </button>
@@ -313,139 +257,65 @@ export function Landing() {
         </div>
       </header>
 
-      {/* Hero -- the approved comp: a photographed open ledger book, centered
-          and dominant, on the same deep-green ground as the nav above it. */}
-      <section
-        className="relative overflow-hidden flex flex-col items-center px-5 sm:px-8 pt-16 sm:pt-20 pb-12 sm:pb-16"
-        style={leatherSurface(150)}
-      >
+      {/* Hero */}
+      <section className="relative overflow-hidden px-5 sm:px-8 pt-16 sm:pt-24 pb-16 sm:pb-24">
         <div
           className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(ellipse 60% 40% at 50% 0%, rgba(184,145,74,0.10), transparent)',
-          }}
+          style={{ background: 'radial-gradient(ellipse 55% 40% at 50% 0%, rgba(203,176,120,0.08), transparent)' }}
         />
-
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="relative max-w-2xl w-full text-center mb-10 sm:mb-12"
+          transition={{ duration: 0.6 }}
+          className="relative max-w-2xl mx-auto text-center mb-12 sm:mb-16"
         >
-          <h1
-            className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-5 tracking-tight"
-            style={{ color: panel.cream, fontFamily: "'Bodoni Moda', serif" }}
-          >
+          <h1 className="text-4xl sm:text-5xl md:text-[3.4rem] font-semibold leading-[1.05] mb-5 tracking-tight" style={{ color: panel.ink }}>
             One ledger — for every business you run.
           </h1>
-          <p className="text-base sm:text-lg mb-8 max-w-xl mx-auto" style={{ color: panel.creamDim }}>
+          <p className="text-base sm:text-lg mb-8 max-w-xl mx-auto" style={{ color: panel.inkDim }}>
             Log income and expenses, bill clients, and pull a clean Profit &amp; Loss — for one
             business today, or every business you add later, all in the same ledger.
           </p>
-          <div className="flex items-center justify-center">
-            <button
-              onClick={() => goToAuth('signup')}
-              className="px-5 py-2.5 rounded-lg font-medium text-sm transition active:scale-[0.98]"
-              style={{ background: panel.brass, color: panel.bgDeep, fontFamily: "'Work Sans', sans-serif" }}
-            >
-              Get Started
-            </button>
-          </div>
+          <button
+            onClick={() => goToAuth('signup')}
+            className="px-5 py-2.5 rounded-lg font-medium text-sm transition hover:brightness-110 active:scale-[0.98]"
+            style={{ background: panel.gold, color: panel.bgDeep }}
+          >
+            Get Started
+          </button>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-4xl"
-          style={{ aspectRatio: '5504 / 3072', containerType: 'inline-size' }}
+          transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="relative max-w-4xl mx-auto"
         >
-          <img
-            src={ledgerBookHeroUrl}
-            alt="An open ledger book with blank ruled pages, real business rows and a combined total set as live text over the left and right page"
-            className="absolute inset-0 w-full h-full object-contain rounded-sm"
-            style={{ boxShadow: '0 30px 70px rgba(0,0,0,0.5)' }}
-          />
-          {/* Real live text set over the photographed blank ruled pages --
-              never baked into the generated asset, so it stays crisp and
-              legible (a raster attempt at this text rendered as garbled
-              lettering) and uses the same sample data as the Mechanism
-              section below, so the hero reads as the real product rather
-              than a decorative object next to it. Positioned in container-
-              query percentage units so it stays registered to the ruled
-              lines at any width. */}
-          {SAMPLE_BUSINESSES.map((b, i) => (
-            <div
-              key={b.name}
-              className="absolute"
-              style={{
-                left: '23%',
-                width: '16.5%',
-                top: `${32.6 + i * 11.2}%`,
-                fontSize: '1.55cqw',
-                color: panel.ink,
-                fontFamily: "'Spectral', serif",
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {b.name}
-            </div>
-          ))}
-          {SAMPLE_BUSINESSES.map((b, i) => (
-            <div
-              key={`${b.name}-amt`}
-              className="absolute text-right"
-              style={{
-                left: '40%',
-                width: '7.5%',
-                top: `${32.6 + i * 11.2}%`,
-                fontSize: '1.6cqw',
-                color: panel.income,
-                fontFamily: "'Courier Prime', monospace",
-              }}
-            >
-              ${(b.income - b.expenses).toLocaleString()}
-            </div>
-          ))}
-          <div
-            className="absolute"
-            style={{ left: '51%', width: '23%', top: '46%', fontFamily: "'Work Sans', sans-serif" }}
-          >
-            <div style={{ fontSize: '1.15cqw', letterSpacing: '0.14em', color: panel.brass, textTransform: 'uppercase' }}>
-              Combined total
-            </div>
-            <div style={{ fontSize: '3.4cqw', color: panel.ink, fontFamily: "'Bodoni Moda', serif", fontWeight: 700, borderBottom: `0.25cqw solid ${panel.brass}`, paddingBottom: '0.4cqw' }}>
-              ${SAMPLE_NET.toLocaleString()}
-            </div>
-          </div>
+          <BrowserFrame>
+            <img
+              src="/landing/screenshot-ledger.png"
+              alt="The Sovereign Books ledger, showing recent transactions across several businesses"
+              className="w-full h-auto block"
+            />
+          </BrowserFrame>
         </motion.div>
       </section>
 
-      {/* Mechanism -- a real ledger page: click a business row to isolate
-          it, click again to return to the combined total. */}
-      <Section id="mechanism" className="px-5 sm:px-8 py-20 sm:py-28" style={paperSurface(150)}>
-        <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: panel.ink, fontFamily: "'Bodoni Moda', serif" }}>
+      {/* Mechanism */}
+      <Section id="mechanism" className="px-5 sm:px-8 py-20 sm:py-28" style={{ background: panel.bg }}>
+        <div className="max-w-2xl mx-auto text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-semibold mb-4 tracking-tight" style={{ color: panel.ink }}>
             Combine everything, or isolate one.
           </h2>
-          <p className="text-base max-w-xl mx-auto" style={{ color: panel.inkDim }}>
-            Stamp a business below to isolate it — stamp it again to bring everyone back into the
+          <p className="text-base max-w-lg mx-auto" style={{ color: panel.inkDim }}>
+            Select a business below to isolate it — select it again to bring everyone back into the
             combined total.
           </p>
         </div>
 
-        <div
-          className="relative max-w-xl mx-auto rounded-lg p-6 sm:p-8"
-          style={{ background: panel.bgRaised, boxShadow: `inset 0 0 0 1px ${panel.hairline}, 0 16px 40px rgba(0,0,0,0.12), ${giltEdgeShadow}` }}
-        >
-          <GoldCorners />
-          <PlateLabel dark className="mb-4 block">
-            {new Date().getFullYear()} — {isolated === null ? 'Combined' : SAMPLE_BUSINESSES[isolated].name}
-          </PlateLabel>
-          <div className="space-y-0">
+        <Card className="relative max-w-xl mx-auto p-6 sm:p-8">
+          <Tag className="mb-4 block">{isolated === null ? 'All businesses' : SAMPLE_BUSINESSES[isolated].name}</Tag>
+          <div>
             {SAMPLE_BUSINESSES.map((b, i) => {
               const net = b.income - b.expenses
               const active = isolated === null || isolated === i
@@ -453,21 +323,17 @@ export function Landing() {
                 <button
                   key={b.name}
                   onClick={() => setIsolated(isolated === i ? null : i)}
-                  className="w-full flex items-center gap-3 py-3 text-left cursor-pointer"
-                  style={{ borderTop: i > 0 ? `1px solid ${panel.hairline}` : undefined }}
+                  className="w-full flex items-center gap-3 py-3.5 text-left cursor-pointer transition hover:bg-white/[0.04]"
+                  style={{ borderTop: i > 0 ? `1px solid ${panel.border}` : undefined }}
                 >
-                  <LedgerStamp active={isolated === i} size={20} />
-                  <span
-                    className="text-sm sm:text-base"
-                    style={{ color: active ? panel.ink : panel.inkDim, fontFamily: "'Spectral', serif" }}
-                  >
+                  <RowDot active={isolated === i} />
+                  <span className="flex-1 text-sm sm:text-base" style={{ color: active ? panel.ink : panel.inkDim }}>
                     {b.name}
                   </span>
-                  <span className="flex-1 border-b border-dotted mx-2 mb-1" style={{ borderColor: panel.hairline }} />
                   <TickerTotal
                     value={net}
                     active={active}
-                    className="text-sm sm:text-base font-medium tabular-nums shrink-0"
+                    className="text-sm sm:text-base font-medium shrink-0"
                     style={{ color: active ? panel.income : panel.inkDim }}
                     key={`${i}-${active}`}
                   />
@@ -475,79 +341,68 @@ export function Landing() {
               )
             })}
           </div>
-          <div className="mt-2 pt-4" style={{ borderTop: `2px solid ${panel.brass}` }}>
+          <div className="mt-2 pt-4" style={{ borderTop: `1px solid ${panel.border}` }}>
             <div className="flex items-baseline justify-between">
-              <PlateLabel dark>{isolated === null ? 'Grand total' : 'Total, isolated'}</PlateLabel>
+              <Tag>{isolated === null ? 'Combined total' : 'Isolated total'}</Tag>
               <TickerTotal
                 value={isolated === null ? SAMPLE_NET : SAMPLE_BUSINESSES[isolated].income - SAMPLE_BUSINESSES[isolated].expenses}
-                className="text-2xl sm:text-3xl font-bold tabular-nums"
+                className="text-2xl sm:text-3xl font-semibold"
                 style={{ color: panel.ink }}
                 key={isolated ?? 'combined'}
               />
             </div>
           </div>
-        </div>
+        </Card>
       </Section>
 
-      {/* Features -- one continuous ledger-insert strip, not a grid of
-          same-size cards: each feature is a row on a shared page, not its
-          own box. */}
-      <Section className="px-5 sm:px-8 py-20 sm:py-28" style={leatherSurface(150)}>
+      {/* Features */}
+      <Section className="px-5 sm:px-8 py-20 sm:py-28">
         <div className="max-w-4xl mx-auto">
           <div className="max-w-xl mb-10">
-            <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: panel.cream, fontFamily: "'Bodoni Moda', serif" }}>
-              Five entries. Everything you need weekly.
+            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight" style={{ color: panel.ink }}>
+              Everything you need weekly.
             </h2>
           </div>
-          <div
-            className="relative rounded-xl overflow-hidden"
-            style={{ ...paperSurface(165), boxShadow: `inset 0 0 0 1px ${panel.hairline}, ${giltEdgeShadow}` }}
-          >
-            <GoldCorners />
+          <Card className="overflow-hidden">
             {FEATURES.map((f, i) => (
               <motion.div
                 key={f.label}
-                initial={{ opacity: 0, x: -16 }}
+                initial={{ opacity: 0, x: -12 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
+                transition={{ duration: 0.4, delay: i * 0.06 }}
                 className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6 px-6 py-6 sm:px-8"
-                style={i > 0 ? { borderTop: `1px solid ${panel.hairline}` } : undefined}
+                style={i > 0 ? { borderTop: `1px solid ${panel.border}` } : undefined}
               >
-                {/* Content comes first in DOM order (so the label never sits
-                    above the heading, even on mobile where the row stacks);
-                    sm:order-first moves the tag back to a left column on
-                    wider screens where it sits beside the heading instead. */}
                 <div className="flex-1 order-1 sm:order-2">
-                  <h3 className="text-lg font-semibold mb-1" style={{ color: panel.ink, fontFamily: "'Bodoni Moda', serif" }}>
+                  <h3 className="text-lg font-semibold mb-1 tracking-tight" style={{ color: panel.ink }}>
                     {f.title}
                   </h3>
                   <p className="text-sm leading-relaxed" style={{ color: panel.inkDim }}>
                     {f.body}
                   </p>
                 </div>
-                <div className="flex items-center gap-2 order-2 sm:order-1 sm:w-40 sm:shrink-0">
-                  <LedgerStamp active size={16} />
-                  <PlateLabel dark>{f.label}</PlateLabel>
+                <div className="order-2 sm:order-1 sm:w-40 sm:shrink-0">
+                  <Tag>{f.label}</Tag>
                 </div>
               </motion.div>
             ))}
-          </div>
+          </Card>
         </div>
       </Section>
 
       {/* Screenshots */}
-      <Section className="px-5 sm:px-8 py-20 sm:py-28" style={paperSurface(150)}>
+      <Section className="px-5 sm:px-8 py-20 sm:py-28" style={{ background: panel.bg }}>
         <div className="max-w-6xl mx-auto">
           <div className="max-w-xl mb-14">
-            <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: panel.ink, fontFamily: "'Bodoni Moda', serif" }}>
+            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight" style={{ color: panel.ink }}>
               This is the real thing, running.
             </h2>
           </div>
           <div className="grid sm:grid-cols-2 gap-6">
             <ScreenshotWindow
               src="/landing/screenshot-ledger.png"
-              alt="Adding a transaction in Business Ledger, with the receipt drop zone visible"
+              alt="Adding a transaction in Sovereign Books, with the receipt drop zone visible"
               label="Ledger — add transaction"
             />
             <ScreenshotWindow
@@ -577,14 +432,14 @@ export function Landing() {
       </Section>
 
       {/* Positioning */}
-      <Section className="px-5 sm:px-8 py-20 sm:py-28" style={leatherSurface(150)}>
+      <Section className="px-5 sm:px-8 py-20 sm:py-28">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6" style={{ color: panel.cream, fontFamily: "'Bodoni Moda', serif" }}>
+          <h2 className="text-3xl sm:text-4xl font-semibold mb-6 tracking-tight" style={{ color: panel.ink }}>
             Not daily babysitting. A weekly sit-down.
           </h2>
-          <p className="text-base leading-relaxed" style={{ color: panel.creamDim }}>
+          <p className="text-base leading-relaxed" style={{ color: panel.inkDim }}>
             Most accounting software assumes one company at a time — separate logins, separate setups,
-            separate exports to reconcile by hand. Business Ledger treats "which business" as just a
+            separate exports to reconcile by hand. Sovereign Books treats "which business" as just a
             field on the transaction. Sit down once a week, log what happened, and pull whatever report
             you need — one click for everything combined, one click for just one, whether that's the
             only business you run or the fifth you've added.
@@ -593,19 +448,19 @@ export function Landing() {
       </Section>
 
       {/* Sign in / sign up */}
-      <Section id="signin" className="px-5 sm:px-8 py-20 sm:py-28" style={leatherSurface(150)}>
-        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12" style={{ color: panel.cream, fontFamily: "'Bodoni Moda', serif" }}>
-          {authMode === 'signup' ? 'Start your own ledger' : 'Sign in to your ledger'}
+      <Section id="signin" className="px-5 sm:px-8 py-20 sm:py-28" style={{ background: panel.bg }}>
+        <h2 className="text-3xl sm:text-4xl font-semibold text-center mb-12 tracking-tight" style={{ color: panel.ink }}>
+          {authMode === 'signup' ? 'Get started' : 'Welcome back'}
         </h2>
         <SignInPanel mode={authMode} onModeChange={setAuthMode} />
       </Section>
 
       {/* Footer */}
-      <footer className="px-5 sm:px-8 py-10" style={{ ...leatherSurface(150), borderTop: `1px solid ${panel.hairline}` }}>
+      <footer className="px-5 sm:px-8 py-10" style={{ borderTop: `1px solid ${panel.border}` }}>
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Nameplate />
-          <p className="text-xs" style={{ color: panel.creamDim, fontFamily: "'Courier Prime', monospace" }}>
-            © {new Date().getFullYear()} Business Ledger
+          <Wordmark />
+          <p className="text-xs" style={{ color: panel.inkDim }}>
+            © {new Date().getFullYear()} Sovereign Books
           </p>
         </div>
       </footer>
