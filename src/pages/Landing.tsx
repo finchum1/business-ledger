@@ -4,6 +4,7 @@ import { motion, useInView } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { panel } from '../lib/landingTheme'
 import { BrowserFrame, Card, RowDot, ScreenshotWindow, Tag, TickerTotal } from '../components/landing/primitives'
+import { BrandMark } from '../components/BrandMark'
 
 const SAMPLE_BUSINESSES = [
   { name: 'Riverside Landscaping', income: 6400, expenses: 2150 },
@@ -71,9 +72,7 @@ function Section({
 function Wordmark() {
   return (
     <div className="flex items-center gap-2">
-      <div className="w-6 h-6 rounded-md flex items-center justify-center shrink-0" style={{ background: panel.gold }}>
-        <div className="w-2 h-2 rounded-full" style={{ background: panel.bgDeep }} />
-      </div>
+      <BrandMark color={panel.gold} size={26} />
       <span className="font-semibold tracking-tight text-[15px]" style={{ color: panel.ink }}>
         Sovereign Books
       </span>
