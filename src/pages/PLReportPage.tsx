@@ -19,7 +19,7 @@ function groupByCategory(txs: Transaction[]) {
 export function PLReportPage() {
   const { businesses } = useBusinesses()
   const [businessId, setBusinessId] = useState('all')
-  const [preset, setPreset] = useState<PresetKey>('this_month')
+  const [preset, setPreset] = useState<PresetKey>('ytd')
   const [customFrom, setCustomFrom] = useState('')
   const [customTo, setCustomTo] = useState('')
   const [transactions, setTransactions] = useState<Transaction[]>([])
