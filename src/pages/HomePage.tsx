@@ -87,39 +87,39 @@ export function HomePage() {
           </div>
 
           {perBusiness.length > 0 && (
-            <div className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-left text-slate-400 dark:text-slate-500 border-b border-slate-200 dark:border-slate-800">
-                    <th className="py-2 font-medium">Business</th>
-                    <th className="py-2 font-medium text-right">Income</th>
-                    <th className="py-2 font-medium text-right">Expenses</th>
-                    <th className="py-2 font-medium text-right">Net</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {perBusiness.map((row) => (
-                    <tr key={row.id} className="border-b border-slate-200/70 dark:border-slate-800/60">
-                      <td className="py-2 text-slate-600 dark:text-slate-300">{businessName(row.id)}</td>
-                      <td className="py-2 text-right text-emerald-600 dark:text-emerald-400">
-                        ${fmt(row.income)}
-                      </td>
-                      <td className="py-2 text-right text-rose-600 dark:text-rose-400">
-                        ${fmt(row.expenses)}
-                      </td>
-                      <td
-                        className={`py-2 text-right font-medium ${
+            <div className="space-y-3">
+              {perBusiness.map((row) => (
+                <div
+                  key={row.id}
+                  className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-4"
+                >
+                  <div className="font-medium text-slate-900 dark:text-slate-100 mb-2">
+                    {businessName(row.id)}
+                  </div>
+                  <div className="space-y-1 text-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500 dark:text-slate-400">Income</span>
+                      <span className="text-emerald-600 dark:text-emerald-400">${fmt(row.income)}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500 dark:text-slate-400">Expenses</span>
+                      <span className="text-rose-600 dark:text-rose-400">${fmt(row.expenses)}</span>
+                    </div>
+                    <div className="flex items-center justify-between pt-1 mt-1 border-t border-slate-200 dark:border-slate-800 font-medium">
+                      <span className="text-slate-700 dark:text-slate-300">Net</span>
+                      <span
+                        className={
                           row.net >= 0
                             ? 'text-emerald-600 dark:text-emerald-400'
                             : 'text-rose-600 dark:text-rose-400'
-                        }`}
+                        }
                       >
                         ${fmt(row.net)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </section>
