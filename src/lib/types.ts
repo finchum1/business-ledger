@@ -33,7 +33,7 @@ export interface Contractor {
   created_at: string
 }
 
-export interface Customer {
+export interface Client {
   id: string
   business_id: string
   name: string
@@ -56,37 +56,6 @@ export interface Transaction {
   receipt_path: string | null
   contractor: string | null
   created_at: string
-}
-
-export type InvoiceStatus = 'unpaid' | 'paid'
-export type DocType = 'quote' | 'invoice'
-
-export interface Invoice {
-  id: string
-  business_id: string
-  doc_type: DocType
-  invoice_number: string
-  status: InvoiceStatus
-  sent_at: string | null
-  approved_at: string | null
-  converted_to_invoice_id: string | null
-  client_name: string
-  client_email: string | null
-  client_address: string | null
-  issue_date: string
-  due_date: string | null
-  notes: string | null
-  created_at: string
-}
-
-export interface InvoiceLineItem {
-  id: string
-  invoice_id: string
-  description: string
-  quantity: number
-  rate: number
-  amount: number
-  sort_order: number
 }
 
 export type BankConnectionStatus = 'active' | 'error' | 'disabled'

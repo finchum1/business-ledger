@@ -8,9 +8,8 @@ import { HomePage } from './pages/HomePage'
 import { LedgerPage } from './pages/LedgerPage'
 import { ReportsPage } from './pages/ReportsPage'
 import { SettingsPage } from './pages/SettingsPage'
-import { SalesPage } from './pages/SalesPage'
 import { ContractorsPage } from './pages/ContractorsPage'
-import { CustomersPage } from './pages/CustomersPage'
+import { ClientsPage } from './pages/ClientsPage'
 import { BankingPage } from './pages/BankingPage'
 import { hasBankingAccess } from './lib/betaAccess'
 
@@ -49,15 +48,14 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/ledger" element={<LedgerPage />} />
           <Route path="/contractors" element={<ContractorsPage />} />
-          <Route path="/sales" element={<SalesPage />} />
-          <Route path="/customers" element={<CustomersPage />} />
+          <Route path="/clients" element={<ClientsPage />} />
           <Route
             path="/banking"
             element={hasBankingAccess(session.user.email) ? <BankingPage /> : <Navigate to="/" replace />}
           />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/invoices" element={<Navigate to="/sales" replace />} />
+          <Route path="/customers" element={<Navigate to="/clients" replace />} />
           <Route path="/businesses" element={<Navigate to="/settings" replace />} />
           <Route path="/categories" element={<Navigate to="/settings" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />

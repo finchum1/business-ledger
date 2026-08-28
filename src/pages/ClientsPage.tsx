@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
-import { useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useBusinesses } from '../lib/useBusinesses'
-import { useCustomers } from '../lib/useCustomers'
-import type { Customer } from '../lib/types'
+import { useClients } from '../lib/useClients'
+import type { Client } from '../lib/types'
 
 const inputClass =
   'w-full rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500'
@@ -12,10 +11,9 @@ const labelClass = 'block text-xs text-slate-500 dark:text-slate-400 mb-1'
 
 const emptyDetails = { email: '', phone: '', address: '' }
 
-export function CustomersPage() {
+export function ClientsPage() {
   const { businesses } = useBusinesses()
-  const { customers, loading, error: fetchError, refetch } = useCustomers()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const { clients, loading, error: fetchError, refetch } = useClients()
   const [businessId, setBusinessId] = useState('')
   const [name, setName] = useState('')
   const [saving, setSaving] = useState(false)
@@ -25,7 +23,6 @@ export function CustomersPage() {
   const [editingName, setEditingName] = useState('')
   const [detailsId, setDetailsId] = useState<string | null>(null)
   const [details, setDetails] = useState(emptyDetails)
-  const nameInputRef = useRef<HTMLInputElement>(null)
 
   const activeBusinesses = useMemo(() => businesses.filter((b) => b.is_active), [businesses])
 
@@ -35,27 +32,9 @@ export function CustomersPage() {
     }
   }, [businesses, activeBusinesses, businessId])
 
-  // Quick-create deep link from Home (`/customers?new=1`) -- focuses the
-  // "Add a customer" field once a business is selected, then strips the
-  // param so a refresh doesn't refocus it.
-  useEffect(() => {
-    if (businessId && searchParams.get('new') === '1') {
-      nameInputRef.current?.focus()
-      setSearchParams(
-        (prev) => {
-          const next = new URLSearchParams(prev)
-          next.delete('new')
-          return next
-        },
-        { replace: true },
-      )
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [businessId, searchParams])
-
   const list = useMemo(
-    () => customers.filter((c) => c.business_id === businessId),
-    [customers, businessId],
+    () => clients.filter((c) => c.business_id === businessId),
+    [clients, businessId],
   )
 
   async function handleAdd(e: FormEvent) {
@@ -71,7 +50,7 @@ export function CustomersPage() {
       setName('')
       refetch()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to add customer.')
+      setError(err instanceof Error ? err.message : 'Failed to add client.')
     } finally {
       setSaving(false)
     }
@@ -83,7 +62,7 @@ export function CustomersPage() {
       if (error) throw error
       refetch()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update customer.')
+      setError(err instanceof Error ? err.message : 'Failed to update client.')
     }
   }
 
@@ -104,11 +83,11 @@ export function CustomersPage() {
       setEditingId(null)
       refetch()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to rename customer.')
+      setError(err instanceof Error ? err.message : 'Failed to rename client.')
     }
   }
 
-  function startDetails(c: Customer) {
+  function startDetails(c: Client) {
     setDetailsId(c.id)
     setEditingId(null)
     setDetails({ email: c.email ?? '', phone: c.phone ?? '', address: c.address ?? '' })
@@ -128,14 +107,14 @@ export function CustomersPage() {
       setDetailsId(null)
       refetch()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update customer details.')
+      setError(err instanceof Error ? err.message : 'Failed to update client details.')
     }
   }
 
-  async function handleDelete(id: string, customerName: string) {
+  async function handleDelete(id: string, clientName: string) {
     if (
       !confirm(
-        `Delete "${customerName}"? This is only possible if nothing references it. To keep its history, use "Deactivate" instead.`,
+        `Delete "${clientName}"? This is only possible if nothing references it. To keep its history, use "Deactivate" instead.`,
       )
     )
       return
@@ -144,7 +123,7 @@ export function CustomersPage() {
       if (error) throw error
       refetch()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete customer.')
+      setError(err instanceof Error ? err.message : 'Failed to delete client.')
     }
   }
 
@@ -152,7 +131,7 @@ export function CustomersPage() {
     <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
       <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Customers</h2>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Clients</h2>
           <select
             value={businessId}
             onChange={(e) => setBusinessId(e.target.value)}
@@ -168,7 +147,6 @@ export function CustomersPage() {
         </div>
         <form onSubmit={handleAdd} className="flex gap-2">
           <input
-            ref={nameInputRef}
             type="text"
             placeholder="e.g. Meridian Corp"
             value={name}
@@ -186,7 +164,7 @@ export function CustomersPage() {
         </form>
         {businesses.length === 0 && (
           <p className="text-xs text-amber-600 dark:text-amber-400 mt-3">
-            Add a business in Settings before adding customers.
+            Add a business in Settings before adding clients.
           </p>
         )}
         {(error || fetchError) && (
@@ -196,13 +174,13 @@ export function CustomersPage() {
 
       <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
         <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
-          Customers for this business
+          Clients for this business
         </h2>
         {loading ? (
           <p className="text-slate-500 dark:text-slate-400 text-sm">Loading…</p>
         ) : list.length === 0 ? (
           <p className="text-slate-400 dark:text-slate-500 text-sm">
-            No customers yet for this business — add one above.
+            No clients yet for this business — add one above.
           </p>
         ) : (
           <ul className="divide-y divide-slate-200 dark:divide-slate-800">
@@ -330,8 +308,8 @@ export function CustomersPage() {
         )}
       </section>
       <p className="text-xs text-slate-400 dark:text-slate-500">
-        Customers belong to the business you have selected above — switch businesses to manage a
-        different roster. Deactivated customers stay visible here and keep their history but drop out
+        Clients belong to the business you have selected above — switch businesses to manage a
+        different roster. Deactivated clients stay visible here and keep their history but drop out
         of suggestions elsewhere.
       </p>
     </div>

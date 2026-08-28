@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from './supabase'
-import type { Customer } from './types'
+import type { Client } from './types'
 
-export function useCustomers() {
-  const [customers, setCustomers] = useState<Customer[]>([])
+export function useClients() {
+  const [clients, setClients] = useState<Client[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -16,10 +16,10 @@ export function useCustomers() {
         .order('sort_order', { ascending: true })
         .order('name', { ascending: true })
       if (error) throw error
-      setCustomers(data as Customer[])
+      setClients(data as Client[])
       setError(null)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load customers.')
+      setError(err instanceof Error ? err.message : 'Failed to load clients.')
     } finally {
       setLoading(false)
     }
@@ -29,5 +29,5 @@ export function useCustomers() {
     refetch()
   }, [refetch])
 
-  return { customers, loading, error, refetch }
+  return { clients, loading, error, refetch }
 }

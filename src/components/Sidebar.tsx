@@ -9,14 +9,13 @@ const NAV = [
   { to: '/', label: 'Home', end: true },
   { to: '/ledger', label: 'Ledger', end: false },
   { to: '/contractors', label: 'Contractors', end: false },
-  { to: '/sales', label: 'Sales', end: false },
-  { to: '/customers', label: 'Customers', end: false },
+  { to: '/clients', label: 'Clients', end: false },
   { to: '/reports', label: 'Reports', end: false },
 ]
 
 export function Sidebar({ session }: { session: Session }) {
   const nav = hasBankingAccess(session.user.email)
-    ? [...NAV.slice(0, 5), { to: '/banking', label: 'Banking', end: false }, ...NAV.slice(5)]
+    ? [...NAV.slice(0, 4), { to: '/banking', label: 'Banking', end: false }, ...NAV.slice(4)]
     : NAV
 
   return (
