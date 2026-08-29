@@ -70,6 +70,10 @@ export function ContractorReportPage() {
     range.from || range.to ? `${range.from ?? '…'} through ${range.to ?? '…'}` : 'All time'
   const scopedBusiness = businessId === 'all' ? null : businesses.find((b) => b.id === businessId)
   const logoUrl = scopedBusiness?.logo_path ? getLogoUrl(scopedBusiness.logo_path) : null
+  const logoUrls =
+    businessId === 'all'
+      ? businesses.filter((b) => b.logo_path).map((b) => getLogoUrl(b.logo_path!))
+      : []
 
   async function handleViewPdf() {
     const newTab = window.open('', '_blank', 'noopener,noreferrer')
@@ -88,6 +92,7 @@ export function ContractorReportPage() {
           totalPaid={totalPaid}
           businessNames={businessId === 'all' ? businesses.map((b) => b.name) : []}
           logoUrl={logoUrl}
+          logoUrls={logoUrls}
         />,
       ).toBlob()
       const url = URL.createObjectURL(blob)

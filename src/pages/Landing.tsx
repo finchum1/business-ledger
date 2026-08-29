@@ -30,9 +30,9 @@ const FEATURES = [
     body: 'Drop a photo or PDF straight onto an expense. Stored privately, opened later through a short-lived link — never a public file.',
   },
   {
-    label: 'INVOICING',
-    title: 'Bill clients, branded per business',
-    body: 'Create an invoice under any business with its own logo and contact details on it, add line items, mark it paid — and send a clean PDF.',
+    label: 'CONTRACTOR & CLIENT REPORTS',
+    title: 'See where the money came from — and went',
+    body: 'Tag an expense with a contractor or income with a client right on the ledger, then pull a report totaling exactly what you paid each contractor or received from each client.',
   },
   {
     label: 'P&L EXPORT',
@@ -272,8 +272,9 @@ export function Landing() {
             One ledger — for every business you run.
           </h1>
           <p className="text-base sm:text-lg mb-8 max-w-xl mx-auto" style={{ color: panel.inkDim }}>
-            Log income and expenses, bill clients, and pull a clean Profit &amp; Loss — for one
-            business today, or every business you add later, all in the same ledger.
+            Log income and expenses, track who paid you and who got paid, and pull a clean Profit
+            &amp; Loss — for one business today, or every business you add later, all in the same
+            ledger.
           </p>
           <button
             onClick={() => goToAuth('signup')}
@@ -421,9 +422,9 @@ export function Landing() {
             />
             <div className="sm:col-span-2">
               <ScreenshotWindow
-                src="/landing/screenshot-invoice.png"
-                alt="A branded invoice for one business, with line items and a paid status"
-                label="Invoicing — branded per business"
+                src="/landing/screenshot-client-report.png"
+                alt="A Client Report showing payments received grouped by client, with totals"
+                label="Client Report — money in by client"
               />
             </div>
           </div>

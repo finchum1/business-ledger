@@ -3,11 +3,13 @@ import { Document, Page, View, Text, StyleSheet, Image } from '@react-pdf/render
 const styles = StyleSheet.create({
   page: { padding: 40, fontSize: 10, fontFamily: 'Helvetica', color: '#241f16' },
   header: { marginBottom: 20, flexDirection: 'row', alignItems: 'flex-start' },
-  logo: { width: 44, height: 44, objectFit: 'contain', marginRight: 14 },
+  logo: { width: 72, height: 72, objectFit: 'contain', marginRight: 16 },
   headerText: { flex: 1 },
   brand: { fontSize: 10, color: '#957a50', marginBottom: 4 },
   title: { fontSize: 22, fontWeight: 'bold', marginBottom: 6 },
   subtitle: { fontSize: 11, color: '#6f5a39', marginBottom: 2 },
+  logoRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 },
+  smallLogo: { width: 30, height: 30, objectFit: 'contain', marginRight: 8, marginBottom: 6 },
   businessList: { fontSize: 9, color: '#baa078', marginTop: 6 },
   section: { marginTop: 22 },
   sectionTitle: {
@@ -86,6 +88,8 @@ export interface ReportPDFProps {
   businessNames: string[]
   /** The scoped business's logo (only meaningful/passed when scope is one specific business). */
   logoUrl?: string | null
+  /** Logos of every business in this report that has one (only meaningful/passed when scope is "all"). */
+  logoUrls?: string[]
 }
 
 export function ReportPDF({
@@ -99,6 +103,7 @@ export function ReportPDF({
   perBusiness,
   businessNames,
   logoUrl,
+  logoUrls,
 }: ReportPDFProps) {
   return (
     <Document>
@@ -110,6 +115,13 @@ export function ReportPDF({
             <Text style={styles.title}>Profit &amp; Loss</Text>
             <Text style={styles.subtitle}>{scopeLabel}</Text>
             <Text style={styles.subtitle}>{periodLabel}</Text>
+            {logoUrls && logoUrls.length > 0 && (
+              <View style={styles.logoRow}>
+                {logoUrls.map((url, i) => (
+                  <Image key={i} src={url} style={styles.smallLogo} />
+                ))}
+              </View>
+            )}
             {businessNames.length > 0 && (
               <Text style={styles.businessList}>Includes: {businessNames.join(', ')}</Text>
             )}
