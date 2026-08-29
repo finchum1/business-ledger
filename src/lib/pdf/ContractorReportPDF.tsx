@@ -2,14 +2,14 @@ import { Document, Page, View, Text, StyleSheet, Image } from '@react-pdf/render
 
 const styles = StyleSheet.create({
   page: { padding: 40, fontSize: 10, fontFamily: 'Helvetica', color: '#241f16' },
-  header: { marginBottom: 20, flexDirection: 'row', alignItems: 'flex-start' },
-  logo: { width: 72, height: 72, objectFit: 'contain', marginRight: 16 },
+  header: { marginBottom: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
+  logo: { width: 100, height: 100, objectFit: 'contain', marginLeft: 16 },
   headerText: { flex: 1 },
   brand: { fontSize: 10, color: '#957a50', marginBottom: 4 },
   title: { fontSize: 22, fontWeight: 'bold', marginBottom: 6 },
   subtitle: { fontSize: 11, color: '#6f5a39', marginBottom: 2 },
   logoRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 },
-  smallLogo: { width: 30, height: 30, objectFit: 'contain', marginRight: 8, marginBottom: 6 },
+  smallLogo: { width: 44, height: 44, objectFit: 'contain', marginRight: 10, marginBottom: 8 },
   businessList: { fontSize: 9, color: '#baa078', marginTop: 6 },
   section: { marginTop: 22 },
   sectionTitle: {
@@ -87,7 +87,6 @@ export function ContractorReportPDF({
     <Document>
       <Page size="LETTER" style={styles.page}>
         <View style={styles.header}>
-          {logoUrl && <Image src={logoUrl} style={styles.logo} />}
           <View style={styles.headerText}>
             <Text style={styles.brand}>Sovereign Books</Text>
             <Text style={styles.title}>Contractor Report</Text>
@@ -104,6 +103,7 @@ export function ContractorReportPDF({
               <Text style={styles.businessList}>Includes: {businessNames.join(', ')}</Text>
             )}
           </View>
+          {logoUrl && <Image src={logoUrl} style={styles.logo} />}
         </View>
 
         <View style={styles.section}>
