@@ -55,6 +55,7 @@ export interface Transaction {
   description: string | null
   receipt_path: string | null
   contractor: string | null
+  client: string | null
   created_at: string
 }
 

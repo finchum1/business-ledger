@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase'
 import { useBusinesses } from '../lib/useBusinesses'
 import { useCategories } from '../lib/useCategories'
 import { useContractors } from '../lib/useContractors'
+import { useClients } from '../lib/useClients'
 import { deleteReceipt, getReceiptUrl, uploadReceipt } from '../lib/receipts'
 import { Combobox } from '../components/Combobox'
 import { ReceiptDropZone } from '../components/ReceiptDropZone'
@@ -23,12 +24,14 @@ const emptyForm = {
   description: '',
   receipt_path: null as string | null,
   contractor: '',
+  client: '',
 }
 
 export function LedgerPage() {
   const { businesses, loading: businessesLoading } = useBusinesses()
   const { categories } = useCategories()
   const { contractors } = useContractors()
+  const { clients } = useClients()
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -93,6 +96,11 @@ export function LedgerPage() {
     [contractors, form.business_id],
   )
 
+  const clientOptions = useMemo(
+    () => clients.filter((c) => c.is_active && c.business_id === form.business_id).map((c) => c.name),
+    [clients, form.business_id],
+  )
+
   function startEdit(tx: Transaction) {
     setForm({
       id: tx.id,
@@ -104,6 +112,7 @@ export function LedgerPage() {
       description: tx.description ?? '',
       receipt_path: tx.receipt_path,
       contractor: tx.contractor ?? '',
+      client: tx.client ?? '',
     })
     setReceiptFile(null)
     setRemovingReceipt(false)
@@ -144,6 +153,7 @@ export function LedgerPage() {
         description: form.description.trim() || null,
         receipt_path: receiptPath,
         contractor: form.type === 'expense' ? form.contractor.trim() || null : null,
+        client: form.type === 'income' ? form.client.trim() || null : null,
       }
       const { error } = form.id
         ? await supabase.from('transactions').update(payload).eq('id', form.id)
@@ -225,7 +235,13 @@ export function LedgerPage() {
                   type="button"
                   key={t}
                   onClick={() =>
-                    setForm((f) => ({ ...f, type: t, category: '', contractor: t === 'income' ? '' : f.contractor }))
+                    setForm((f) => ({
+                      ...f,
+                      type: t,
+                      category: '',
+                      contractor: t === 'income' ? '' : f.contractor,
+                      client: t === 'expense' ? '' : f.client,
+                    }))
                   }
                   className={`flex-1 py-2 font-medium transition ${
                     form.type === t
@@ -286,7 +302,24 @@ export function LedgerPage() {
             </div>
           )}
 
-          <div className={`sm:col-span-2 ${form.type === 'expense' ? 'lg:col-span-3' : 'lg:col-span-4'}`}>
+          {form.type === 'income' && (
+            <div className="lg:col-span-2">
+              <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">
+                Client (optional)
+              </label>
+              <Combobox
+                placeholder="e.g. Meridian Corp"
+                value={form.client}
+                onChange={(client) => setForm((f) => ({ ...f, client }))}
+                options={clientOptions}
+              />
+              <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
+                Who this was received from — drives the Client Report.
+              </p>
+            </div>
+          )}
+
+          <div className="sm:col-span-2 lg:col-span-3">
             <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">
               Description (optional)
             </label>
@@ -400,6 +433,7 @@ export function LedgerPage() {
                   <th className="py-2 pr-3 font-medium">Business</th>
                   <th className="py-2 pr-3 font-medium">Category</th>
                   <th className="py-2 pr-3 font-medium">Contractor</th>
+                  <th className="py-2 pr-3 font-medium">Client</th>
                   <th className="py-2 pr-3 font-medium">Description</th>
                   <th className="py-2 pr-3 font-medium text-right">Amount</th>
                   <th className="py-2 pr-3 font-medium"></th>
@@ -432,6 +466,9 @@ export function LedgerPage() {
                     </td>
                     <td className="py-2 pr-3 text-slate-400 dark:text-slate-500 whitespace-nowrap">
                       {tx.contractor ?? ''}
+                    </td>
+                    <td className="py-2 pr-3 text-slate-400 dark:text-slate-500 whitespace-nowrap">
+                      {tx.client ?? ''}
                     </td>
                     <td className="py-2 pr-3 text-slate-400 dark:text-slate-500">{tx.description}</td>
                     <td
