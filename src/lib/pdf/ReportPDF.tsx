@@ -1,8 +1,10 @@
-import { Document, Page, View, Text, StyleSheet } from '@react-pdf/renderer'
+import { Document, Page, View, Text, StyleSheet, Image } from '@react-pdf/renderer'
 
 const styles = StyleSheet.create({
   page: { padding: 40, fontSize: 10, fontFamily: 'Helvetica', color: '#241f16' },
-  header: { marginBottom: 20 },
+  header: { marginBottom: 20, flexDirection: 'row', alignItems: 'flex-start' },
+  logo: { width: 44, height: 44, objectFit: 'contain', marginRight: 14 },
+  headerText: { flex: 1 },
   brand: { fontSize: 10, color: '#957a50', marginBottom: 4 },
   title: { fontSize: 22, fontWeight: 'bold', marginBottom: 6 },
   subtitle: { fontSize: 11, color: '#6f5a39', marginBottom: 2 },
@@ -82,6 +84,8 @@ export interface ReportPDFProps {
   perBusiness: { name: string; income: number; expenses: number; net: number }[]
   /** Every business rolled into this report (only meaningful/passed when scope is "all"). */
   businessNames: string[]
+  /** The scoped business's logo (only meaningful/passed when scope is one specific business). */
+  logoUrl?: string | null
 }
 
 export function ReportPDF({
@@ -94,18 +98,22 @@ export function ReportPDF({
   net,
   perBusiness,
   businessNames,
+  logoUrl,
 }: ReportPDFProps) {
   return (
     <Document>
       <Page size="LETTER" style={styles.page}>
         <View style={styles.header}>
-          <Text style={styles.brand}>Sovereign Books</Text>
-          <Text style={styles.title}>Profit &amp; Loss</Text>
-          <Text style={styles.subtitle}>{scopeLabel}</Text>
-          <Text style={styles.subtitle}>{periodLabel}</Text>
-          {businessNames.length > 0 && (
-            <Text style={styles.businessList}>Includes: {businessNames.join(', ')}</Text>
-          )}
+          {logoUrl && <Image src={logoUrl} style={styles.logo} />}
+          <View style={styles.headerText}>
+            <Text style={styles.brand}>Sovereign Books</Text>
+            <Text style={styles.title}>Profit &amp; Loss</Text>
+            <Text style={styles.subtitle}>{scopeLabel}</Text>
+            <Text style={styles.subtitle}>{periodLabel}</Text>
+            {businessNames.length > 0 && (
+              <Text style={styles.businessList}>Includes: {businessNames.join(', ')}</Text>
+            )}
+          </View>
         </View>
 
         <View style={styles.section}>

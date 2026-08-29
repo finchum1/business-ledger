@@ -82,6 +82,9 @@ export function BusinessProfileEditor({
           onRemove={() => setRemovingLogo(true)}
           onError={setError}
         />
+        <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
+          Appears on this business's P&amp;L and other reports when you export them as a PDF.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -128,7 +131,7 @@ export function BusinessProfileEditor({
           className={inputClass}
         />
         <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
-          Shown on invoices sent to clients.
+          For your own reference — bank/payment details for this business.
         </p>
       </div>
 

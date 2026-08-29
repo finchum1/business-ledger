@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { useBusinesses } from '../lib/useBusinesses'
+import { getLogoUrl } from '../lib/logos'
 import type { Transaction } from '../lib/types'
 import { PRESET_LABELS, rangeForPreset, type PresetKey } from '../lib/dateRanges'
 
@@ -67,6 +68,8 @@ export function ContractorReportPage() {
   const scopeLabel = businessId === 'all' ? 'All Businesses (Combined)' : businessName(businessId)
   const periodLabel =
     range.from || range.to ? `${range.from ?? '…'} through ${range.to ?? '…'}` : 'All time'
+  const scopedBusiness = businessId === 'all' ? null : businesses.find((b) => b.id === businessId)
+  const logoUrl = scopedBusiness?.logo_path ? getLogoUrl(scopedBusiness.logo_path) : null
 
   async function handleViewPdf() {
     const newTab = window.open('', '_blank', 'noopener,noreferrer')
@@ -84,6 +87,7 @@ export function ContractorReportPage() {
           rows={rows}
           totalPaid={totalPaid}
           businessNames={businessId === 'all' ? businesses.map((b) => b.name) : []}
+          logoUrl={logoUrl}
         />,
       ).toBlob()
       const url = URL.createObjectURL(blob)
