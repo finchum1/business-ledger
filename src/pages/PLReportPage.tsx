@@ -230,18 +230,20 @@ export function PLReportPage() {
             {incomeByCategory.length === 0 ? (
               <p className="text-slate-400 dark:text-slate-500 text-sm">No income recorded.</p>
             ) : (
-              <table className="w-full text-sm mb-2">
-                <tbody>
-                  {incomeByCategory.map(([cat, amt]) => (
-                    <tr key={cat} className="border-b border-slate-200/70 dark:border-slate-800/60">
-                      <td className="py-1.5 text-slate-600 dark:text-slate-300">{cat}</td>
-                      <td className="py-1.5 text-right text-emerald-600 dark:text-emerald-400">
-                        ${fmt(amt)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm mb-2">
+                  <tbody>
+                    {incomeByCategory.map(([cat, amt]) => (
+                      <tr key={cat} className="border-b border-slate-200/70 dark:border-slate-800/60">
+                        <td className="py-1.5 text-slate-600 dark:text-slate-300">{cat}</td>
+                        <td className="py-1.5 text-right text-emerald-600 dark:text-emerald-400">
+                          ${fmt(amt)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
             <div className="flex justify-between pt-2 font-semibold text-slate-900 dark:text-slate-100">
               <span>Total Income</span>
@@ -256,18 +258,20 @@ export function PLReportPage() {
             {expensesByCategory.length === 0 ? (
               <p className="text-slate-400 dark:text-slate-500 text-sm">No expenses recorded.</p>
             ) : (
-              <table className="w-full text-sm mb-2">
-                <tbody>
-                  {expensesByCategory.map(([cat, amt]) => (
-                    <tr key={cat} className="border-b border-slate-200/70 dark:border-slate-800/60">
-                      <td className="py-1.5 text-slate-600 dark:text-slate-300">{cat}</td>
-                      <td className="py-1.5 text-right text-rose-600 dark:text-rose-400">
-                        ${fmt(amt)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm mb-2">
+                  <tbody>
+                    {expensesByCategory.map(([cat, amt]) => (
+                      <tr key={cat} className="border-b border-slate-200/70 dark:border-slate-800/60">
+                        <td className="py-1.5 text-slate-600 dark:text-slate-300">{cat}</td>
+                        <td className="py-1.5 text-right text-rose-600 dark:text-rose-400">
+                          ${fmt(amt)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
             <div className="flex justify-between pt-2 font-semibold text-slate-900 dark:text-slate-100">
               <span>Total Expenses</span>
@@ -295,38 +299,42 @@ export function PLReportPage() {
               <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
                 By business
               </h3>
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-left text-slate-400 dark:text-slate-500 border-b border-slate-200 dark:border-slate-800">
-                    <th className="py-2 font-medium">Business</th>
-                    <th className="py-2 font-medium text-right">Income</th>
-                    <th className="py-2 font-medium text-right">Expenses</th>
-                    <th className="py-2 font-medium text-right">Net</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {perBusiness.map((row) => (
-                    <tr key={row.id} className="border-b border-slate-200/70 dark:border-slate-800/60">
-                      <td className="py-2 text-slate-600 dark:text-slate-300">{row.name}</td>
-                      <td className="py-2 text-right text-emerald-600 dark:text-emerald-400">
-                        ${fmt(row.income)}
-                      </td>
-                      <td className="py-2 text-right text-rose-600 dark:text-rose-400">
-                        ${fmt(row.expenses)}
-                      </td>
-                      <td
-                        className={`py-2 text-right font-medium ${
-                          row.net >= 0
-                            ? 'text-emerald-600 dark:text-emerald-400'
-                            : 'text-rose-600 dark:text-rose-400'
-                        }`}
-                      >
-                        ${fmt(row.net)}
-                      </td>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-left text-slate-400 dark:text-slate-500 border-b border-slate-200 dark:border-slate-800">
+                      <th className="py-2 font-medium">Business</th>
+                      <th className="py-2 font-medium text-right">Income</th>
+                      <th className="py-2 font-medium text-right">Expenses</th>
+                      <th className="py-2 font-medium text-right">Net</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {perBusiness.map((row) => (
+                      <tr key={row.id} className="border-b border-slate-200/70 dark:border-slate-800/60">
+                        <td className="py-2 text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                          {row.name}
+                        </td>
+                        <td className="py-2 text-right text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
+                          ${fmt(row.income)}
+                        </td>
+                        <td className="py-2 text-right text-rose-600 dark:text-rose-400 whitespace-nowrap">
+                          ${fmt(row.expenses)}
+                        </td>
+                        <td
+                          className={`py-2 text-right font-medium whitespace-nowrap ${
+                            row.net >= 0
+                              ? 'text-emerald-600 dark:text-emerald-400'
+                              : 'text-rose-600 dark:text-rose-400'
+                          }`}
+                        >
+                          ${fmt(row.net)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </section>
           )}
         </>

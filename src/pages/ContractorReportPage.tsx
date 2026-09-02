@@ -208,24 +208,32 @@ export function ContractorReportPage() {
               Ledger page to see it here.
             </p>
           ) : (
-            <table className="w-full text-sm mb-2">
-              <thead>
-                <tr className="text-left text-slate-400 dark:text-slate-500 border-b border-slate-200 dark:border-slate-800">
-                  <th className="py-2 font-medium">Contractor</th>
-                  <th className="py-2 font-medium text-right">Payments</th>
-                  <th className="py-2 font-medium text-right">Total paid</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row) => (
-                  <tr key={row.name} className="border-b border-slate-200/70 dark:border-slate-800/60">
-                    <td className="py-2 text-slate-600 dark:text-slate-300">{row.name}</td>
-                    <td className="py-2 text-right text-slate-500 dark:text-slate-400">{row.count}</td>
-                    <td className="py-2 text-right text-rose-600 dark:text-rose-400">${fmt(row.total)}</td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm mb-2">
+                <thead>
+                  <tr className="text-left text-slate-400 dark:text-slate-500 border-b border-slate-200 dark:border-slate-800">
+                    <th className="py-2 font-medium">Contractor</th>
+                    <th className="py-2 font-medium text-right">Payments</th>
+                    <th className="py-2 font-medium text-right">Total paid</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {rows.map((row) => (
+                    <tr key={row.name} className="border-b border-slate-200/70 dark:border-slate-800/60">
+                      <td className="py-2 text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                        {row.name}
+                      </td>
+                      <td className="py-2 text-right text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                        {row.count}
+                      </td>
+                      <td className="py-2 text-right text-rose-600 dark:text-rose-400 whitespace-nowrap">
+                        ${fmt(row.total)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
           <div className="flex justify-between pt-2 font-semibold text-slate-900 dark:text-slate-100">
             <span>Total paid to contractors</span>

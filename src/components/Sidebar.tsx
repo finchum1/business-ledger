@@ -3,23 +3,14 @@ import { supabase } from '../lib/supabase'
 import type { Session } from '@supabase/supabase-js'
 import { ThemeToggle } from './ThemeToggle'
 import { hasBankingAccess } from '../lib/betaAccess'
+import { navFor } from '../lib/nav'
 import { BrandMark } from './BrandMark'
 
-const NAV = [
-  { to: '/', label: 'Home', end: true },
-  { to: '/ledger', label: 'Ledger', end: false },
-  { to: '/contractors', label: 'Contractors', end: false },
-  { to: '/clients', label: 'Clients', end: false },
-  { to: '/reports', label: 'Reports', end: false },
-]
-
 export function Sidebar({ session }: { session: Session }) {
-  const nav = hasBankingAccess(session.user.email)
-    ? [...NAV.slice(0, 4), { to: '/banking', label: 'Banking', end: false }, ...NAV.slice(4)]
-    : NAV
+  const nav = navFor(hasBankingAccess(session.user.email))
 
   return (
-    <aside className="flex h-screen w-60 shrink-0 sticky top-0 flex-col border-r border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 px-4 py-5">
+    <aside className="hidden md:flex h-screen w-60 shrink-0 sticky top-0 flex-col border-r border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 px-4 py-5">
       <div className="px-1 pb-6 flex items-center gap-2">
         <BrandMark color="var(--color-amber-400)" size={22} />
         <div className="font-semibold text-slate-900 dark:text-slate-100">Sovereign Books</div>

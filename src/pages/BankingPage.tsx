@@ -404,18 +404,22 @@ export function BankingPage() {
                   </div>
                 </div>
                 {(accountsByConnection.get(conn.id) ?? []).length > 0 && (
-                  <table className="w-full text-sm mt-3">
-                    <tbody>
-                      {(accountsByConnection.get(conn.id) ?? []).map((a) => (
-                        <tr key={a.id} className="border-t border-slate-200/70 dark:border-slate-800/60">
-                          <td className="py-1.5 text-slate-600 dark:text-slate-300">{a.name}</td>
-                          <td className="py-1.5 text-right text-slate-700 dark:text-slate-200 font-medium">
-                            {a.currency ?? '$'} {a.current_balance != null ? fmt(a.current_balance) : '—'}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm mt-3">
+                      <tbody>
+                        {(accountsByConnection.get(conn.id) ?? []).map((a) => (
+                          <tr key={a.id} className="border-t border-slate-200/70 dark:border-slate-800/60">
+                            <td className="py-1.5 text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                              {a.name}
+                            </td>
+                            <td className="py-1.5 text-right text-slate-700 dark:text-slate-200 font-medium whitespace-nowrap">
+                              {a.currency ?? '$'} {a.current_balance != null ? fmt(a.current_balance) : '—'}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 )}
               </li>
             ))}
