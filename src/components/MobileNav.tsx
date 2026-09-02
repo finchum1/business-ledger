@@ -1,7 +1,6 @@
 import { NavLink } from 'react-router-dom'
-import type { Session } from '@supabase/supabase-js'
-import { hasBankingAccess } from '../lib/betaAccess'
-import { navFor } from '../lib/nav'
+import { NAV } from '../lib/nav'
+import { NavIcon } from './NavIcons'
 
 /**
  * Fixed bottom tab bar shown only below the md breakpoint -- the primary
@@ -10,15 +9,13 @@ import { navFor } from '../lib/nav'
  * <main>'s bottom padding, which reserves space so page content never sits
  * underneath this bar.
  */
-export function MobileNav({ session }: { session: Session }) {
-  const nav = navFor(hasBankingAccess(session.user.email))
-
+export function MobileNav() {
   return (
     <nav
       className="md:hidden fixed bottom-0 inset-x-0 z-20 flex border-t border-slate-200 dark:border-slate-800 bg-slate-50/95 dark:bg-slate-900/95 backdrop-blur"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      {nav.map((item) => (
+      {NAV.map((item) => (
         <NavLink
           key={item.to}
           to={item.to}
@@ -31,6 +28,7 @@ export function MobileNav({ session }: { session: Session }) {
             }`
           }
         >
+          <NavIcon to={item.to} size={20} />
           <span className="truncate max-w-full px-0.5">{item.label}</span>
         </NavLink>
       ))}

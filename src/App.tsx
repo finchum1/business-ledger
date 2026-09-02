@@ -12,8 +12,6 @@ import { ReportsPage } from './pages/ReportsPage'
 import { SettingsPage } from './pages/SettingsPage'
 import { ContractorsPage } from './pages/ContractorsPage'
 import { ClientsPage } from './pages/ClientsPage'
-import { BankingPage } from './pages/BankingPage'
-import { hasBankingAccess } from './lib/betaAccess'
 
 function App() {
   const [session, setSession] = useState<Session | null>(null)
@@ -53,10 +51,7 @@ function App() {
             <Route path="/ledger" element={<LedgerPage />} />
             <Route path="/contractors" element={<ContractorsPage />} />
             <Route path="/clients" element={<ClientsPage />} />
-            <Route
-              path="/banking"
-              element={hasBankingAccess(session.user.email) ? <BankingPage /> : <Navigate to="/" replace />}
-            />
+            <Route path="/banking" element={<Navigate to="/" replace />} />
             <Route path="/reports" element={<ReportsPage />} />
             <Route path="/settings" element={<SettingsPage session={session} />} />
             <Route path="/customers" element={<Navigate to="/clients" replace />} />
@@ -65,7 +60,7 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
-        <MobileNav session={session} />
+        <MobileNav />
       </div>
     </div>
   )
