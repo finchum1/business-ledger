@@ -10,7 +10,10 @@ import { ThemeToggle } from './ThemeToggle'
  */
 export function MobileHeader() {
   return (
-    <header className="md:hidden sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 bg-slate-50/95 dark:bg-slate-900/95 backdrop-blur px-4 py-3">
+    <header
+      className="md:hidden sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 bg-slate-50/95 dark:bg-slate-900/95 backdrop-blur px-4 pb-3"
+      style={{ paddingTop: 'calc(env(safe-area-inset-top) + 0.75rem)' }}
+    >
       <div className="flex items-center gap-2 min-w-0">
         <BrandMark color="var(--color-amber-400)" size={20} />
         <span className="font-semibold text-slate-900 dark:text-slate-100 truncate">Sovereign Books</span>
